@@ -1,9 +1,10 @@
 package xyz.abelgomez.navigationdrawer.model;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Salon {
+public class Salon implements Serializable {
 
     private int id_salon;
     private String nombre ;

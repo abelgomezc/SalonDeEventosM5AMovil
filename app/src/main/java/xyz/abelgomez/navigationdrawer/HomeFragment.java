@@ -5,16 +5,19 @@ import static java.io.File.createTempFile;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import xyz.abelgomez.navigationdrawer.adapters.AdapterHome;
@@ -96,6 +99,31 @@ public class HomeFragment extends Fragment {
 
         salon4.setImagen(file4);
         salones.add(salon4);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Obtener el objeto Salon seleccionado
+                Salon salon = salones.get(position);
+
+                // Crear una instancia del fragmento DetalleSalonFragment
+                DetalleSalonFragment detalleSalonFragment = new DetalleSalonFragment();
+
+                // Pasar los datos del objeto Salon al fragmento DetalleSalonFragment
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("salon",salon);
+                detalleSalonFragment.setArguments(bundle);
+
+                // Reemplazar el fragmento actual por el fragmento DetalleSalonFragment
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, detalleSalonFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+
 
 
 
