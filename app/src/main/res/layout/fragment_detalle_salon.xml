@@ -30,6 +30,7 @@
             android:layout_height="23dp"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+            android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,8 +43,8 @@
 
         <TextView
             android:id="@+id/descripcionTextView"
-            android:layout_width="378dp"
-            android:layout_height="75dp"
+            android:layout_width="368dp"
+            android:layout_height="42dp"
             android:maxLines="4"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
@@ -51,16 +52,16 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.424"
+            app:layout_constraintHorizontal_bias="0.348"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.526" />
+            app:layout_constraintVertical_bias="0.499" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Detalle del Salon "
+            android:text="Dirección :"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.045"
@@ -82,27 +83,27 @@
 
         <TextView
             android:id="@+id/textViewCapacidad"
-            android:layout_width="77dp"
-            android:layout_height="21dp"
+            android:layout_width="222dp"
+            android:layout_height="27dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.398"
+            app:layout_constraintHorizontal_bias="0.735"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.627" />
+            app:layout_constraintVertical_bias="0.633" />
 
         <TextView
             android:id="@+id/textViewCostoHora"
-            android:layout_width="84dp"
-            android:layout_height="19dp"
+            android:layout_width="76dp"
+            android:layout_height="22dp"
             android:text="2.0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.406"
+            app:layout_constraintHorizontal_bias="0.414"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.722" />
+            app:layout_constraintVertical_bias="0.721" />
 
         <TextView
             android:id="@+id/textView5"
@@ -116,6 +117,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.724" />
 
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Esatdo : "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.791" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="130dp"
@@ -127,6 +140,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.971" />
+
+        <TextView
+            android:id="@+id/textViewEstado"
+            android:layout_width="140dp"
+            android:layout_height="22dp"
+            android:text="disponible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.793" />
 
         <!-- Agrega más TextViews u otros elementos para mostrar los demás detalles del salón -->
 

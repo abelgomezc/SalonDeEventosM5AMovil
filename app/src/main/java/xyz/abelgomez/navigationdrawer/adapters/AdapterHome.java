@@ -58,19 +58,32 @@ public class AdapterHome extends BaseAdapter {
 
         Salon salon = salones.get(position);
 
-        // Carga la imagen desde el archivo utilizando una biblioteca de terceros o métodos personalizados
-        Glide.with(context)
-                .load(salon.getImagen())
-                .centerCrop()
-                .placeholder(R.drawable.s)
-                .into(imageView);
 
-        nombreTextView.setText(salon.getNombre());
-        descripcionTextView.setText(salon.getDescripccion());
+
+        nombreTextView.setText(salon.getId_salon()+"   Nombre :"+salon.getNombre());
+        descripcionTextView.setText(salon.getDireccion());
 
         return view;
     }
+
+    public int getSalonId(int position) {
+        Salon salon = salones.get(position);
+        return salon.getId_salon();
+    }
 }
+
+
+
+//        // Carga la imagen desde el archivo utilizando una biblioteca de terceros o métodos personalizados
+//        Glide.with(context)
+//                .load(salon.getImagen())
+//                .centerCrop()
+//                .placeholder(R.drawable.s)
+//                .into(imageView);
+
+
+
+
 
 
 
