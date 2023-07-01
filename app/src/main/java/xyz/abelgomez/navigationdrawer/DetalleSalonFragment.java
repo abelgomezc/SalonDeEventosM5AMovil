@@ -16,11 +16,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,6 +52,7 @@ public class DetalleSalonFragment extends Fragment {
             System.out.println("--------------------------------------------ID del salón seleccionado: " + idSalon);
 
             obtenerDatosSalon(idSalon);
+            obtenerUrlsSalon(idSalon);
         }
 
         return view;
@@ -128,20 +131,58 @@ public class DetalleSalonFragment extends Fragment {
 
             costoHoraView.setText("$  "+String.valueOf(salon.getCostoHora()));
 
-//            // Mostrar los datos del salón en la consola
-//            System.out.println("Datos del salón consultado:");
-//            System.out.println("ID: " + salon.getId_salon());
-//            System.out.println("Nombre: " + salon.getNombre());
-//            System.out.println("Dirección: " + salon.getDireccion());
-            // Mostrar otros datos según sea necesario
+
         }
     }
 
 
+    private void obtenerUrlsSalon(int idSalon) {
+        RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
+        String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Manejar la respuesta exitosa
+                        mostrarUrlsSalon(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejar el error de respuesta
+                        error.printStackTrace();
+                        Toast.makeText(getActivity(), "Error al obtener las URLs del salón", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        requestQueue.add(request);
+    }
+
+    private void mostrarUrlsSalon(JSONArray response) {
+
+        ImageView imageView = getView().findViewById(R.id.imageView);
+
+        String imageUrl="";
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                 imageUrl = response.getString(i);
+                System.out.println("URL de imagen: " + imageUrl);
 
 
+            }
 
+            // Reemplaza "localhost" con la dirección IP del servidor
+            imageUrl = imageUrl.replace("localhost", "192.168.18.4");
 
+            Glide.with(this)
+                    .load(imageUrl)
+                    .into(imageView);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 
