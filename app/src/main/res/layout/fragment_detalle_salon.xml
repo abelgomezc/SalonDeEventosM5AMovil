@@ -4,26 +4,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color2"
     tools:context=".DetalleSalonFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="381dp"
-            android:layout_height="206dp"
-            android:adjustViewBounds="true"
-            android:padding="16dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.114"
-            app:srcCompat="@raw/img1" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="401dp"
+            android:layout_height="321dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="20dp"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="9dp">
 
+            <com.denzcoskun.imageslider.ImageSlider
+                android:id="@+id/imageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="329dp"
+                app:iss_auto_cycle="true"
+                app:iss_corner_radius="20"
+                app:iss_delay="1000"
+                app:iss_period="1000"
+                app:iss_title_background="@drawable/s" />
+
+
+        </androidx.cardview.widget.CardView>
 
 
         <TextView
@@ -37,11 +45,10 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintHorizontal_bias="0.46"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.027" />
-
+            app:layout_constraintVertical_bias="0.47" />
 
         <TextView
             android:id="@+id/descripcionTextView"
@@ -54,10 +61,10 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.348"
+            app:layout_constraintHorizontal_bias="0.372"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.499" />
+            app:layout_constraintVertical_bias="0.627" />
 
         <TextView
             android:id="@+id/textView"
@@ -66,10 +73,10 @@
             android:text="Dirección :"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintHorizontal_bias="0.052"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.445" />
+            app:layout_constraintVertical_bias="0.549" />
 
         <TextView
             android:id="@+id/textView2"
@@ -81,7 +88,7 @@
             app:layout_constraintHorizontal_bias="0.044"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.626" />
+            app:layout_constraintVertical_bias="0.7" />
 
         <TextView
             android:id="@+id/textViewCapacidad"
@@ -90,10 +97,10 @@
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.735"
+            app:layout_constraintHorizontal_bias="0.777"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.633" />
+            app:layout_constraintVertical_bias="0.697" />
 
         <TextView
             android:id="@+id/textViewCostoHora"
@@ -102,10 +109,10 @@
             android:text="2.0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.414"
+            app:layout_constraintHorizontal_bias="0.438"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.721" />
+            app:layout_constraintVertical_bias="0.771" />
 
         <TextView
             android:id="@+id/textView5"
@@ -117,7 +124,7 @@
             app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.724" />
+            app:layout_constraintVertical_bias="0.768" />
 
         <TextView
             android:id="@+id/textView6"
@@ -129,7 +136,7 @@
             app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.791" />
+            app:layout_constraintVertical_bias="0.837" />
 
         <Button
             android:id="@+id/button"
@@ -150,10 +157,10 @@
             android:text="disponible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintHorizontal_bias="0.542"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.793" />
+            app:layout_constraintVertical_bias="0.834" />
 
         <!-- Agrega más TextViews u otros elementos para mostrar los demás detalles del salón -->
 

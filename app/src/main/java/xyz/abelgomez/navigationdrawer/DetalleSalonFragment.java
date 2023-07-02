@@ -21,10 +21,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import xyz.abelgomez.navigationdrawer.model.Salon;
 
@@ -162,23 +167,23 @@ public class DetalleSalonFragment extends Fragment {
 
     private void mostrarUrlsSalon(JSONArray response) {
 
-        ImageView imageView = getView().findViewById(R.id.imageView);
+     //   ImageView imageView = getView().findViewById(R.id.imageView);
+        ImageSlider imageSlider = getView().findViewById(R.id.imageSlider);
+        ArrayList<SlideModel> slideModels = new ArrayList<>();
+
 
         String imageUrl="";
         try {
             for (int i = 0; i < response.length(); i++) {
                  imageUrl = response.getString(i);
+                // Reemplaza "localhost" con la dirección IP del servidor
+                imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
-
+                slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
 
             }
+            imageSlider.setImageList(slideModels,ScaleTypes.FIT);
 
-            // Reemplaza "localhost" con la dirección IP del servidor
-            imageUrl = imageUrl.replace("localhost", "192.168.18.4");
-
-            Glide.with(this)
-                    .load(imageUrl)
-                    .into(imageView);
         } catch (JSONException e) {
             e.printStackTrace();
         }

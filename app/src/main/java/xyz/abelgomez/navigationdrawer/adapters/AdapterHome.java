@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.bumptech.glide.Glide;
 
 import java.io.File;
@@ -67,6 +69,14 @@ public class AdapterHome extends BaseAdapter {
 
         nombreTextView.setText(salon.getId_salon()+"   Nombre :"+salon.getNombre());
         descripcionTextView.setText(salon.getDireccion());
+
+        // Cambiar el color de fondo de los elementos de la ListView
+        if (position % 2 == 0) {
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.combined_color));
+        } else {
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        }
+
 
         return view;
     }
