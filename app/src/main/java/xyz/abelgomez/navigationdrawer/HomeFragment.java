@@ -11,16 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +58,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-    listView = view.findViewById(R.id.listaView);
+       // listView = view.findViewById(R.id.listaView);
 
 
         listView = view.findViewById(R.id.listaView);
@@ -90,7 +94,6 @@ public class HomeFragment extends Fragment {
         });
 
 
-
         return view;
     }
 
@@ -112,6 +115,7 @@ public class HomeFragment extends Fragment {
         obtenerSalones();
     }
 
+
     private void obtenerSalones() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
         String url = "http://192.168.18.4:9999/salon/listar";
@@ -123,6 +127,7 @@ public class HomeFragment extends Fragment {
                         // Manejar la respuesta exitosa
                         ArrayList<Salon> salones = parseSalonesFromResponse(response);
                         mostrarSalones(salones);
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -141,12 +146,12 @@ public class HomeFragment extends Fragment {
         this.salones = salones;
         adapter = new AdapterHome(getActivity(), salones);
         listView.setAdapter(adapter);
-    }
 
+
+    }
 
     private ArrayList<Salon> parseSalonesFromResponse(String response) {
         ArrayList<Salon> salones = new ArrayList<>();
-
         try {
             JSONArray jsonArray = new JSONArray(response);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -159,11 +164,11 @@ public class HomeFragment extends Fragment {
                 salon.setCostoHora(jsonSalon.getDouble("salCostoHora"));
                 salon.setEstado(jsonSalon.getBoolean("salEstado"));
 
-
-
                 salon.setLatitud(jsonSalon.getDouble("salLatitud"));
                 salon.setLongitud(jsonSalon.getDouble("salLongitud"));
+
                 salones.add(salon);
+                obtenerUrlsSalon(salon, salon.getId_salon()); // Pasar el objeto Salon al método obtenerUrlsSalon()
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -174,25 +179,220 @@ public class HomeFragment extends Fragment {
 
 
 
+//    private ArrayList<Salon> parseSalonesFromResponse(String response) {
+//        ArrayList<Salon> salones = new ArrayList<>();
+//
+//        try {
+//            JSONArray jsonArray = new JSONArray(response);
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                JSONObject jsonSalon = jsonArray.getJSONObject(i);
+//                Salon salon = new Salon();
+//                salon.setId_salon(jsonSalon.getInt("salId"));
+//                obtenerUrlsSalon(salon.getId_salon());
+//                salon.setNombre(jsonSalon.getString("salNombre"));
+//                salon.setDireccion(jsonSalon.getString("salDireccion"));
+//                salon.setCapacidad(jsonSalon.getInt("salCapacidad"));
+//                salon.setCostoHora(jsonSalon.getDouble("salCostoHora"));
+//                salon.setEstado(jsonSalon.getBoolean("salEstado"));
+//
+//
+//                salon.setLatitud(jsonSalon.getDouble("salLatitud"));
+//                salon.setLongitud(jsonSalon.getDouble("salLongitud"));
+//
+//
+//                salones.add(salon);
+//
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//
+//
+//        return salones;
+//    }
 
+    private void obtenerUrlsSalon(Salon salon, int idSalon) {
+        RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
+        String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
 
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Manejar la respuesta exitosa
+                        System.out.println("===========id   : " + idSalon);
+                        mostrarUrlsSalon(salon, response); // Pasar el objeto Salon al método mostrarUrlsSalon()
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejar el error de respuesta
+                        error.printStackTrace();
+                        Toast.makeText(getActivity(), "Error al obtener las URLs del salón", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-    private File createTempFile(InputStream inputStream) throws IOException {
-        File tempFile = File.createTempFile("temp_", null);
-
-        FileOutputStream outputStream = new FileOutputStream(tempFile);
-        byte[] buffer = new byte[4096];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, bytesRead);
-        }
-        outputStream.close();
-        inputStream.close();
-
-        return tempFile;
+        requestQueue.add(request);
     }
 
+//
+//    private void obtenerUrlsSalon(int idSalon) {
+//        RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
+//        String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
+//
+//        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        // Manejar la respuesta exitosa
+//                        System.out.println("===========id   : " + idSalon);
+//                        mostrarUrlsSalon(response);
+//
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        // Manejar el error de respuesta
+//                        error.printStackTrace();
+//                        Toast.makeText(getActivity(), "Error al obtener las URLs del salón", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//        requestQueue.add(request);
+//    }
+
+    private void mostrarUrlsSalon(Salon salon, JSONArray response) {
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                String imageUrl = response.getString(i);
+                imageUrl = imageUrl.replace("localhost", "192.168.18.4"); // Reemplazar localhost por 192.168.18.4
+                System.out.println("URL de imagen: " + imageUrl);
+
+                // Guardar la URL de imagen en el objeto Salon correspondiente
+                salon.setUrlImagen(imageUrl);
+            }
+
+            // Notificar al adaptador para que se actualice
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+//    private void mostrarUrlsSalon(JSONArray response) {
+//        try {
+//            for (int i = 0; i < response.length(); i++) {
+//                String imageUrl = response.getString(i);
+//                imageUrl = imageUrl.replace("localhost", "192.168.18.4");
+//                System.out.println("URL de imagen: " + imageUrl);
+//
+//                // Guardar la última URL de imagen en el objeto Salon correspondiente
+//                Salon salon = salones.get(i);
+//                salon.setUrlImagen(imageUrl);
+//            }
+//
+//            // Notificar al adaptador para que se actualice
+//            if (adapter != null) {
+//                adapter.notifyDataSetChanged();
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+//    private void mostrarUrlsSalon(JSONArray response) {
+//        try {
+//            for (int i = 0; i < response.length(); i++) {
+//                String imageUrl = response.getString(i);
+//                System.out.println("URL de imagen: " + imageUrl);
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+//    private void mostrarUrlsSalon(JSONArray response) {
+//        try {
+//            for (int i = 0; i < response.length(); i++) {
+//                String imageUrl = response.getString(i);
+//                System.out.println("URL de imagen: " + imageUrl);
+//
+//                // Obtener la referencia al ImageView correspondiente al salón actual
+//                int position = i;
+//                View itemView = listView.getChildAt(position);
+//                ImageView imageView = itemView.findViewById(R.id.imagen);
+//
+//                // Reemplaza "localhost" con la dirección IP del servidor
+//                imageUrl = imageUrl.replace("localhost", "192.168.18.4");
+//
+//                if (imageUrl.isEmpty() || imageUrl.equals("null")) {
+//                    // Si la URL de la imagen está vacía o nula, carga la imagen predeterminada desde la carpeta "raw"
+//                    Glide.with(this)
+//                            .load(R.drawable.imgnull) // R.drawable.imgnull es el ID de tu imagen predeterminada en el directorio "res/drawable"
+//                            .into(imageView);
+//                } else {
+//                    // Si hay una URL de imagen válida, carga la imagen desde la URL
+//                    Glide.with(this)
+//                            .load(imageUrl)
+//                            .into(imageView);
+//
+//                    System.out.println("URL de imagen ------------------- " + imageUrl);
+//                }
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+//    private void mostrarUrlsSalon(JSONArray response) {
+//        ImageView imageView = getView().findViewById(R.id.imageView);
+//
+//        String imageUrl = "";
+//        try {
+//            for (int i = 0; i < response.length(); i++) {
+//                imageUrl = response.getString(i);
+//                System.out.println("URL de imagen: " + imageUrl);
+//
+//                // Reemplaza "localhost" con la dirección IP del servidor
+//                imageUrl = imageUrl.replace("localhost", "192.168.18.4");
+//
+//                Glide.with(this)
+//                        .load(imageUrl)
+//                        .into(imageView);
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
 }
+
+//    private File createTempFile(InputStream inputStream) throws IOException {
+//        File tempFile = File.createTempFile("temp_", null);
+//
+//        FileOutputStream outputStream = new FileOutputStream(tempFile);
+//        byte[] buffer = new byte[4096];
+//        int bytesRead;
+//        while ((bytesRead = inputStream.read(buffer)) != -1) {
+//            outputStream.write(buffer, 0, bytesRead);
+//        }
+//        outputStream.close();
+//        inputStream.close();
+//
+//        return tempFile;
+//    }
+//
+//}
 
 
 

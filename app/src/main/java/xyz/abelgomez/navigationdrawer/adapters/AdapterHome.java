@@ -58,7 +58,12 @@ public class AdapterHome extends BaseAdapter {
 
         Salon salon = salones.get(position);
 
-
+        // Carga la imagen desde la URL utilizando una biblioteca de terceros o métodos personalizados
+        Glide.with(context)
+                .load(salon.getUrlImagen())
+                .centerCrop()
+                .placeholder(R.drawable.imgnull)
+                .into(imageView);
 
         nombreTextView.setText(salon.getId_salon()+"   Nombre :"+salon.getNombre());
         descripcionTextView.setText(salon.getDireccion());

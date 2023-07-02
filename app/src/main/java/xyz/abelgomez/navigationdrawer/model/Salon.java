@@ -17,6 +17,8 @@ public class Salon implements Serializable {
     private String ciudad;
     private double latitud;
     private double longitud;
+    private File imagen;
+    private String urlImagen;
 
     public int getId_salon() {
         return id_salon;
@@ -96,5 +98,21 @@ public class Salon implements Serializable {
 
     public void setFecha_hora_registro(Timestamp fecha_hora_registro) {
         this.fecha_hora_registro = fecha_hora_registro;
+    }
+
+    public File getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(File imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
 }
