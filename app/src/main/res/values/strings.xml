@@ -1,7 +1,59 @@
 <resources>
-    <string name="app_name">Salon</string>
+    <string name="app_name">Perruncai</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="label_usuario">Ingrese su Usuario</string>
+    <string name="label_password">Ingrese su Contraseña</string>
+    <string name="label_start_session">Iniciar Sesión</string>
+    <string name="label_nuevoUser"><u>Nuevo Usuario ? Registrarme Ahora</u></string>
+    <string name="label_olvide_password">Olvide mi contraseña ?</string>
+    <string name="label_bienvenida">Hola ! - Identifíquese para iniciar sesión</string>
+    <string name="title_activity_inicio">InicioActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Cerrar Sesión</string>
+    <string name="descripcion_platillo">Productos Truekshop.</string>
+
+    <string name="menu_home">Inicio</string>
+    <string name="menu_gallery">Mis Compras</string>
+    <string name="menu_slideshow">Configuración</string>
+    <string name="add_shop">Añadir al Carrito</string>
+    <string name="comprar_p">Comprar</string>
+    <string-array name="tipoDoc">
+        <item>Cedula</item>
+        <item>RUC</item>
+        <item>PASAPORTE</item>
+    </string-array>
+    <string-array name="tipoPubli">
+        <item>Trueque</item>
+        <item>Venta</item>
+    </string-array>
+    <string-array name="categoria">
+        <item>Ropa</item>
+        <item>Computacion</item>
+        <item>Electrodomestico</item>
+        <item>Comida</item>
+    </string-array>
+    <string-array name="departamentos">
+        <item>Comprador</item>
+        <item>Vendedor</item>
+
+    </string-array>
+    <string-array name="provincias">
+        <item>Azuay</item>
+        <item>Pichincha</item>
+        <item>Loja</item>
+        <item>Otra</item>
+    </string-array>
+    <string-array name="Ciudad">
+        <item>Cuenca</item>
+        <item>Quito</item>
+        <item>Guayaquil</item>
+        <item>Loja</item>
+        <item>Otros</item>
+    </string-array>
 </resources>

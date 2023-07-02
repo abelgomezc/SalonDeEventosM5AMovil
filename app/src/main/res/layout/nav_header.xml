@@ -10,20 +10,20 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="100dp"
+        android:layout_width="267dp"
         android:layout_height="66dp"
-        android:src="@drawable/s" />
+        android:src="@drawable/logo_perruncai" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Android  Abel"
+        android:text="Usuario : "
         android:textColor="@color/white"
         android:textStyle="bold"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="abel@androidk.com"
+        android:text="abel g"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:layout_marginBottom="16dp"/>
 </LinearLayout>
