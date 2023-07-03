@@ -67,14 +67,14 @@ public class AdapterHome extends BaseAdapter {
                 .placeholder(R.drawable.imgnull)
                 .into(imageView);
 
-        nombreTextView.setText(salon.getId_salon()+"   Nombre :"+salon.getNombre());
+        nombreTextView.setText(salon.getNombre());
         descripcionTextView.setText(salon.getDireccion());
 
         // Cambiar el color de fondo de los elementos de la ListView
         if (position % 2 == 0) {
-            view.setBackgroundColor(ContextCompat.getColor(context, R.color.combined_color));
-        } else {
             view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        } else {
+            view.setBackgroundColor(ContextCompat.getColor(context, R.color.combined_color));
         }
 
 
