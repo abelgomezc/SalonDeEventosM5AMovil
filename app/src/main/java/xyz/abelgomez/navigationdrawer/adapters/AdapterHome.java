@@ -60,7 +60,7 @@ public class AdapterHome extends BaseAdapter {
 
         Salon salon = salones.get(position);
 
-        // Carga la imagen desde la URL utilizando una biblioteca de terceros o métodos personalizados
+
         Glide.with(context)
                 .load(salon.getUrlImagen())
                 .centerCrop()
@@ -70,7 +70,7 @@ public class AdapterHome extends BaseAdapter {
         nombreTextView.setText(salon.getNombre());
         descripcionTextView.setText(salon.getDireccion());
 
-        // Cambiar el color de fondo de los elementos de la ListView
+
         if (position % 2 == 0) {
             view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
         } else {

@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Salon;
 
 
@@ -65,8 +66,8 @@ public class DetalleSalonFragment extends Fragment {
 
     private void obtenerDatosSalon(int idSalon) {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
-        String url = "http://192.168.18.4:9999/salon/salonporid/" + idSalon;
-
+      //  String url = "http://192.168.18.4:9999/salon/salonporid/" + idSalon;
+        String url = ConfigApi.baseUrlE+"/salon/salonporid/"+idSalon;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -143,20 +144,20 @@ public class DetalleSalonFragment extends Fragment {
 
     private void obtenerUrlsSalon(int idSalon) {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
-        String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
-
+       // String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
+        String url = ConfigApi.baseUrlE+"/imgsalones/urls/"+idSalon;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        // Manejar la respuesta exitosa
+
                         mostrarUrlsSalon(response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // Manejar el error de respuesta
+
                         error.printStackTrace();
                         Toast.makeText(getActivity(), "Error al obtener las URLs del salón", Toast.LENGTH_SHORT).show();
                     }
@@ -177,6 +178,7 @@ public class DetalleSalonFragment extends Fragment {
             for (int i = 0; i < response.length(); i++) {
                  imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
+              //  imageUrl = imageUrl.replace("localhost", "10.0.2.2");
                 imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
