@@ -20,7 +20,8 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-        getSupportActionBar().hide();
+       // getSupportActionBar().hide();
+
 
       //  imageView.findViewById(R.id.image_view);
         appname= findViewById(R.id.titulo);

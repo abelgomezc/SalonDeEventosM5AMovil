@@ -164,12 +164,12 @@ public class HomeFragment extends Fragment {
                 salon.setId_salon(jsonSalon.getInt("salId"));
                 salon.setNombre(jsonSalon.getString("salNombre"));
                 salon.setDireccion(jsonSalon.getString("salDireccion"));
-                salon.setCapacidad(jsonSalon.getInt("salCapacidad"));
-                salon.setCostoHora(jsonSalon.getDouble("salCostoHora"));
-                salon.setEstado(jsonSalon.getBoolean("salEstado"));
-
-                salon.setLatitud(jsonSalon.getDouble("salLatitud"));
-                salon.setLongitud(jsonSalon.getDouble("salLongitud"));
+//                salon.setCapacidad(jsonSalon.getInt("salCapacidad"));
+//                salon.setCostoHora(jsonSalon.getDouble("salCostoHora"));
+//                salon.setEstado(jsonSalon.getBoolean("salEstado"));
+//
+//                salon.setLatitud(jsonSalon.getDouble("salLatitud"));
+//                salon.setLongitud(jsonSalon.getDouble("salLongitud"));
 
                 salones.add(salon);
                 obtenerUrlsSalon(salon, salon.getId_salon()); // Pasar el objeto Salon al método obtenerUrlsSalon()
@@ -217,9 +217,10 @@ public class HomeFragment extends Fragment {
         try {
             for (int i = 0; i < response.length(); i++) {
                 String imageUrl = response.getString(i);
-              //  imageUrl = imageUrl.replace("localhost", "10.0.2.2");
-                imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
-              //  System.out.println("URL de imagen: " + imageUrl);
+            //    imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+              imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
+             //   imageUrl = imageUrl.replace("localhost", "192.168.37.86");//ipcasa
+               System.out.println("URL de imagen: " + imageUrl);
 
                 // Guardar la URL de imagen en el objeto Salon correspondiente
                 salon.setUrlImagen(imageUrl);

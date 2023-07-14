@@ -9,6 +9,13 @@ public class Usuario {
     private String usuContrasena;
     private Timestamp usuFechaRegistro;
 
+
+    public Usuario(Long usuId, String usuNombreUsuario, String usuContrasena) {
+        this.usuId = usuId;
+        this.usuNombreUsuario = usuNombreUsuario;
+        this.usuContrasena = usuContrasena;
+    }
+
     public Long getUsuId() {
         return usuId;
     }

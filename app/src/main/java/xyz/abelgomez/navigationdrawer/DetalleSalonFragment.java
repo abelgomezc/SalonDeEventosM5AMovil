@@ -42,8 +42,6 @@ public class DetalleSalonFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -51,7 +49,7 @@ public class DetalleSalonFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_salon, container, false);
 
-        // Obtener el ID del salón desde los argumentos
+        // obtener el ID de home
         Bundle bundle = getArguments();
         if (bundle != null) {
             int idSalon = bundle.getInt("idSalon");
@@ -72,7 +70,7 @@ public class DetalleSalonFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // Manejar la respuesta exitosa
+                        // respuesta exitosa
                         Salon salon = parseSalonFromResponse(response);
                         mostrarDatosSalon(salon);
                     }
@@ -178,8 +176,8 @@ public class DetalleSalonFragment extends Fragment {
             for (int i = 0; i < response.length(); i++) {
                  imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
-              //  imageUrl = imageUrl.replace("localhost", "10.0.2.2");
-                imageUrl = imageUrl.replace("localhost", "192.168.18.4");
+             //   imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+               imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
 

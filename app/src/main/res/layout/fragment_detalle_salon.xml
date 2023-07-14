@@ -12,8 +12,8 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-            android:layout_width="401dp"
-            android:layout_height="321dp"
+            android:layout_width="407dp"
+            android:layout_height="249dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="20dp"
             app:cardElevation="20dp"
@@ -23,7 +23,7 @@
             <com.denzcoskun.imageslider.ImageSlider
                 android:id="@+id/imageSlider"
                 android:layout_width="match_parent"
-                android:layout_height="329dp"
+                android:layout_height="match_parent"
                 app:iss_auto_cycle="true"
                 app:iss_corner_radius="20"
                 app:iss_delay="1000"
