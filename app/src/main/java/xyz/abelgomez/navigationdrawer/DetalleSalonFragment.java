@@ -3,11 +3,14 @@ package xyz.abelgomez.navigationdrawer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +41,7 @@ import xyz.abelgomez.navigationdrawer.model.Salon;
 public class DetalleSalonFragment extends Fragment {
 
     private Salon salon;
+    private Button btnContizar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,29 @@ public class DetalleSalonFragment extends Fragment {
             obtenerDatosSalon(idSalon);
             obtenerUrlsSalon(idSalon);
         }
+        btnContizar = view.findViewById(R.id.btn_Cotizar);
+        btnContizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Crear instancia del fragmento CotizarFragment
+                FragmentCotitacion cotizarFragment = new FragmentCotitacion();
+
+                // Obtener el FragmentManager y comenzar la transacción
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                // Reemplazar el fragmento actual con CotizarFragment
+                fragmentTransaction.replace(R.id.fragment_container, cotizarFragment);
+
+                // Agregar la transacción al BackStack
+                fragmentTransaction.addToBackStack(null);
+
+                // Ejecutar la transacción
+                fragmentTransaction.commit();
+            }
+        });
+
+
 
         return view;
     }
@@ -176,7 +203,7 @@ public class DetalleSalonFragment extends Fragment {
             for (int i = 0; i < response.length(); i++) {
                  imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
-             //   imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+             //  imageUrl = imageUrl.replace("localhost", "10.0.2.2");
                imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
