@@ -72,9 +72,13 @@ public class AdapterHome extends BaseAdapter {
 
 
         if (position % 2 == 0) {
-            view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+         //   view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+            // Reemplaza "image_name" con el nombre del archivo de imagen en la carpeta "drawable"
+            view.setBackgroundResource(R.drawable.img16);
+
         } else {
-            view.setBackgroundColor(ContextCompat.getColor(context, R.color.combined_color));
+          //  view.setBackgroundColor(ContextCompat.getColor(context, R.color.combined_color));
+            view.setBackgroundResource(R.drawable.img18);
         }
 
 

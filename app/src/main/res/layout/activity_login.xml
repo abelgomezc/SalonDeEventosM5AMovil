@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/im3"
+    android:background="@drawable/img10"
     tools:context=".LoginActivity">
 
 
@@ -43,10 +43,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/san_francisco"
-            android:textSize="18sp"
-            android:textStyle="bold"
             android:gravity="center|center_horizontal"
-            android:text="@string/label_bienvenida"/>
+            android:textColor="#FFFFFF"
+            android:text="@string/label_bienvenida"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/linearParte3"
@@ -55,6 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearParte2"
         android:layout_marginTop="10dp"
+        android:textColor="#FFFFFF"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp">
 
@@ -63,6 +65,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
             android:hint="@string/label_usuario"
             app:startIconDrawable="@drawable/ic_person">
 
@@ -70,6 +73,8 @@
                 android:id="@+id/edtMail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+
                 android:fontFamily="@font/poppins_medium"
                 android:inputType="textEmailAddress"
                 android:textSize="15sp" />
@@ -80,6 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_password"
+            android:textColor="#FFFFFF"
             app:startIconDrawable="@drawable/ic_lock">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -87,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
+                android:textColor="#FFFFFF"
                 android:inputType="textPassword"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>

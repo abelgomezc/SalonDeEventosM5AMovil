@@ -6,7 +6,7 @@
     android:layout_height="176dp"
     android:gravity="bottom"
     android:padding="16dp"
-    android:background="@drawable/f1"
+    android:background="@drawable/img17"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cuenta : "
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="17sp"
         android:textStyle="bold" />
 
