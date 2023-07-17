@@ -4,36 +4,233 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/combined_color"
+
     android:orientation="vertical"
     tools:context=".FragmentCotitacion">
 
-    <Spinner
-        android:id="@+id/spinnerProductos"
-        android:layout_width="238dp"
-        android:layout_height="43dp"
-        android:spinnerMode="dropdown" />
+                    <LinearLayout
+                        android:id="@+id/linearTitleUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="10dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtdescripcionsalon"
-
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/san_francisco"
+                            android:text="Cotizacion"
+                            android:textAlignment="center"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Descripcion del Salon"
-        >
+        android:fillViewport="true">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="530dp"
+                            android:layout_below="@+id/linearTitleUser"
+                            android:layout_marginTop="0dp"
+                            android:orientation="vertical"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="10dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtdescripcion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/san_francisco"
-            android:textSize="15sp" />
+                            <!-- Agrega los elementos restantes dentro de este LinearLayout -->
 
-    </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/txtnomSalon"
 
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Nombre del salon"
+                                app:startIconDrawable="@drawable/ic_person">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtNombresalon"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/san_francisco"
+                                    android:textSize="15sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/txtdescripcionsalon"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Descripcion del Salon">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtdescripcion"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/san_francisco"
+                                    android:textSize="15sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/txthoritas"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="horas en total">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edthoritas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+                                    android:fontFamily="@font/san_francisco"
+                                    android:textSize="15sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:id="@+id/datePickerLabel1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Selecciona la hora de inicio de la reserva:" />
+
+                            <TimePicker
+                                android:id="@+id/timerinicio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/white"
+                                android:timePickerMode="spinner" />
+
+                            <TextView
+                                android:id="@+id/datePickerLabel2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Selecciona la hora del final de la reserva:" />
+
+                            <TimePicker
+                                android:id="@+id/timerfinal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/white"
+                                android:timePickerMode="spinner" />
+
+                            <TextView
+                                android:id="@+id/datePickerLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Selecciona una fecha para su reserva:" />
+
+                            <DatePicker
+                                android:id="@+id/datePickerfecha"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:calendarViewShown="false"
+                                android:datePickerMode="spinner"
+                                android:spinnersShown="true" />
+
+                            <Spinner
+                                android:id="@+id/spinner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/txtSilla"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Cuantas sillas necesita"
+                                app:startIconDrawable="@drawable/ic_person">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtSillas"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/san_francisco"
+                                    android:textSize="15sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/txtMesa"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Cuantas Mesas necesita"
+                                app:startIconDrawable="@drawable/ic_person">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtMesa"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/san_francisco"
+                                    android:textSize="15sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/txtMantel"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Cuantas manteles necesita"
+                                app:startIconDrawable="@drawable/ic_person">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edtMantel"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/san_francisco"
+                                    android:textSize="15sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/txtTotalcoti"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:editable="false"
+                                android:hint="Total">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edttotal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+                                    android:fontFamily="@font/san_francisco"
+                                    android:textSize="15sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Button
+                                android:id="@+id/btncalcularcoti"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="15dp"
+                                android:fontFamily="@font/san_francisco"
+                                android:text="Cotizar"
+                                android:textColor="@color/white" />
+
+                            <Button
+                                android:id="@+id/btnGuardarCoti"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_marginTop="15dp"
+                                android:fontFamily="@font/san_francisco"
+                                android:text="Guardar Cotizacion"
+                                android:textColor="@color/white" />
+
+                        </LinearLayout>
+        </ScrollView>
 
 </LinearLayout>
-
-
-
 
