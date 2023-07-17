@@ -30,6 +30,7 @@ import java.util.List;
 import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Producto;
 
+import com.google.android.material.card.MaterialCardView;
 
 public class FragmentCotitacion extends Fragment {
 
@@ -40,7 +41,7 @@ public class FragmentCotitacion extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cotitacion, container, false);
 
-        spinnerProductos = view.findViewById(R.id.spinnerProductos);
+        spinnerProductos = view.findViewById(R.id.spinner);
 
         // Realizar la solicitud GET para obtener la lista de productos
        // String url = "URL_DE_TU_API/listar"; // Reemplaza con la URL correcta de tu API
