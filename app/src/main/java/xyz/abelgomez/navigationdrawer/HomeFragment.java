@@ -217,8 +217,8 @@ public class HomeFragment extends Fragment {
         try {
             for (int i = 0; i < response.length(); i++) {
                 String imageUrl = response.getString(i);
-         //    imageUrl = imageUrl.replace("localhost", "10.0.2.2");
-              imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
+            imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+          //    imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
              //   imageUrl = imageUrl.replace("localhost", "192.168.37.86");
                System.out.println("URL de imagen: " + imageUrl);
 
