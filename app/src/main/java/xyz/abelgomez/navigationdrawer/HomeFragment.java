@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -119,7 +120,7 @@ public class HomeFragment extends Fragment {
 
     private void obtenerSalones() {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
-      //  String url = "http://192.168.18.4:9999/salon/listar";
+        //  String url = "http://192.168.18.4:9999/salon/listar";
 
         String url = ConfigApi.baseUrlE+"/salon/listar";
 
@@ -153,28 +154,28 @@ public class HomeFragment extends Fragment {
 
 
     }
-
     private ArrayList<Salon> parseSalonesFromResponse(String response) {
         ArrayList<Salon> salones = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(response);
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonSalon = jsonArray.getJSONObject(i);
+                // Decodificar la cadena JSON utilizando la codificación UTF-8
+                String jsonString = jsonArray.getJSONObject(i).toString();
+                String decodedJsonString = new String(jsonString.getBytes("ISO-8859-1"), "UTF-8");
+                JSONObject jsonSalon = new JSONObject(decodedJsonString);
+
                 Salon salon = new Salon();
                 salon.setId_salon(jsonSalon.getInt("salId"));
                 salon.setNombre(jsonSalon.getString("salNombre"));
                 salon.setDireccion(jsonSalon.getString("salDireccion"));
-//                salon.setCapacidad(jsonSalon.getInt("salCapacidad"));
-//                salon.setCostoHora(jsonSalon.getDouble("salCostoHora"));
-//                salon.setEstado(jsonSalon.getBoolean("salEstado"));
-//
-//                salon.setLatitud(jsonSalon.getDouble("salLatitud"));
-//                salon.setLongitud(jsonSalon.getDouble("salLongitud"));
+                // Resto de los atributos del objeto Salon
 
                 salones.add(salon);
                 obtenerUrlsSalon(salon, salon.getId_salon()); // Pasar el objeto Salon al método obtenerUrlsSalon()
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
@@ -182,12 +183,40 @@ public class HomeFragment extends Fragment {
     }
 
 
+//    private ArrayList<Salon> parseSalonesFromResponse(String response) {
+//        ArrayList<Salon> salones = new ArrayList<>();
+//        try {
+//            JSONArray jsonArray = new JSONArray(response);
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                JSONObject jsonSalon = jsonArray.getJSONObject(i);
+//                Salon salon = new Salon();
+//                salon.setId_salon(jsonSalon.getInt("salId"));
+//                salon.setNombre(jsonSalon.getString("salNombre"));
+//                salon.setDireccion(jsonSalon.getString("salDireccion"));
+////                salon.setCapacidad(jsonSalon.getInt("salCapacidad"));
+////                salon.setCostoHora(jsonSalon.getDouble("salCostoHora"));
+////                salon.setEstado(jsonSalon.getBoolean("salEstado"));
+////
+////                salon.setLatitud(jsonSalon.getDouble("salLatitud"));
+////                salon.setLongitud(jsonSalon.getDouble("salLongitud"));
+//
+//                salones.add(salon);
+//                obtenerUrlsSalon(salon, salon.getId_salon()); // Pasar el objeto Salon al método obtenerUrlsSalon()
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return salones;
+//    }
+
+
 
 
 
     private void obtenerUrlsSalon(Salon salon, int idSalon) {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
-      //  String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
+        //  String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
         String url = ConfigApi.baseUrlE+"/imgsalones/urls/"+idSalon;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -217,10 +246,10 @@ public class HomeFragment extends Fragment {
         try {
             for (int i = 0; i < response.length(); i++) {
                 String imageUrl = response.getString(i);
-            imageUrl = imageUrl.replace("localhost", "10.0.2.2");
-          //    imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
-             //   imageUrl = imageUrl.replace("localhost", "192.168.37.86");
-               System.out.println("URL de imagen: " + imageUrl);
+                imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+                //   imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
+                //   imageUrl = imageUrl.replace("localhost", "192.168.37.86");
+                System.out.println("URL de imagen: " + imageUrl);
 
                 // Guardar la URL de imagen en el objeto Salon correspondiente
                 salon.setUrlImagen(imageUrl);
