@@ -141,12 +141,12 @@ public class FragmentCotitacion extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Procesar la respuesta JSON y obtener la lista de productos
                         productosList = parseProductosFromResponse(response);
-                        Producto seleccionarOpcion = new Producto();
+                      /*  Producto seleccionarOpcion = new Producto();
                         seleccionarOpcion.setId(0);
                         seleccionarOpcion.setNombre("Seleccione una opción");
                         List<Producto> productosListWithOption = new ArrayList<>();
                         productosListWithOption.add(seleccionarOpcion);
-                        productosListWithOption.addAll(productosList);
+                        productosListWithOption.addAll(productosList);*/
 
                         ArrayAdapter<Producto> adapter1 = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, productosList);
                         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

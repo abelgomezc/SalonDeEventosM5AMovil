@@ -16,6 +16,10 @@ public class Usuario {
         this.usuContrasena = usuContrasena;
     }
 
+    public Usuario() {
+
+    }
+
     public Long getUsuId() {
         return usuId;
     }
