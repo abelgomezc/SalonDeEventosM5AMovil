@@ -9,14 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <GridLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="3"
-            android:padding="16dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
+            <!-- Person 1 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,92 +55,56 @@
 
             <!-- Person 2 -->
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="16dp">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:src="@drawable/toxin"
-                            android:scaleType="centerCrop"
-                            android:layout_gravity="center"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Person 1"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:layout_gravity="center_horizontal"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="person1@example.com"
-                            android:layout_gravity="center_horizontal"/>
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                <!-- Add ImageView, TextViews for Name and Email for Person 2 here -->
 
             </androidx.cardview.widget.CardView>
 
             <!-- Person 3 -->
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="16dp">
 
-                <!-- Add CardView contents for Person 3 here -->
+                <!-- Add ImageView, TextViews for Name and Email for Person 3 here -->
 
             </androidx.cardview.widget.CardView>
 
             <!-- Person 4 -->
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="16dp">
 
-                <!-- Add CardView contents for Person 4 here -->
+                <!-- Add ImageView, TextViews for Name and Email for Person 4 here -->
 
             </androidx.cardview.widget.CardView>
 
             <!-- Person 5 -->
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="16dp">
 
-                <!-- Add CardView contents for Person 5 here -->
+                <!-- Add ImageView, TextViews for Name and Email for Person 5 here -->
 
             </androidx.cardview.widget.CardView>
 
             <!-- Person 6 -->
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="16dp">
 
-                <!-- Add CardView contents for Person 6 here -->
+                <!-- Add ImageView, TextViews for Name and Email for Person 6 here -->
 
             </androidx.cardview.widget.CardView>
 
-        </GridLayout>
+        </LinearLayout>
 
     </ScrollView>
 
 </FrameLayout>
-
-

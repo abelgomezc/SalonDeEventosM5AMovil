@@ -1,6 +1,7 @@
 package xyz.abelgomez.navigationdrawer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +57,10 @@ public class TusCotizacionesFragment extends Fragment {
 
     TextView titulo;
 
+
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,11 +78,14 @@ public class TusCotizacionesFragment extends Fragment {
 
 
 
+
+
         cotizaciones = new ArrayList<>();
         adapterCotizaciones = new AdapterCotizaciones(requireContext(), cotizaciones);
         listViewCotizaciones.setAdapter(adapterCotizaciones);
 
         obtenerCotizaciones(usuario.getUsuId());
+
 
         return  view;
     }
@@ -122,6 +132,7 @@ public class TusCotizacionesFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(decodedJsonString);
 
                 // Obtener los datos de la cotización del JSON
+                long cotiId = jsonObject.getLong("cotiId");
                 double monto = jsonObject.getDouble("monto");
                 String salonNombre = jsonObject.getString("salonNombre");
                 String fechaReserva = jsonObject.getString("fechaReserva");
@@ -131,6 +142,7 @@ public class TusCotizacionesFragment extends Fragment {
 
                 // Crear un mapa con los datos de la cotización
                 Map<String, Object> cotizacionMap = new HashMap<>();
+                cotizacionMap.put("cotiId", cotiId);
                 cotizacionMap.put("salonNombre", salonNombre);
                 cotizacionMap.put("monto", monto);
                 cotizacionMap.put("fechaReserva", fechaFormateada);
