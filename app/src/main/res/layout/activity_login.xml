@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/san_francisco"
             android:gravity="center|center_horizontal"
-            android:textColor="#FFFFFF"
+
             android:text="@string/label_bienvenida"
             android:textSize="18sp"
             android:textStyle="bold" />
