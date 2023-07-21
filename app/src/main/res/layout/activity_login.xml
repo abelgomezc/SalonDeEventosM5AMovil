@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img10"
+
     tools:context=".LoginActivity">
 
 
@@ -65,7 +65,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
+
             android:hint="@string/label_usuario"
             app:startIconDrawable="@drawable/ic_person">
 
@@ -73,7 +73,7 @@
                 android:id="@+id/edtMail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
+
 
                 android:fontFamily="@font/poppins_medium"
                 android:inputType="textEmailAddress"
@@ -85,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/label_password"
-            android:textColor="#FFFFFF"
+
             app:startIconDrawable="@drawable/ic_lock">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:textColor="#FFFFFF"
+
                 android:inputType="textPassword"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
