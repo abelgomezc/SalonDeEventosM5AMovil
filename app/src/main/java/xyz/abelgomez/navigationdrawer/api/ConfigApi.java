@@ -21,12 +21,14 @@ public class ConfigApi {
   public static final String baseUrlE = "http://10.0.2.2:9999";
  // public static final String baseUrlE = "http://192.168.18.4:9999";
 //   public static final String baseUrlE = "http://192.168.37.86:9999";
+ private static DocumentoAlmacenadoApi documentoAlmacenadoApi;
 
 
     private static Retrofit retrofit;
     private static String token = "";
 
     private static UsuarioApi usuarioApi;
+    private static ReservaApi reservaApi;
 
 
     static {
@@ -73,6 +75,18 @@ public class ConfigApi {
         return usuarioApi;
     }
 
+    public static DocumentoAlmacenadoApi getDocumentoAlmacenadoApi() {
+        if (documentoAlmacenadoApi == null) {
+            documentoAlmacenadoApi = retrofit.create(DocumentoAlmacenadoApi.class);
+        }
+        return documentoAlmacenadoApi;
+    }
 
+    public static ReservaApi getReservaApi() {
+        if (reservaApi == null) {
+            reservaApi = retrofit.create(ReservaApi.class);
+        }
+        return reservaApi;
+    }
 
 }
