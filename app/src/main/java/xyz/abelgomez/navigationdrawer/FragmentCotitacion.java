@@ -1,5 +1,11 @@
 package xyz.abelgomez.navigationdrawer;
 
+
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -48,13 +54,14 @@ import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Cotizacion;
 import xyz.abelgomez.navigationdrawer.model.Producto;
 import xyz.abelgomez.navigationdrawer.model.Salon;
+import xyz.abelgomez.navigationdrawer.model.Usuario;
 
 
 public class FragmentCotitacion extends Fragment {
 
     private Button btncalcularcoti, btnguardarcoti;
     private TextInputLayout txtsillita, txtmesita, txtdescrion, txtmontocoti, txthoritas, txtmantelcito;
-    private EditText edtmesa, edtmantelcito;
+    private EditText edtmesa, edtmantelcito,edtnomb;
     private EditText edtsilla;
     private EditText edtdescripcion;
     private EditText edtmontocoti;
@@ -69,12 +76,19 @@ public class FragmentCotitacion extends Fragment {
     DatePicker datefecha;
 
 
+    private static final String PREF_NAME = "MiPreferencia";
+    private static final String KEY_USUARIO = "usuario";
     private List<Producto> productosList;
     private Spinner spinnerProductos;
     private RequestQueue queue;
-
+    Usuario usuario;
     View view;
+    private Salon salon;
 
+
+    public void setSalon(Salon salon) {
+        this.salon = salon;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cotitacion, container, false);
@@ -84,6 +98,8 @@ public class FragmentCotitacion extends Fragment {
         txtdescrion = view.findViewById(R.id.txtdescripcionsalon);
         edtmantelcito = view.findViewById(R.id.edtMantel);
         txtmantelcito = view.findViewById(R.id.txtMantel);
+
+        edtnomb=view.findViewById(R.id.edtNombresalon);
 
         txthoritas = view.findViewById(R.id.txthoritas);
         edthorias = view.findViewById(R.id.edthoritas);
@@ -102,6 +118,30 @@ public class FragmentCotitacion extends Fragment {
 
         btncalcularcoti = view.findViewById(R.id.btncalcularcoti);
         btnguardarcoti = view.findViewById(R.id.btnGuardarCoti);
+
+// Obtener el objeto salon que fue configurado en el FragmentDetalleSalon
+        if (salon != null) {
+            // Imprimir los datos en la consola
+            System.out.println("Datos del salon:");
+            System.out.println("ID: " + salon.getId_salon());
+            System.out.println("Nombre: " + salon.getNombre());
+            System.out.println("Dirección: " + salon.getDireccion());
+            System.out.println("Capacidad: " + salon.getCapacidad());
+            System.out.println("Costo por hora: " + salon.getCostoHora());
+            System.out.println("Estado: " + salon.isEstado());
+            System.out.println("Latitud: " + salon.getLatitud());
+            System.out.println("Longitud: " + salon.getLongitud());
+            // Puedes seguir imprimiendo los demás campos que tenga el objeto salon
+        } else {
+            System.out.println("El objeto salon es nulo. Asegúrate de configurarlo correctamente desde FragmentDetalleSalon.");
+        }
+
+        edtdescripcion.setText(salon.getDireccion());
+        edtnomb.setText(salon.getNombre());
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String usuarioJson = sharedPreferences.getString(KEY_USUARIO, "");
+        Gson gson = new Gson();
+        usuario = gson.fromJson(usuarioJson, Usuario.class);
 
 
         String url = ConfigApi.baseUrlE + "/productoServicio/listar";
@@ -325,6 +365,9 @@ public class FragmentCotitacion extends Fragment {
     }
 
 
+    public void idusu(){
+
+    }
     private void enviarCotizacion() {
 
         String url = ConfigApi.baseUrlE + "/cotizacion/crearcoti";
@@ -352,53 +395,57 @@ public class FragmentCotitacion extends Fragment {
 // Formatear la fecha en una cadena de texto
         String fechaSeleccionada = String.format("%02d/%02d/%04d", day, month + 1, year);
 
+            coti.setCotiHoraInicio(horainicio1);
+            coti.setCotiHoraFin(horafin1);
+            coti.setCotiFechaEvento(fechaSeleccionada);
+            //coti.setCotiFechaRegistro(fechahoy);
+            coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
+            coti.setCotiTipoEvento("cumpleaños");
+            coti.setUsuId(usuario);
+           coti.setSalId(salon);
+            System.out.println("usuario: "+usuario.getUsuId());
+              System.out.println("salon: "+salon.getId_salon());
+            // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
+            Gson gson = new Gson();
+            String requestBody = gson.toJson(coti);
 
-        coti.setCotiHoraInicio(horainicio1);
-        coti.setCotiHoraFin(horafin1);
-        coti.setCotiFechaEvento(fechaSeleccionada);
-        //coti.setCotiFechaRegistro(fechahoy);
-        coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
-        coti.setCotiTipoEvento("cumpleaños");
+            // Crear una solicitud HTTP POST con la URL y el cuerpo de la solicitud
+            StringRequest request = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Manejar la respuesta de la solicitud
+                            Log.d("TAG", "Response: " + response);
+                            // Guardar la cotización
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Manejar errores de la solicitud
+                            Log.e("TAG", "Error: " + error.toString());
+                            Toast.makeText(getContext(), "¡No se pudo guardar su cotizacion!", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }) {
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    return requestBody.getBytes(StandardCharsets.UTF_8);
+                }
+            };
+
+            // Agregar la solicitud a la cola de solicitudes de Volley
+            queue.add(request);
 
 
-        // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
-        Gson gson = new Gson();
-        String requestBody = gson.toJson(coti);
-
-        // Crear una solicitud HTTP POST con la URL y el cuerpo de la solicitud
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Manejar la respuesta de la solicitud
-                        Log.d("TAG", "Response: " + response);
-                        // Guardar la cotización
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Manejar errores de la solicitud
-                        Log.e("TAG", "Error: " + error.toString());
-                        Toast.makeText(getContext(), "¡No se pudo guardar su cotizacion!", Toast.LENGTH_SHORT).show();
-
-                    }
-                }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody.getBytes(StandardCharsets.UTF_8);
-            }
-        };
-
-        // Agregar la solicitud a la cola de solicitudes de Volley
-        queue.add(request);
     }
+
 
 
     private boolean validarenvio() {

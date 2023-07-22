@@ -92,6 +92,9 @@ public class Activity_reserva extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
     }
+    LoginActivity myFragment = new LoginActivity();
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -138,7 +141,6 @@ public class Activity_reserva extends AppCompatActivity {
 
     private void enviarSolicitudGuardarReserva(String imageId) {
 
-
         String serverUrl = ConfigApi.baseUrlE + "/reserva/guardar"; // Cambia esto a la dirección de tu servidor Spring Boot
         String dateString = "21/07/2023"; // Tu cadena de fecha
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -148,12 +150,8 @@ public class Activity_reserva extends AppCompatActivity {
 
             rese.setResFechaEvento(date);
             rese.setResImagenRerserva(Integer.parseInt(imageId)); // Convierte el ID a int y asigna
-
-
             Gson gson = new Gson();
             String requestBody = gson.toJson(rese);
-
-
             // Crear una solicitud HTTP POST con la URL y el cuerpo de la solicitud
             StringRequest request = new StringRequest(Request.Method.POST, serverUrl,
                     new Response.Listener<String>() {

@@ -69,11 +69,14 @@ public class DetalleSalonFragment extends Fragment {
                 // Crear instancia del fragmento CotizarFragment
                 FragmentCotitacion cotizarFragment = new FragmentCotitacion();
 
+                // Establecer el objeto salon en el fragmento cotizarFragment
+                cotizarFragment.setSalon(salon);
+
                 // Obtener el FragmentManager y comenzar la transacción
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                // Reemplazar el fragmento actual con CotizarFragment
+                // Reemplazar el fragmento actual con cotizarFragment
                 fragmentTransaction.replace(R.id.fragment_container, cotizarFragment);
 
                 // Agregar la transacción al BackStack
@@ -115,7 +118,7 @@ public class DetalleSalonFragment extends Fragment {
     }
 
     private Salon parseSalonFromResponse(JSONObject response) {
-        Salon salon = null;
+        salon = null;
 
         try {
             salon = new Salon();

@@ -1,8 +1,9 @@
 package xyz.abelgomez.navigationdrawer.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Usuario {
+public class Usuario implements Serializable {
 
     private Long usuId;
     private String usuNombreUsuario;
