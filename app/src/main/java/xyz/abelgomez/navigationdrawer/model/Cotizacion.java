@@ -1,8 +1,9 @@
 package xyz.abelgomez.navigationdrawer.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Cotizacion {
+public class Cotizacion implements Serializable {
 
 
     private Long cotiId;
@@ -16,8 +17,8 @@ public class Cotizacion {
     private Timestamp cotiFechaRegistro;
 
     private Producto producto;
-    private Salon salon;
-    private Usuario usuario;
+    private Salon salId;
+    private Usuario usuId;
 
     public Cotizacion() {
     }
@@ -102,19 +103,19 @@ public class Cotizacion {
         this.producto = producto;
     }
 
-    public Salon getSalon() {
-        return salon;
+    public Salon getSalId() {
+        return salId;
     }
 
-    public void setSalon(Salon salon) {
-        this.salon = salon;
+    public void setSalId(Salon salId) {
+        this.salId = salId;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Usuario getUsuId() {
+        return usuId;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuId(Usuario usuId) {
+        this.usuId = usuId;
     }
 }
