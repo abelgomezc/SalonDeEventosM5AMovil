@@ -73,11 +73,22 @@ public class FragmentCotitacion extends Fragment {
     private Spinner spinnerProductos;
     private RequestQueue queue;
 
-    View view;
+
+
+
+    private Salon salon;
+
+
+    public void setSalon(Salon salon) {
+        this.salon = salon;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cotitacion, container, false);
+
+
+
 
         spinnerProductos = view.findViewById(R.id.spinner);
         edtdescripcion = view.findViewById(R.id.edtdescripcion);
@@ -492,6 +503,7 @@ public class FragmentCotitacion extends Fragment {
     public void limpiar(){
 
     }
+
 
 
 }

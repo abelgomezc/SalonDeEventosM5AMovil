@@ -43,6 +43,7 @@ public class DetalleSalonFragment extends Fragment {
     private Salon salon;
     private Button btnContizar;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,18 +63,22 @@ public class DetalleSalonFragment extends Fragment {
             obtenerDatosSalon(idSalon);
             obtenerUrlsSalon(idSalon);
         }
-        btnContizar = view.findViewById(R.id.btn_Cotizar);
+       btnContizar = view.findViewById(R.id.btn_Cotizar);
+
         btnContizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Crear instancia del fragmento CotizarFragment
                 FragmentCotitacion cotizarFragment = new FragmentCotitacion();
 
+                // Establecer el objeto salon en el fragmento cotizarFragment
+                cotizarFragment.setSalon(salon);
+
                 // Obtener el FragmentManager y comenzar la transacción
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                // Reemplazar el fragmento actual con CotizarFragment
+                // Reemplazar el fragmento actual con cotizarFragment
                 fragmentTransaction.replace(R.id.fragment_container, cotizarFragment);
 
                 // Agregar la transacción al BackStack
@@ -83,6 +88,12 @@ public class DetalleSalonFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
+
+
+
+
+
 
 
 
@@ -115,7 +126,7 @@ public class DetalleSalonFragment extends Fragment {
     }
 
     private Salon parseSalonFromResponse(JSONObject response) {
-        Salon salon = null;
+         salon = null;
 
         try {
             salon = new Salon();
@@ -203,8 +214,8 @@ public class DetalleSalonFragment extends Fragment {
             for (int i = 0; i < response.length(); i++) {
                  imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
-             imageUrl = imageUrl.replace("localhost", "10.0.2.2");
-              // imageUrl = imageUrl.replace("localhost", "192.168.18.4");
+           //  imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+              imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
 
