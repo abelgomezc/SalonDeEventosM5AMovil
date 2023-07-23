@@ -1,6 +1,7 @@
 package xyz.abelgomez.navigationdrawer.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.sql.Timestamp;
 
 public class Cotizacion implements Serializable {
