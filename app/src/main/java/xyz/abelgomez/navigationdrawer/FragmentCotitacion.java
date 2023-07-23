@@ -380,15 +380,13 @@ public class FragmentCotitacion extends Fragment {
         coti.setCotiEstado(1);
         int hora = timePickerinicio.getCurrentHour();
         int minuto = timePickerinicio.getCurrentMinute();
-        int seg = 25;
-        LocalTime horaLocal = LocalTime.of(hora, minuto, seg);
+        LocalTime horaLocal = LocalTime.of(hora, minuto);
         String horainicio1 = horaLocal.toString();
 
 
         int hora1 = timePickerfinal.getCurrentHour();
         int minuto1 = timePickerfinal.getCurrentMinute();
-        int seg1 = 25;
-        LocalTime horaLocal1 = LocalTime.of(hora1, minuto1, seg1);
+        LocalTime horaLocal1 = LocalTime.of(hora1, minuto1);
         String horafin1 = horaLocal1.toString();
 
         int year = datefecha.getYear();
