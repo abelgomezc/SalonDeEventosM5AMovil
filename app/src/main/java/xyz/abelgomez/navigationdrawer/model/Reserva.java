@@ -11,7 +11,7 @@ public class Reserva {
     private String resComprobante;
     private Timestamp resFechaRegistro;
     private Cotizacion reCotiId;
-    private Date resFechaEvento;
+    private String resFechaEvento;
     private Usuario usuId;
 
     public Long getResId() {
@@ -54,11 +54,11 @@ public class Reserva {
         this.reCotiId = reCotiId;
     }
 
-    public Date getResFechaEvento() {
+    public String getResFechaEvento() {
         return resFechaEvento;
     }
 
-    public void setResFechaEvento(Date resFechaEvento) {
+    public void setResFechaEvento(String resFechaEvento) {
         this.resFechaEvento = resFechaEvento;
     }
 

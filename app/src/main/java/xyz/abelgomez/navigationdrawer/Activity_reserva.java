@@ -142,13 +142,13 @@ public class Activity_reserva extends AppCompatActivity {
     private void enviarSolicitudGuardarReserva(String imageId) {
 
         String serverUrl = ConfigApi.baseUrlE + "/reserva/guardar"; // Cambia esto a la dirección de tu servidor Spring Boot
-        String dateString = "21/07/2023"; // Tu cadena de fecha
+        String dateString1 = "2023/07/05"; // Tu cadena de fecha
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            Date date = dateFormat.parse(dateString);
+
+
             Reserva rese = new Reserva();
 
-            rese.setResFechaEvento(date);
+            //rese.setResFechaEvento(dateString1);
             rese.setResImagenRerserva(Integer.parseInt(imageId)); // Convierte el ID a int y asigna
             Gson gson = new Gson();
             String requestBody = gson.toJson(rese);
@@ -184,9 +184,6 @@ public class Activity_reserva extends AppCompatActivity {
             };
             queue.add(request);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
     }
 

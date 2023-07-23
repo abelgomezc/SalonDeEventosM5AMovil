@@ -43,10 +43,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import xyz.abelgomez.navigationdrawer.adapters.AdapterHome;
@@ -392,17 +395,29 @@ public class FragmentCotitacion extends Fragment {
         int month = datefecha.getMonth();
         int day = datefecha.getDayOfMonth();
 
-// Formatear la fecha en una cadena de texto
-        String fechaSeleccionada = String.format("%02d/%02d/%04d", day, month + 1, year);
 
-            coti.setCotiHoraInicio(horainicio1);
+// Crear un objeto Calendar y establecer los componentes de la fecha
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+
+// Obtener la fecha como un objeto java.util.Date
+        Date cotiFechaEvento = calendar.getTime();
+
+// Formatear la fecha como "AAAA-MM-DD"
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String fechaFormateada = sdf.format(cotiFechaEvento);
+
+
+        coti.setCotiHoraInicio(horainicio1);
             coti.setCotiHoraFin(horafin1);
-            coti.setCotiFechaEvento(fechaSeleccionada);
-            //coti.setCotiFechaRegistro(fechahoy);
+            coti.setCotiFechaEvento(fechaFormateada);
+            System.out.println(fechaFormateada);
             coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
             coti.setCotiTipoEvento("cumpleaños");
             coti.setUsuId(usuario);
-           coti.setSalId(salon);
+          // coti.setSalId(salon);
             System.out.println("usuario: "+usuario.getUsuId());
               System.out.println("salon: "+salon.getId_salon());
             // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
