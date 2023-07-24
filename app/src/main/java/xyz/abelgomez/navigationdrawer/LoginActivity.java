@@ -110,11 +110,10 @@ public class LoginActivity extends AppCompatActivity {
                                         editor.putString(KEY_USUARIO, usuarioJson);
                                         editor.apply();
 
+
                                         toastCorrecto("Bienvenido " + usuNombreUsuario);
 // El inicio de sesión fue exitoso
                                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-
 
 
 
