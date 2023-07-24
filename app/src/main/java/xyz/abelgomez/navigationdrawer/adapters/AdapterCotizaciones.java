@@ -1,6 +1,8 @@
 package xyz.abelgomez.navigationdrawer.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,15 +85,31 @@ public class AdapterCotizaciones extends BaseAdapter {
         reservarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long cotiId = (long) cotizacion.get("cotiId");
-                Log.d("ReservaActivity", "ID de cotización: " + cotiId);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Confirmación");
+                builder.setMessage("Para acceder a la confirmacion de la reserva debe tener una imagen del pago de la cotizacion" +
+                        "Posee el comprobante?");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        long cotiId = (long) cotizacion.get("cotiId");
+                        Log.d("ReservaActivity", "ID de cotización: " + cotiId);
 
-                // Abrir el Activity de reserva y pasar el ID de la cotización como extra
-                Intent intent = new Intent(context, pruebaActivity2.class);
-                intent.putExtra("cotiId", cotiId);
-                context.startActivity(intent);
+                        // Abrir el Activity de reserva y pasar el ID de la cotización como extra
+                        Intent intent = new Intent(context, pruebaActivity2.class);
+                        intent.putExtra("cotiId", cotiId);
+                        context.startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("Cancelar", null);
+                builder.show();
             }
         });
         return view;
+    }
+
+
+    private void mostrarConfirmacion() {
+
     }
 }
