@@ -1,5 +1,9 @@
 package xyz.abelgomez.navigationdrawer;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -37,10 +41,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import xyz.abelgomez.navigationdrawer.adapters.AdapterHome;
@@ -48,13 +55,15 @@ import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Cotizacion;
 import xyz.abelgomez.navigationdrawer.model.Producto;
 import xyz.abelgomez.navigationdrawer.model.Salon;
+import xyz.abelgomez.navigationdrawer.model.Usuario;
 
 
 public class FragmentCotitacion extends Fragment {
 
+
     private Button btncalcularcoti, btnguardarcoti;
     private TextInputLayout txtsillita, txtmesita, txtdescrion, txtmontocoti, txthoritas, txtmantelcito;
-    private EditText edtmesa, edtmantelcito;
+    private EditText edtmesa, edtmantelcito,edtnomb;
     private EditText edtsilla;
     private EditText edtdescripcion;
     private EditText edtmontocoti;
@@ -69,12 +78,19 @@ public class FragmentCotitacion extends Fragment {
     DatePicker datefecha;
 
 
+    private static final String PREF_NAME = "MiPreferencia";
+    private static final String KEY_USUARIO = "usuario";
     private List<Producto> productosList;
     private Spinner spinnerProductos;
     private RequestQueue queue;
-
+    Usuario usuario;
     View view;
+    private Salon salon;
 
+
+    public void setSalon(Salon salon) {
+        this.salon = salon;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cotitacion, container, false);
@@ -84,6 +100,8 @@ public class FragmentCotitacion extends Fragment {
         txtdescrion = view.findViewById(R.id.txtdescripcionsalon);
         edtmantelcito = view.findViewById(R.id.edtMantel);
         txtmantelcito = view.findViewById(R.id.txtMantel);
+
+        edtnomb=view.findViewById(R.id.edtNombresalon);
 
         txthoritas = view.findViewById(R.id.txthoritas);
         edthorias = view.findViewById(R.id.edthoritas);
@@ -102,6 +120,30 @@ public class FragmentCotitacion extends Fragment {
 
         btncalcularcoti = view.findViewById(R.id.btncalcularcoti);
         btnguardarcoti = view.findViewById(R.id.btnGuardarCoti);
+
+// Obtener el objeto salon que fue configurado en el FragmentDetalleSalon
+        if (salon != null) {
+            // Imprimir los datos en la consola
+            System.out.println("Datos del salon:");
+            System.out.println("ID: " + salon.getId_salon());
+            System.out.println("Nombre: " + salon.getNombre());
+            System.out.println("Dirección: " + salon.getDireccion());
+            System.out.println("Capacidad: " + salon.getCapacidad());
+            System.out.println("Costo por hora: " + salon.getCostoHora());
+            System.out.println("Estado: " + salon.isEstado());
+            System.out.println("Latitud: " + salon.getLatitud());
+            System.out.println("Longitud: " + salon.getLongitud());
+            // Puedes seguir imprimiendo los demás campos que tenga el objeto salon
+        } else {
+            System.out.println("El objeto salon es nulo. Asegúrate de configurarlo correctamente desde FragmentDetalleSalon.");
+        }
+
+        edtdescripcion.setText(salon.getDireccion());
+        edtnomb.setText(salon.getNombre());
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        String usuarioJson = sharedPreferences.getString(KEY_USUARIO, "");
+        Gson gson = new Gson();
+        usuario = gson.fromJson(usuarioJson, Usuario.class);
 
 
         String url = ConfigApi.baseUrlE + "/productoServicio/listar";
@@ -133,8 +175,6 @@ public class FragmentCotitacion extends Fragment {
         requestQueue.add(jsonArrayRequest);
 
 
-
-
         // Realizar la solicitud GET para obtener la lista de productos
         String url1 = ConfigApi.baseUrlE + "/productoServicio/listar";
         JsonArrayRequest jsonArrayRequest1 = new JsonArrayRequest(Request.Method.GET, url1, null,
@@ -143,12 +183,12 @@ public class FragmentCotitacion extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Procesar la respuesta JSON y obtener la lista de productos
                         productosList = parseProductosFromResponse(response);
-                        Producto seleccionarOpcion = new Producto();
+                      /*  Producto seleccionarOpcion = new Producto();
                         seleccionarOpcion.setId(0);
                         seleccionarOpcion.setNombre("Seleccione una opción");
                         List<Producto> productosListWithOption = new ArrayList<>();
                         productosListWithOption.add(seleccionarOpcion);
-                        productosListWithOption.addAll(productosList);
+                        productosListWithOption.addAll(productosList);*/
 
                         ArrayAdapter<Producto> adapter1 = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, productosList);
                         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -241,7 +281,6 @@ public class FragmentCotitacion extends Fragment {
 
         queue = Volley.newRequestQueue(getActivity());
 
-
         return view;
     }
 
@@ -316,10 +355,11 @@ public class FragmentCotitacion extends Fragment {
 
 
 
-        double costohora = diffInHours * 100;
+        double costohora = diffInHours * salon.getCostoHora();
+        System.out.println("precio:"+salon.getCostoHora());
         int value1 = Integer.parseInt(edtmantelcito.getText().toString()) * 10;
         int value2 = Integer.parseInt(edtmesa.getText().toString()) * 15;
-        int value3 = Integer.parseInt(edtsilla.getText().toString()) *120;
+        int value3 = Integer.parseInt(edtsilla.getText().toString()) *11;
 
         double sum = value2 + value3 + value1 + costohora;
 
@@ -328,6 +368,9 @@ public class FragmentCotitacion extends Fragment {
     }
 
 
+    public void idusu(){
+
+    }
     private void enviarCotizacion() {
 
         String url = ConfigApi.baseUrlE + "/cotizacion/crearcoti";
@@ -337,47 +380,44 @@ public class FragmentCotitacion extends Fragment {
         coti.setCotiEstado(1);
         int hora = timePickerinicio.getCurrentHour();
         int minuto = timePickerinicio.getCurrentMinute();
-        int seg = 25;
-        LocalTime horaLocal = LocalTime.of(hora, minuto, seg);
+        LocalTime horaLocal = LocalTime.of(hora, minuto);
         String horainicio1 = horaLocal.toString();
 
 
         int hora1 = timePickerfinal.getCurrentHour();
         int minuto1 = timePickerfinal.getCurrentMinute();
-        int seg1 = 25;
-        LocalTime horaLocal1 = LocalTime.of(hora1, minuto1, seg1);
+        LocalTime horaLocal1 = LocalTime.of(hora1, minuto1);
         String horafin1 = horaLocal1.toString();
 
         int year = datefecha.getYear();
         int month = datefecha.getMonth();
         int day = datefecha.getDayOfMonth();
 
-// Formatear la fecha en una cadena de texto
-        String fechaSeleccionada = String.format("%02d/%02d/%04d", day, month + 1, year);
+
+// Crear un objeto Calendar y establecer los componentes de la fecha
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+
+// Obtener la fecha como un objeto java.util.Date
+        Date cotiFechaEvento = calendar.getTime();
+
+// Formatear la fecha como "AAAA-MM-DD"
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        String fechaFormateada = sdf.format(cotiFechaEvento);
 
 
         coti.setCotiHoraInicio(horainicio1);
         coti.setCotiHoraFin(horafin1);
-        coti.setCotiFechaEvento(fechaSeleccionada);
-        //coti.setCotiFechaRegistro(fechahoy);
+        coti.setCotiFechaEvento(fechaFormateada);
+        System.out.println(fechaFormateada);
         coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
         coti.setCotiTipoEvento("cumpleaños");
-
-        spinnerProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                                       @Override
-                                                       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                                           Producto producto = (Producto) parent.getItemAtPosition(position);
-                                                           coti.setProducto(producto);
-                                                       }
-
-                                                       @Override
-                                                       public void onNothingSelected(AdapterView<?> parent) {
-                                                           Toast.makeText(requireContext(), "NO HA SELCCIONADO UN PRODUCTO", Toast.LENGTH_SHORT).show();
-                                                       }
-                                                   }
-        );
-
-
+        coti.setUsuId(usuario);
+        // coti.setSalId(salon);
+        System.out.println("usuario: "+usuario.getUsuId());
+        System.out.println("salon: "+salon.getId_salon());
         // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
         Gson gson = new Gson();
         String requestBody = gson.toJson(coti);
@@ -415,7 +455,10 @@ public class FragmentCotitacion extends Fragment {
 
         // Agregar la solicitud a la cola de solicitudes de Volley
         queue.add(request);
+
+
     }
+
 
 
     private boolean validarenvio() {

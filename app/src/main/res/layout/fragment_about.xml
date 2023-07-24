@@ -9,101 +9,410 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:padding="16dp">
 
-            <!-- Person 1 -->
-            <androidx.cardview.widget.CardView
+            <!-- Parallax header 2 -->
+            <ImageView
+                android:id="@+id/microsoft"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/a2" />
+
+            <!-- Intro section -->
+            <LinearLayout
+                android:id="@+id/intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_below="@id/microsoft"
+                android:orientation="vertical">
+
+                <!-- Tarjetas -->
+                <TextView
+                    android:id="@+id/subtitulo2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nuestros Servicios"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/s"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="center"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Person 1"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/abau9" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Reserva"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="en Salones Perruncay"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Todas tus ocasiones especiales\nCelebralas con nosotros" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="person1@example.com"
-                        android:layout_gravity="center_horizontal"/>
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a12" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cotizar"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="en Perruncay" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias cum repellat\nvelit quae suscipit c." />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a11" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Decoración"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="de Eventos" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias cum repellat\nvelit quae suscipit c." />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Servicio"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="de Catering" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias cum repellat\nvelit quae suscipit c." />
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
-            <!-- Add similar CardViews for Person 2 to Person 6 here -->
-
-            <!-- Person 2 -->
-            <androidx.cardview.widget.CardView
+            <!-- Consola 3 section -->
+            <LinearLayout
+                android:id="@+id/consola3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_below="@id/intro"
+                android:orientation="vertical">
 
-                <!-- Add ImageView, TextViews for Name and Email for Person 2 here -->
+                <!-- Galeria -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/subtitulo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tus eventos con Perruncay"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
-            <!-- Person 3 -->
-            <androidx.cardview.widget.CardView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a8" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a7" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a6" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a5" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a4" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/a3" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Sección para mostrar imagen ampliada -->
+                <LinearLayout
+                    android:id="@+id/imagen_light"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/consola3"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/agregar_imagen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter" />
+
+                    <ImageView
+                        android:id="@+id/close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/a12" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Parallax header 3 -->
+            <ImageView
+                android:id="@+id/nintendo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/consola3"
+                android:scaleType="centerCrop"
+                android:src="@drawable/a1" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_below="@id/nintendo"
+                android:orientation="vertical">
 
-                <!-- Add ImageView, TextViews for Name and Email for Person 3 here -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            </androidx.cardview.widget.CardView>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-            <!-- Person 4 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Misión"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                <!-- Add ImageView, TextViews for Name and Email for Person 4 here -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="- Marcar siempre la diferencia por medio de un servicio personalizado, puntual,\npropuestas creativas de alta calidad, con costos y precios competitivos para\nconstruir una relación estratégica de confianza logrando crecimiento y satisfacción\nmutua.\n- Perruncay es una empresa sólida que ha venido demostrando calidad en su servicio y\nrespondiendo a los requerimientos del cliente convirtiéndonos así en sus socios\nestratégicos enfocados en un mismo objetivo. Nuestro trabajo se refleja en el nivel\nde satisfacción del cliente en cada una de las Unidades en las que brindamos servicios."
+                            android:textSize="14sp" />
 
-            </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
-            <!-- Person 5 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                <!-- Add ImageView, TextViews for Name and Email for Person 5 here -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Visión"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-            </androidx.cardview.widget.CardView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="- Proporcionar un espacio altamente versátil y adaptable que satisfaga las\nnecesidades de nuestros clientes para personalizar su evento.\n- Nos esforzamos por crear una experiencia inolvidable a través de la decoración, la\nmúsica, la iluminación y la atención personalizada. Además, nos centramos en la\ntecnología de vanguardia, ofreciendo sistemas de sonido de alta calidad, pantallas y\nproyectores de última generación, y servicios de conectividad a internet de alta\nvelocidad para eventos en línea.\n- También nos preocupamos por la sostenibilidad y la responsabilidad social, ofreciendo\nopciones de catering y bebidas sostenibles, utilizando materiales reciclables y\nreduciendo el impacto ambiental."
+                            android:textSize="14sp" />
 
-            <!-- Person 6 -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                    </LinearLayout>
 
-                <!-- Add ImageView, TextViews for Name and Email for Person 6 here -->
+                </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+                <!-- Layout2 section -->
+                <LinearLayout
+                    android:id="@+id/layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/nintendo"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <!-- Dirección -->
+                    <LinearLayout
+                        android:id="@+id/direccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Ubícanos"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/direccion1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:text="Primera Entrada\nJOSE MARIA ORTEGA - PEDRO LOPEZ DE ARGUDO" />
+
+                        <TextView
+                            android:id="@+id/direccion2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:textSize="16sp"
+                            android:text="Segunda Entrada\nMANUEL TENORIO LAZO" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:text="CELULAR\n(+593) 985860636" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@android:color/black"
+                                android:textSize="16sp"
+                                android:text="EMAIL\ninfoeventos@perruncay.com" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
 
     </ScrollView>
 

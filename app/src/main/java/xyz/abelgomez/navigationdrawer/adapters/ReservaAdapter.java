@@ -72,11 +72,13 @@ public class ReservaAdapter extends BaseAdapter {
         fechaTextView.setText(fechaEvento);
 
         if(estado==1) {
-            estadoTextView.setText("Aprobado");
-        }else{
-
             estadoTextView.setText("En espera.");
+        }else if(estado==2){
 
+            estadoTextView.setText("Aprobado");
+
+        }else{
+            estadoTextView.setText("Denegado");
         }
         tipoEventoextView.setText(tipoEvento);
         if (position % 2 == 0) {

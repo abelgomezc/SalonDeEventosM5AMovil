@@ -1,5 +1,49 @@
 package xyz.abelgomez.navigationdrawer;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+
+import com.android.volley.VolleyError;
+
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSyntaxException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import xyz.abelgomez.navigationdrawer.api.ConfigApi;
+import xyz.abelgomez.navigationdrawer.model.Cotizacion;
+import xyz.abelgomez.navigationdrawer.model.ImagenReserva;
+import xyz.abelgomez.navigationdrawer.model.Reserva;
+import xyz.abelgomez.navigationdrawer.model.Usuario;
+import xyz.abelgomez.navigationdrawer.model.VolleyRequest;
+
+import xyz.abelgomez.navigationdrawer.model.Reserva;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -28,7 +72,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +84,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,12 +95,11 @@ import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Reserva;
 
 import xyz.abelgomez.navigationdrawer.model.Usuario;
+public class Activity_reserva extends AppCompatActivity {
 
-public class pruebaActivity2 extends AppCompatActivity {
+    private static final int PICK_IMAGE_REQUEST = 1;
     private TextView textViewCotiId;
     private TextView txtInformacionReserva;
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private RequestQueue queue;
 
     private Button btnSubirIma;
     private String selectedFilePath = "";
@@ -70,9 +111,9 @@ public class pruebaActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_prueba2);
+        setContentView(R.layout.activity_reserva);
 
-        Log.d("PruebaActivity2", "La actividad se ha creado correctamente");
+        Log.d("Activity_reserva", "La actividad se ha creado correctamente");
 
         txtInformacionReserva = findViewById(R.id.txtinformacionreserva);
 
@@ -80,6 +121,7 @@ public class pruebaActivity2 extends AppCompatActivity {
         btnSubirIma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 seleccionarArchivo();
             }
         });
@@ -112,21 +154,18 @@ public class pruebaActivity2 extends AppCompatActivity {
                             Log.d("ArchivoSeleccionado", "Nombre del archivo seleccionado: " + fileName);
                             txtInformacionReserva.setText("Archivo seleccionado: " + fileName);
                         } else {
-                            Log.d("PruebaActivity2", "El path del archivo es nulo");
+                            Log.d("Activity_reserva", "El path del archivo es nulo");
                         }
                     } else {
-                        Log.d("PruebaActivity2", "El archivo no se puede abrir");
+                        Log.d("Activity_reserva", "El archivo no se puede abrir");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                Log.d("PruebaActivity2", "La URI es nula o no tiene el esquema 'content'");
+                Log.d("Activity_reserva|", "La URI es nula o no tiene el esquema 'content'");
             }
         }
-
-        queue = Volley.newRequestQueue(pruebaActivity2.this);
-
     }
 
     private void seleccionarArchivo() {
@@ -171,7 +210,7 @@ public class pruebaActivity2 extends AppCompatActivity {
             // Sube la imagen al servidor en un AsyncTask
             new FileUploadTask().execute(new File(selectedFilePath));
         } else {
-            Toast.makeText(pruebaActivity2.this, "Por favor, seleccione un archivo antes de guardar la reserva", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Activity_reserva.this, "Por favor, seleccione un archivo antes de guardar la reserva", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -189,7 +228,7 @@ public class pruebaActivity2 extends AppCompatActivity {
                 // Aquí llamamos al método para guardar la reserva
                 guardarReserva();
             } else {
-                Toast.makeText(pruebaActivity2.this, "Error al subir el archivo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_reserva.this, "Error al subir el archivo", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -245,47 +284,54 @@ public class pruebaActivity2 extends AppCompatActivity {
             return null;
         }
 
-
         private void guardarReserva() {
-            String url = ConfigApi.baseUrlE + "/reserva/crear"; // URL para guardar la reserva en el servidor
+            // Crea una nueva reserva con los datos requeridos
             Reserva reserva = new Reserva();
-            reserva.setResComprobante(uploadedFileName+ fileName);
-            Gson gson = new Gson();
-            String requestBody = gson.toJson(reserva);
-            StringRequest request = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Manejar la respuesta de la solicitud
-                            Log.d("TAG", "Response: " + response);
-                            // Guardar la cotización
-
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Manejar errores de la solicitud
-                            Log.e("TAG", "Error: " + error.toString());
-                            Toast.makeText(pruebaActivity2.this, "¡No se pudo guardar su cotizacion!", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    return requestBody.getBytes(StandardCharsets.UTF_8);
-                }
-            };
-
-            // Agregar la solicitud a la cola de solicitudes de Volley
-            queue.add(request);
+            reserva.setResComprobante(uploadedFileName);
 
 
+            // Obtén el ID de cotización desde los extras
+            Intent intent = getIntent();
+            long cotiId = intent.getLongExtra("cotiId", -1);
+
+            // Asigna el ID de cotización a la reserva
+            reserva.setResId(cotiId);
+
+            // Guarda la reserva en el servidor utilizando una solicitud HTTP con JSONObjectRequest
+            RequestQueue requestQueue = Volley.newRequestQueue(Activity_reserva.this);
+            String url = ConfigApi.baseUrlE + "/reserva/crear"; // URL para guardar la reserva en el servidor
+
+            try {
+                Cotizacion coti=new Cotizacion();
+                coti.setCotiId(cotiId);
+
+                reserva.setReCotiId(coti);
+
+                JSONObject reservaJson = new JSONObject();
+                reservaJson.put("resComprobante", reserva.getResComprobante());
+                reservaJson.put("reCotiId", cotiId);
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, reservaJson,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                // Aquí puedes manejar la respuesta del servidor después de guardar la reserva
+                                Toast.makeText(Activity_reserva.this, "Reserva guardada con éxito", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Aquí puedes manejar el error en caso de que ocurra algún problema al guardar la reserva
+                                Toast.makeText(Activity_reserva.this, "Error al guardar la reserva", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                // Agrega la solicitud a la cola de solicitudes
+                requestQueue.add(jsonObjectRequest);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
     }

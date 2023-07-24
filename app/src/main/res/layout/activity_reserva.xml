@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".pruebaActivity2">
+    tools:context=".Activity_reserva">
 
     <LinearLayout
         android:id="@+id/linearTitleUser1"
@@ -56,7 +56,7 @@
                 android:id="@+id/txtinformacionreserva"
                 android:layout_width="397dp"
                 android:layout_height="76dp"
-                android:text="dcdfvd" />
+                 />
 
             <Button
                 android:id="@+id/Guardarreserva"

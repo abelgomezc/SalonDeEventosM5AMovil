@@ -1,6 +1,8 @@
 package xyz.abelgomez.navigationdrawer.model;
 
-public class ImagenesSalon {
+import java.io.Serializable;
+
+public class ImagenesSalon implements Serializable {
 
 
 

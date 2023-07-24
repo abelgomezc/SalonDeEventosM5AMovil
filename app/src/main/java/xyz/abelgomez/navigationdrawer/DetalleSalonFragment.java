@@ -39,7 +39,6 @@ import xyz.abelgomez.navigationdrawer.model.Salon;
 
 
 public class DetalleSalonFragment extends Fragment {
-
     private Salon salon;
     private Button btnContizar;
 
@@ -69,11 +68,14 @@ public class DetalleSalonFragment extends Fragment {
                 // Crear instancia del fragmento CotizarFragment
                 FragmentCotitacion cotizarFragment = new FragmentCotitacion();
 
+                // Establecer el objeto salon en el fragmento cotizarFragment
+                cotizarFragment.setSalon(salon);
+
                 // Obtener el FragmentManager y comenzar la transacción
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                // Reemplazar el fragmento actual con CotizarFragment
+                // Reemplazar el fragmento actual con cotizarFragment
                 fragmentTransaction.replace(R.id.fragment_container, cotizarFragment);
 
                 // Agregar la transacción al BackStack
@@ -91,7 +93,7 @@ public class DetalleSalonFragment extends Fragment {
 
     private void obtenerDatosSalon(int idSalon) {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
-      //  String url = "http://192.168.18.4:9999/salon/salonporid/" + idSalon;
+        //  String url = "http://192.168.18.4:9999/salon/salonporid/" + idSalon;
         String url = ConfigApi.baseUrlE+"/salon/salonporid/"+idSalon;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -115,7 +117,7 @@ public class DetalleSalonFragment extends Fragment {
     }
 
     private Salon parseSalonFromResponse(JSONObject response) {
-        Salon salon = null;
+        salon = null;
 
         try {
             salon = new Salon();
@@ -169,7 +171,7 @@ public class DetalleSalonFragment extends Fragment {
 
     private void obtenerUrlsSalon(int idSalon) {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
-       // String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
+        // String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
         String url = ConfigApi.baseUrlE+"/imgsalones/urls/"+idSalon;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -193,7 +195,7 @@ public class DetalleSalonFragment extends Fragment {
 
     private void mostrarUrlsSalon(JSONArray response) {
 
-     //   ImageView imageView = getView().findViewById(R.id.imageView);
+        //   ImageView imageView = getView().findViewById(R.id.imageView);
         ImageSlider imageSlider = getView().findViewById(R.id.imageSlider);
         ArrayList<SlideModel> slideModels = new ArrayList<>();
 
@@ -201,10 +203,10 @@ public class DetalleSalonFragment extends Fragment {
         String imageUrl="";
         try {
             for (int i = 0; i < response.length(); i++) {
-                 imageUrl = response.getString(i);
+                imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
-             imageUrl = imageUrl.replace("localhost", "10.0.2.2");
-              // imageUrl = imageUrl.replace("localhost", "192.168.18.4");
+                imageUrl = imageUrl.replace("localhost", "192.168.18.219");
+                // imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
 
