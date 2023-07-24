@@ -15,6 +15,10 @@ public class Producto implements Serializable {
         this.precio = precio;
     }
 
+    public Producto() {
+
+    }
+
     public int getId() {
         return id;
     }

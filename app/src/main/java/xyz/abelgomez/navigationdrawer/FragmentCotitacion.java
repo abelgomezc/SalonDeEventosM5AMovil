@@ -84,6 +84,7 @@ public class FragmentCotitacion extends Fragment {
     private List<Producto> productosList;
     private Spinner spinnerProductos;
     private RequestQueue queue;
+
     Usuario usuario;
     View view;
     private Salon salon;
@@ -95,6 +96,9 @@ public class FragmentCotitacion extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cotitacion, container, false);
+
+
+
 
         spinnerProductos = view.findViewById(R.id.spinner);
         edtdescripcion = view.findViewById(R.id.edtdescripcion);
@@ -176,6 +180,8 @@ public class FragmentCotitacion extends Fragment {
         requestQueue.add(jsonArrayRequest);
 
 
+
+
         // Realizar la solicitud GET para obtener la lista de productos
         String url1 = ConfigApi.baseUrlE + "/productoServicio/listar";
         JsonArrayRequest jsonArrayRequest1 = new JsonArrayRequest(Request.Method.GET, url1, null,
@@ -223,7 +229,7 @@ public class FragmentCotitacion extends Fragment {
                 if (validarenvio() == true) {
 
 
-                        enviarCotizacion();
+                    enviarCotizacion();
 
 
                 }
@@ -281,6 +287,7 @@ public class FragmentCotitacion extends Fragment {
 
 
         queue = Volley.newRequestQueue(getActivity());
+
 
         return view;
     }
@@ -402,6 +409,7 @@ public class FragmentCotitacion extends Fragment {
 
 // Obtener la fecha como un objeto java.util.Date
         Date cotiFechaEvento = calendar.getTime();
+
 
 // Formatear la fecha como "AAAA-MM-DD"
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -536,5 +544,6 @@ public class FragmentCotitacion extends Fragment {
 
     }
 
-    
+
+
 }
