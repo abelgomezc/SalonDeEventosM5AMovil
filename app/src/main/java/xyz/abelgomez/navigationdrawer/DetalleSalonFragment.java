@@ -126,7 +126,8 @@ public class DetalleSalonFragment extends Fragment {
     }
 
     private Salon parseSalonFromResponse(JSONObject response) {
-         salon = null;
+
+        salon = null;
 
         try {
             salon = new Salon();

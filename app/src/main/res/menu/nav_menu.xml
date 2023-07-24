@@ -22,6 +22,10 @@
             android:icon="@drawable/reserva1"
             android:title="Tus Reservas"/>
         <item
+            android:id="@+id/nav_reserva"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="reserva"/>
+        <item
             android:id="@+id/nav_ajustes"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="Ajustes"/>
