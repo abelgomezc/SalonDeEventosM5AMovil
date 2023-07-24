@@ -11,7 +11,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre de Salon :"
+        android:text="Nombre de Salón :"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"

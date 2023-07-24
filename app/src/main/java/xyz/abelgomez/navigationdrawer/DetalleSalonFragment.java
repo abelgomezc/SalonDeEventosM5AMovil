@@ -39,10 +39,8 @@ import xyz.abelgomez.navigationdrawer.model.Salon;
 
 
 public class DetalleSalonFragment extends Fragment {
-
     private Salon salon;
     private Button btnContizar;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,8 +61,7 @@ public class DetalleSalonFragment extends Fragment {
             obtenerDatosSalon(idSalon);
             obtenerUrlsSalon(idSalon);
         }
-       btnContizar = view.findViewById(R.id.btn_Cotizar);
-
+        btnContizar = view.findViewById(R.id.btn_Cotizar);
         btnContizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,18 +88,12 @@ public class DetalleSalonFragment extends Fragment {
 
 
 
-
-
-
-
-
-
         return view;
     }
 
     private void obtenerDatosSalon(int idSalon) {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
-      //  String url = "http://192.168.18.4:9999/salon/salonporid/" + idSalon;
+        //  String url = "http://192.168.18.4:9999/salon/salonporid/" + idSalon;
         String url = ConfigApi.baseUrlE+"/salon/salonporid/"+idSalon;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -126,7 +117,6 @@ public class DetalleSalonFragment extends Fragment {
     }
 
     private Salon parseSalonFromResponse(JSONObject response) {
-
         salon = null;
 
         try {
@@ -181,7 +171,7 @@ public class DetalleSalonFragment extends Fragment {
 
     private void obtenerUrlsSalon(int idSalon) {
         RequestQueue requestQueue = Volley.newRequestQueue(requireContext());
-       // String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
+        // String url = "http://192.168.18.4:9999/imgsalones/urls/" + idSalon;
         String url = ConfigApi.baseUrlE+"/imgsalones/urls/"+idSalon;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
@@ -205,7 +195,7 @@ public class DetalleSalonFragment extends Fragment {
 
     private void mostrarUrlsSalon(JSONArray response) {
 
-     //   ImageView imageView = getView().findViewById(R.id.imageView);
+        //   ImageView imageView = getView().findViewById(R.id.imageView);
         ImageSlider imageSlider = getView().findViewById(R.id.imageSlider);
         ArrayList<SlideModel> slideModels = new ArrayList<>();
 
@@ -213,9 +203,9 @@ public class DetalleSalonFragment extends Fragment {
         String imageUrl="";
         try {
             for (int i = 0; i < response.length(); i++) {
-                 imageUrl = response.getString(i);
+                imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
-            imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+                imageUrl = imageUrl.replace("localhost", "192.168.18.219");
                 // imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));

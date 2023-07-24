@@ -37,170 +37,302 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import xyz.abelgomez.navigationdrawer.api.ConfigApi;
+import xyz.abelgomez.navigationdrawer.model.Cotizacion;
 import xyz.abelgomez.navigationdrawer.model.ImagenReserva;
 import xyz.abelgomez.navigationdrawer.model.Reserva;
 import xyz.abelgomez.navigationdrawer.model.Usuario;
 import xyz.abelgomez.navigationdrawer.model.VolleyRequest;
 
+import xyz.abelgomez.navigationdrawer.model.Reserva;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.FileUtils;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import xyz.abelgomez.navigationdrawer.api.ConfigApi;
+import xyz.abelgomez.navigationdrawer.model.Reserva;
+
+import xyz.abelgomez.navigationdrawer.model.Usuario;
 public class Activity_reserva extends AppCompatActivity {
 
-    private RequestQueue queue;
-
     private static final int PICK_IMAGE_REQUEST = 1;
-    private static final String PREF_NAME = "MiPreferencia";
-    private static final String KEY_USUARIO = "usuario";
-    private ImageView imageView;
-    private Button chooseButton;
-    private Button uploadButton;
+    private TextView textViewCotiId;
+    private TextView txtInformacionReserva;
 
-    Usuario usuario;
-    private Bitmap selectedBitmap;
-    private VolleyRequest volleyRequest;
+    private Button btnSubirIma;
+    private String selectedFilePath = "";
+    private static final int REQUEST_CODE_PICK_FILE = 1;
 
+    String fileName="";
+    //  String uploadedFileName =  ConfigApi.baseUrlE+"/file/filesImg/"+fileName;
+    String uploadedFileName = "http://localhost:9999/file/filesImg/"+fileName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserva);
-        imageView = findViewById(R.id.imageUser);
-        chooseButton = findViewById(R.id.btnsubirarchivo);
-        uploadButton = findViewById(R.id.Guardarreserva);
 
-        volleyRequest = new VolleyRequest(this);
-        queue = Volley.newRequestQueue(this);
+        Log.d("Activity_reserva", "La actividad se ha creado correctamente");
 
-        chooseButton.setOnClickListener(new View.OnClickListener() {
+        txtInformacionReserva = findViewById(R.id.txtinformacionreserva);
+
+        btnSubirIma = findViewById(R.id.btnsubirarchivo);
+        btnSubirIma.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openImagePicker();
+            public void onClick(View view) {
+
+                seleccionarArchivo();
             }
         });
 
-        uploadButton.setOnClickListener(new View.OnClickListener() {
+        Button btnGuardarReserva = findViewById(R.id.Guardarreserva);
+        btnGuardarReserva.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-                uploadImageToServer();
-
-
+            public void onClick(View view) {
+                guardarReservaConImagen();
             }
         });
     }
 
-    private void openImagePicker() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+
+            if (uri != null && "content".equals(uri.getScheme())) {
+                try {
+                    InputStream inputStream = getContentResolver().openInputStream(uri);
+                    if (inputStream != null) {
+                        inputStream.close();
+
+                        selectedFilePath = getPathFromUri(uri);
+                        if (selectedFilePath != null) {
+                            fileName = getFileNameFromPath(selectedFilePath);
+                            Log.d("ArchivoSeleccionado", "Nombre del archivo seleccionado: " + fileName);
+                            txtInformacionReserva.setText("Archivo seleccionado: " + fileName);
+                        } else {
+                            Log.d("Activity_reserva", "El path del archivo es nulo");
+                        }
+                    } else {
+                        Log.d("Activity_reserva", "El archivo no se puede abrir");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d("Activity_reserva|", "La URI es nula o no tiene el esquema 'content'");
+            }
+        }
+    }
+
+    private void seleccionarArchivo() {
+       /* Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("/");
+        startActivityForResult(intent, REQUEST_CODE_PICK_FILE);*/
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), PICK_IMAGE_REQUEST);
     }
-    LoginActivity myFragment = new LoginActivity();
 
+    private String getPathFromUri(Uri uri) {
+        String path = null;
+        String[] projection = {MediaStore.Images.Media.DATA};
 
+        try (Cursor cursor = getContentResolver().query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                path = cursor.getString(columnIndex);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        if (path == null) {
+            path = uri.getPath();
+        }
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        return path;
+    }
+
+    private String getFileNameFromPath(String path) {
+        if (path != null) {
+            return new File(path).getName();
+        }
+        return null;
+    }
+
+    private void guardarReservaConImagen() {
+        if (!selectedFilePath.isEmpty()) {
+            // Sube la imagen al servidor en un AsyncTask
+            new FileUploadTask().execute(new File(selectedFilePath));
+        } else {
+            Toast.makeText(Activity_reserva.this, "Por favor, seleccione un archivo antes de guardar la reserva", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class FileUploadTask extends AsyncTask<File, Void, String> {
+        @Override
+        protected String doInBackground(File... files) {
+            File file = files[0];
+            return enviarArchivoAlServidor(file);
+        }
+
+        @Override
+        protected void onPostExecute(String uploadedFileName) {
+            // La imagen se ha subido con éxito, ahora guarda la reserva con los datos requeridos
+            if (uploadedFileName != null) {
+                // Aquí llamamos al método para guardar la reserva
+                guardarReserva();
+            } else {
+                Toast.makeText(Activity_reserva.this, "Error al subir el archivo", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        private String enviarArchivoAlServidor(File file) {
+            //  String uploadUrl = "http://localhost:9999/file/upload"; // URL para subir el archivo
+            String uploadUrl = ConfigApi.baseUrlE+"/file/upload";
             try {
-                selectedBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-                imageView.setImageBitmap(selectedBitmap);
-            } catch (Exception e) {
+                HttpURLConnection connection = (HttpURLConnection) new URL(uploadUrl).openConnection();
+                connection.setDoOutput(true);
+                connection.setRequestMethod("POST");
+                String boundary = "===" + System.currentTimeMillis() + "===";
+                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+                DataOutputStream request = new DataOutputStream(connection.getOutputStream());
+
+                request.writeBytes("--" + boundary + "\r\n");
+                request.writeBytes("Content-Disposition: form-data; name=\"files\"; filename=\"" + file.getName() + "\"\r\n");
+                request.writeBytes("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName()) + "\r\n");
+                request.writeBytes("\r\n");
+
+                FileInputStream inputStream = new FileInputStream(file);
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    request.write(buffer, 0, bytesRead);
+                }
+                request.writeBytes("\r\n");
+                inputStream.close();
+
+                request.writeBytes("--" + boundary + "--\r\n");
+                request.flush();
+                request.close();
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    InputStream responseStream = connection.getInputStream();
+                    // Leer la respuesta del servidor si es necesario
+                    // ...
+                    responseStream.close();
+                } else {
+                    // Manejar error en la respuesta del servidor si es necesario
+                    // ...
+                }
+
+                connection.disconnect();
+
+                // Si la subida fue exitosa, retorna el nombre del archivo subido (sin la URL base)
+                return file.getName();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        private void guardarReserva() {
+            // Crea una nueva reserva con los datos requeridos
+            Reserva reserva = new Reserva();
+            reserva.setResComprobante(uploadedFileName);
+
+
+            // Obtén el ID de cotización desde los extras
+            Intent intent = getIntent();
+            long cotiId = intent.getLongExtra("cotiId", -1);
+
+            // Asigna el ID de cotización a la reserva
+            reserva.setResId(cotiId);
+
+            // Guarda la reserva en el servidor utilizando una solicitud HTTP con JSONObjectRequest
+            RequestQueue requestQueue = Volley.newRequestQueue(Activity_reserva.this);
+            String url = ConfigApi.baseUrlE + "/reserva/crear"; // URL para guardar la reserva en el servidor
+
+            try {
+                Cotizacion coti=new Cotizacion();
+                coti.setCotiId(cotiId);
+
+                reserva.setReCotiId(coti);
+
+                JSONObject reservaJson = new JSONObject();
+                reservaJson.put("resComprobante", reserva.getResComprobante());
+                reservaJson.put("reCotiId", cotiId);
+
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, reservaJson,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                // Aquí puedes manejar la respuesta del servidor después de guardar la reserva
+                                Toast.makeText(Activity_reserva.this, "Reserva guardada con éxito", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // Aquí puedes manejar el error en caso de que ocurra algún problema al guardar la reserva
+                                Toast.makeText(Activity_reserva.this, "Error al guardar la reserva", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                // Agrega la solicitud a la cola de solicitudes
+                requestQueue.add(jsonObjectRequest);
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-    }
 
-    private void uploadImageToServer() {
-        String serverUrl = ConfigApi.baseUrlE + "/imagen/guardar-imagen";
-
-        volleyRequest.uploadImageToServer(serverUrl, selectedBitmap,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(Activity_reserva.this, "Imagen cargada exitosamente", Toast.LENGTH_SHORT).show();
-                        // La imagen se cargó con éxito, obtenemos el ID de la imagen
-                        String imageId = response; // Esto depende de cómo el servidor responde con el ID
-                        // Ahora podemos guardar la reserva con el ID de la imagen
-                        enviarSolicitudGuardarReserva(imageId);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Activity_reserva.this, "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
-                        Log.e("VolleyError", error.toString());
-                    }
-                });
-    }
-
-
-    private String convertirReservaAJson(Reserva reserva) {
-        Gson gson = new Gson();
-        return gson.toJson(reserva);
-    }
-
-    private void enviarSolicitudGuardarReserva(String imageId) {
-
-        String serverUrl = ConfigApi.baseUrlE + "/reserva/guardar"; // Cambia esto a la dirección de tu servidor Spring Boot
-        String dateString1 = "2023/07/05"; // Tu cadena de fecha
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-
-            Reserva rese = new Reserva();
-
-            //rese.setResFechaEvento(dateString1);
-            rese.setResImagenRerserva(Integer.parseInt(imageId)); // Convierte el ID a int y asigna
-            Gson gson = new Gson();
-            String requestBody = gson.toJson(rese);
-            // Crear una solicitud HTTP POST con la URL y el cuerpo de la solicitud
-            StringRequest request = new StringRequest(Request.Method.POST, serverUrl,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Manejar la respuesta de la solicitud
-                            Log.d("TAG", "Response: " + response);
-                            // Guardar la cotización
-
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Manejar errores de la solicitud
-                            Log.e("TAG", "Error: " + error.toString());
-                            Toast.makeText(Activity_reserva.this, "¡No se pudo guardar su cotizacion!", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    return requestBody.getBytes(StandardCharsets.UTF_8);
-                }
-            };
-            queue.add(request);
-
-
-    }
-
-
-    private String obtenerImageIdDeRespuesta(String response) {
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            if (jsonObject.has("id_imagen_reserva")) {
-                Object idObject = jsonObject.get("id_imagen_reserva");
-                if (idObject instanceof Integer) {
-                    int imageId = (int) idObject;
-                    return String.valueOf(imageId);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

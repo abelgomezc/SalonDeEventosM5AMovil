@@ -22,7 +22,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/san_francisco"
-                            android:text="Cotizacion"
+                            android:text="Cotización"
                             android:textAlignment="center"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -55,7 +55,6 @@
                                     android:id="@+id/edtNombresalon"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:editable="false"
                                     android:fontFamily="@font/san_francisco"
                                     android:textSize="15sp" />
 
@@ -66,13 +65,12 @@
 
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Descripcion del Salon">
+                                android:hint="Descripcion del Salón">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edtdescripcion"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:editable="false"
                                     android:fontFamily="@font/san_francisco"
                                     android:textSize="15sp" />
 
@@ -154,10 +152,9 @@
                                     android:id="@+id/edtSillas"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="number"
-
                                     android:fontFamily="@font/san_francisco"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:inputType="number"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -174,8 +171,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/san_francisco"
-                                    android:inputType="number"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:inputType="number"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -185,16 +182,15 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Cuantas manteles necesita"
-                                android:inputType="number"
                                 app:startIconDrawable="@drawable/ic_person">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edtMantel"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="number"
                                     android:fontFamily="@font/san_francisco"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:inputType="number"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -212,7 +208,8 @@
                                     android:layout_height="wrap_content"
                                     android:editable="false"
                                     android:fontFamily="@font/san_francisco"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:inputType="number"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 

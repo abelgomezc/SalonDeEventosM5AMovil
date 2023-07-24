@@ -80,6 +80,7 @@ public class TusCotizacionesFragment extends Fragment {
 
 
 
+
         cotizaciones = new ArrayList<>();
         adapterCotizaciones = new AdapterCotizaciones(requireContext(), cotizaciones);
         listViewCotizaciones.setAdapter(adapterCotizaciones);

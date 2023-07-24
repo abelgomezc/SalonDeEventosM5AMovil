@@ -1,9 +1,10 @@
 package xyz.abelgomez.navigationdrawer;
 
-
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,9 +64,10 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
 
 public class FragmentCotitacion extends Fragment {
 
+
     private Button btncalcularcoti, btnguardarcoti;
     private TextInputLayout txtsillita, txtmesita, txtdescrion, txtmontocoti, txthoritas, txtmantelcito;
-    private EditText edtmesa, edtmantelcito,edtnomb;
+    private EditText edtmesa, edtmantelcito, edtnomb;
     private EditText edtsilla;
     private EditText edtdescripcion;
     private EditText edtmontocoti;
@@ -84,20 +87,18 @@ public class FragmentCotitacion extends Fragment {
     private List<Producto> productosList;
     private Spinner spinnerProductos;
     private RequestQueue queue;
-
     Usuario usuario;
     View view;
-    private Salon salon;
+    Salon salon;
 
 
     public void setSalon(Salon salon) {
         this.salon = salon;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cotitacion, container, false);
-
-
 
 
         spinnerProductos = view.findViewById(R.id.spinner);
@@ -106,7 +107,7 @@ public class FragmentCotitacion extends Fragment {
         edtmantelcito = view.findViewById(R.id.edtMantel);
         txtmantelcito = view.findViewById(R.id.txtMantel);
 
-        edtnomb=view.findViewById(R.id.edtNombresalon);
+        edtnomb = view.findViewById(R.id.edtNombresalon);
 
         txthoritas = view.findViewById(R.id.txthoritas);
         edthorias = view.findViewById(R.id.edthoritas);
@@ -145,6 +146,7 @@ public class FragmentCotitacion extends Fragment {
 
         edtdescripcion.setText(salon.getDireccion());
         edtnomb.setText(salon.getNombre());
+
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String usuarioJson = sharedPreferences.getString(KEY_USUARIO, "");
         Gson gson = new Gson();
@@ -178,8 +180,6 @@ public class FragmentCotitacion extends Fragment {
 
 // Agregar la solicitud a la cola
         requestQueue.add(jsonArrayRequest);
-
-
 
 
         // Realizar la solicitud GET para obtener la lista de productos
@@ -217,7 +217,17 @@ public class FragmentCotitacion extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validarcalculo() == true) {
-                    calcular();
+                    if (validarfecha()) {
+                        if(validaraño()) {
+                            calcular();
+                        }
+
+                    } else {
+
+                        toastIncorrecto("No puede seleccionar una fecha menor a la fecha actual");
+
+                    }
+
                     //   calcularhora();
                 }
 
@@ -229,7 +239,11 @@ public class FragmentCotitacion extends Fragment {
                 if (validarenvio() == true) {
 
 
-                    enviarCotizacion();
+                            mostrarConfirmacion();
+
+
+                    // enviarCotizacion();
+                    // enviarCotizacion1();
 
 
                 }
@@ -288,7 +302,6 @@ public class FragmentCotitacion extends Fragment {
 
         queue = Volley.newRequestQueue(getActivity());
 
-
         return view;
     }
 
@@ -311,6 +324,25 @@ public class FragmentCotitacion extends Fragment {
         }
 
         return productosList;
+    }
+
+    private void enviarCotizacion1() {
+        // Aquí colocas la lógica para enviar la cotización
+        Toast.makeText(getActivity(), "Cotización enviada con éxito", Toast.LENGTH_SHORT).show();
+    }
+
+    private void mostrarConfirmacion() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Confirmación");
+        builder.setMessage("¿Estás seguro de que deseas enviar la cotización?");
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                enviarCotizacion();
+            }
+        });
+        builder.setNegativeButton("Cancelar", null);
+        builder.show();
     }
 
 
@@ -362,11 +394,11 @@ public class FragmentCotitacion extends Fragment {
         edthorias.setText("La diferencia de tiempo es de " + diffInHours + " horas y " + (diffInMinutes % 60) + " minutos.");
 
 
-
-        double costohora = diffInHours * 100;
+        double costohora = diffInHours * salon.getCostoHora();
+        System.out.println("precio:" + salon.getCostoHora());
         int value1 = Integer.parseInt(edtmantelcito.getText().toString()) * 10;
         int value2 = Integer.parseInt(edtmesa.getText().toString()) * 15;
-        int value3 = Integer.parseInt(edtsilla.getText().toString()) *120;
+        int value3 = Integer.parseInt(edtsilla.getText().toString()) * 11;
 
         double sum = value2 + value3 + value1 + costohora;
 
@@ -375,12 +407,10 @@ public class FragmentCotitacion extends Fragment {
     }
 
 
-    public void idusu(){
 
-    }
     private void enviarCotizacion() {
 
-        String url = ConfigApi.baseUrlE + "/cotizacion/crearcoti";
+        String url = ConfigApi.baseUrlE + "/cotizacion/crear";
         // Crear una instancia de la clase Persona con los datos que deseas enviar
         Cotizacion coti = new Cotizacion();
         coti.setCotiDescripcion(edtdescripcion.getText().toString());
@@ -407,66 +437,68 @@ public class FragmentCotitacion extends Fragment {
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
 
+
 // Obtener la fecha como un objeto java.util.Date
         Date cotiFechaEvento = calendar.getTime();
-
 
 // Formatear la fecha como "AAAA-MM-DD"
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String fechaFormateada = sdf.format(cotiFechaEvento);
 
-
         coti.setCotiHoraInicio(horainicio1);
-            coti.setCotiHoraFin(horafin1);
-            coti.setCotiFechaEvento(fechaFormateada);
-            System.out.println(fechaFormateada);
-            coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
-            coti.setCotiTipoEvento("cumpleaños");
-            coti.setUsuId(usuario);
-          // coti.setSalId(salon);
-            System.out.println("usuario: "+usuario.getUsuId());
-              System.out.println("salon: "+salon.getId_salon());
-            // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
-            Gson gson = new Gson();
-            String requestBody = gson.toJson(coti);
+        coti.setCotiHoraFin(horafin1);
+        coti.setCotiFechaEvento(fechaFormateada);
+        System.out.println(fechaFormateada);
+        coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
+        coti.setCotiTipoEvento("cumpleaños");
+        coti.setUsuId(usuario);
+        //coti.setSalId(salon);
+        System.out.println("usuario: " + usuario.getUsuId());
+        System.out.println("salon: " + salon.getId_salon());
+        // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(coti);
 
-            // Crear una solicitud HTTP POST con la URL y el cuerpo de la solicitud
-            StringRequest request = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            // Manejar la respuesta de la solicitud
-                            Log.d("TAG", "Response: " + response);
-                            // Guardar la cotización
+        // Crear una solicitud HTTP POST con la URL y el cuerpo de la solicitud
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Manejar la respuesta de la solicitud
+                        Log.d("TAG", "Response: " + response);
+                        // Guardar la cotización
+                        toastCorrecto("Cotización guardado correctamente ");
 
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Manejar errores de la solicitud
-                            Log.e("TAG", "Error: " + error.toString());
-                            Toast.makeText(getContext(), "¡No se pudo guardar su cotizacion!", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getActivity(), MainActivity.class));
 
-                        }
-                    }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
 
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    return requestBody.getBytes(StandardCharsets.UTF_8);
-                }
-            };
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejar errores de la solicitud
+                        Log.e("TAG", "Error: " + error.toString());
+                        Toast.makeText(getContext(), "¡No se pudo guardar su cotizacion!", Toast.LENGTH_SHORT).show();
 
-            // Agregar la solicitud a la cola de solicitudes de Volley
-            queue.add(request);
+                    }
+                }) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody.getBytes(StandardCharsets.UTF_8);
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        queue.add(request);
 
 
     }
-
 
 
     private boolean validarenvio() {
@@ -540,10 +572,84 @@ public class FragmentCotitacion extends Fragment {
         // Si la cotización se guarda correctamente, debes devolver true, de lo contrario, false.
         return true;
     }
-    public void limpiar(){
+
+    public void limpiar() {
 
     }
 
+    public void toastCorrecto(String msg) {
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+        View view = layoutInflater.inflate(R.layout.custom_toast_ok, (ViewGroup) getActivity().findViewById(R.id.ll_custom_toast_ok));
+        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast1);
+        txtMensaje.setText(msg);
+
+        Toast toast = new Toast(getContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 200);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(view);
+        toast.show();
+    }
+
+    public void toastIncorrecto(String msg) {
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.custom_toast_error, (ViewGroup) getActivity().findViewById(R.id.ll_custom_toast_error));
+        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast2);
+        txtMensaje.setText(msg);
+
+        Toast toast = new Toast(getContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 200);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(view);
+        toast.show();
+    }
+
+
+    public boolean validarfecha(){
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar todayCalendar = Calendar.getInstance();
+        Date today = todayCalendar.getTime();
+
+        // Verificar si la fecha seleccionada es menor que la fecha actual
+        if (selectedDate.before(today)) {
+            return false;
+        } else {
+            // Aquí puedes realizar cualquier acción en caso de que la fecha seleccionada sea válida.
+            return true;
+        }
+    }
+
+
+    public boolean validaraño() {
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar todayCalendar = Calendar.getInstance();
+        Date today = todayCalendar.getTime();
+
+        // Obtener el año actual
+        int currentYear = todayCalendar.get(Calendar.YEAR);
+
+        // Verificar si el año seleccionado es igual al año actual
+        if (year == currentYear || year == currentYear + 1) {
+            // Aquí puedes realizar cualquier acción en caso de que la fecha sea válida.
+            return true;
+        } else {
+            toastIncorrecto("El año seleccionado debe ser igual al año actual.");
+            return false;
+        }
+        }
 
 
 }
