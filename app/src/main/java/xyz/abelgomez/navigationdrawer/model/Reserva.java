@@ -1,9 +1,10 @@
 package xyz.abelgomez.navigationdrawer.model;
 
+import java.io.Serializable;
 import java.security.Timestamp;
 import java.util.Date;
 
-public class Reserva {
+public class Reserva implements Serializable {
 
     private Long resId;
     private int resEstado;

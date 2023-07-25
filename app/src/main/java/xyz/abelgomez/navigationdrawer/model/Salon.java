@@ -115,4 +115,5 @@ public class Salon implements Serializable {
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
     }
+
 }
