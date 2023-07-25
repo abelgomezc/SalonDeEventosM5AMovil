@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         txtInputUsuario = findViewById(R.id.txtInputUsuario);
         txtInputPassword = findViewById(R.id.txtInputPassword);
-        txtNuevoUsuario = findViewById(R.id.txtNuevoUsuario);
+        //txtNuevoUsuario = findViewById(R.id.txtNuevoUsuario);
         btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
 
 //        btnIniciarSesion.setOnClickListener(v -> {

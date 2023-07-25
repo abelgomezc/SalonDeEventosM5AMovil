@@ -70,7 +70,7 @@ public class FragmentCotitacion extends Fragment {
     private EditText edtmesa, edtmantelcito, edtnomb;
     private EditText edtsilla;
     private EditText edtdescripcion;
-    private EditText edtmontocoti;
+    private EditText edtmontocoti,edttipoevento;
     private EditText edthorias;
     // private CotizacionViewModel cotizacionViewModel;
     ArrayList<String> arraynombres;
@@ -80,7 +80,8 @@ public class FragmentCotitacion extends Fragment {
     private ListView listView;
     TimePicker timePickerinicio, timePickerfinal;
     DatePicker datefecha;
-
+    Spinner spinnerEventos;
+    String seleccion;
 
     private static final String PREF_NAME = "MiPreferencia";
     private static final String KEY_USUARIO = "usuario";
@@ -108,10 +109,10 @@ public class FragmentCotitacion extends Fragment {
         txtmantelcito = view.findViewById(R.id.txtMantel);
 
         edtnomb = view.findViewById(R.id.edtNombresalon);
-
+        edttipoevento=view.findViewById(R.id.edttipo);
         txthoritas = view.findViewById(R.id.txthoritas);
         edthorias = view.findViewById(R.id.edthoritas);
-
+        spinnerEventos = view.findViewById(R.id.spinnerEventos);
         datefecha = view.findViewById(R.id.datePickerfecha);
 
         edtmontocoti = view.findViewById(R.id.edttotal);
@@ -162,7 +163,6 @@ public class FragmentCotitacion extends Fragment {
                         // Procesar la respuesta JSON y obtener la lista de productos
                         productosList = parseProductosFromResponse(response);
 
-
                         ArrayAdapter<Producto> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, productosList);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinnerProductos.setAdapter(adapter);
@@ -212,6 +212,7 @@ public class FragmentCotitacion extends Fragment {
                     }
                 });
 
+
         btncalcularcoti.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -219,7 +220,13 @@ public class FragmentCotitacion extends Fragment {
                 if (validarcalculo() == true) {
                     if (validarfecha()) {
                         if(validaraño()) {
-                            calcular();
+                            if(validarduracionhoras()){
+                                if (validarFechaAnticipacion()) {
+                                    calcular();
+
+
+                                }
+                            }
                         }
 
                     } else {
@@ -233,6 +240,7 @@ public class FragmentCotitacion extends Fragment {
 
             }
         });
+
         btnguardarcoti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -299,6 +307,32 @@ public class FragmentCotitacion extends Fragment {
             }
         });
 
+        spinnerEventos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if (selectedItem.equals("Boda")) {
+                    edttipoevento.setText("Boda");
+                }
+                if (selectedItem.equals("Graduación")) {
+                    edttipoevento.setText("Graduación");
+                }
+                if (selectedItem.equals("Bautizo")) {
+                    edttipoevento.setText("Bautizo");
+                }
+                if (selectedItem.equals("Confirmación")) {
+                    edttipoevento.setText("Confirmación");
+                }
+                if (selectedItem.equals("Cumpleaños")) {
+                    edttipoevento.setText("Cumpleaños");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No se realiza ninguna acción cuando no hay opción seleccionada
+            }
+        });
 
         queue = Volley.newRequestQueue(getActivity());
 
@@ -405,6 +439,7 @@ public class FragmentCotitacion extends Fragment {
         edtmontocoti.setText(String.valueOf(sum));
 
     }
+    String cotiev;
 
 
 
@@ -430,7 +465,6 @@ public class FragmentCotitacion extends Fragment {
         int month = datefecha.getMonth();
         int day = datefecha.getDayOfMonth();
 
-
 // Crear un objeto Calendar y establecer los componentes de la fecha
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
@@ -450,7 +484,8 @@ public class FragmentCotitacion extends Fragment {
         coti.setCotiFechaEvento(fechaFormateada);
         System.out.println(fechaFormateada);
         coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
-        coti.setCotiTipoEvento("cumpleaños");
+
+        coti.setCotiTipoEvento(edttipoevento.getText().toString());
         coti.setUsuId(usuario);
         //coti.setSalId(salon);
         System.out.println("usuario: " + usuario.getUsuId());
@@ -499,7 +534,6 @@ public class FragmentCotitacion extends Fragment {
 
 
     }
-
 
     private boolean validarenvio() {
         boolean retorno = true;
@@ -573,9 +607,7 @@ public class FragmentCotitacion extends Fragment {
         return true;
     }
 
-    public void limpiar() {
 
-    }
 
     public void toastCorrecto(String msg) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -650,6 +682,55 @@ public class FragmentCotitacion extends Fragment {
             return false;
         }
         }
+
+    public boolean validarduracionhoras() {
+        timePickerinicio.setIs24HourView(true);
+        timePickerfinal.setIs24HourView(true);
+
+        int horaInicio = timePickerinicio.getHour();
+        int minutoInicio = timePickerinicio.getMinute();
+        int horaFin = timePickerfinal.getHour();
+        int minutoFin = timePickerfinal.getMinute();
+
+        int diferenciaHoras = horaFin - horaInicio;
+        int diferenciaMinutos = minutoFin - minutoInicio;
+
+        if (diferenciaMinutos < 0) {
+            diferenciaHoras--;
+            diferenciaMinutos += 60;
+        }
+
+        if (diferenciaHoras >= 4 || (diferenciaHoras == 3 && diferenciaMinutos >= 60)) {
+            return true;
+        } else {
+            toastIncorrecto("El evento debe durar minimo 4 horas.");
+            return false;
+
+        }
+
+    }
+    public boolean validarFechaAnticipacion() {
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar fiveDaysLaterCalendar = Calendar.getInstance();
+        fiveDaysLaterCalendar.add(Calendar.DAY_OF_MONTH, 5); // Agrega 5 días a la fecha actual
+        Date fiveDaysLater = fiveDaysLaterCalendar.getTime();
+
+        // Verificar si la fecha seleccionada es mayor o igual a 5 días en el futuro
+        if (selectedDate.after(fiveDaysLater) || selectedDate.equals(fiveDaysLater)) {
+            // La fecha seleccionada es válida (está a 5 días o más en el futuro)
+            return true;
+        } else {
+            toastIncorrecto("La fecha de la reserva debe tener minimo 5 días de anticipación");
+            return false;
+        }
+    }
 
 
 }

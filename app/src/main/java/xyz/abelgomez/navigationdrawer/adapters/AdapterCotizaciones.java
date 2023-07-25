@@ -87,8 +87,7 @@ public class AdapterCotizaciones extends BaseAdapter {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Confirmación");
-                builder.setMessage("Para acceder a la confirmacion de la reserva debe tener una imagen del pago de la cotizacion" +
-                        "Posee el comprobante?");
+                builder.setMessage("Para acceder a la confirmación de la reserva, se debe tener una imagen del pago de la cotización. ¿Posee el comprobante?");
                 builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
