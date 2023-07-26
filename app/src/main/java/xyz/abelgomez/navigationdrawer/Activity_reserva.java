@@ -142,7 +142,10 @@ public class Activity_reserva extends AppCompatActivity {
                 if (validarfecha()) {
 
                     if(validaraño()) {
-                        guardarReservaConImagen();
+                        if(validarFechaAnticipacion()){
+                            guardarReservaConImagen();
+
+                        }
                     }
                 }
 
