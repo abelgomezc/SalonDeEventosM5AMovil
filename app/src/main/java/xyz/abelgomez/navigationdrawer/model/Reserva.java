@@ -15,6 +15,8 @@ public class Reserva implements Serializable {
     private String resFechaEvento;
     private Usuario usuId;
 
+    private String cotiFechaEvento;
+
     public Long getResId() {
         return resId;
     }

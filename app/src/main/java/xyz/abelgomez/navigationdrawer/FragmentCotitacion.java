@@ -59,6 +59,7 @@ import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Cotizacion;
 import xyz.abelgomez.navigationdrawer.model.Producto;
 import xyz.abelgomez.navigationdrawer.model.Salon;
+import xyz.abelgomez.navigationdrawer.model.Salon2;
 import xyz.abelgomez.navigationdrawer.model.Usuario;
 
 
@@ -79,7 +80,6 @@ public class FragmentCotitacion extends Fragment {
     private AdapterHome adapter1;
     private ListView listView;
     TimePicker timePickerinicio, timePickerfinal;
-    DatePicker datefecha;
     Spinner spinnerEventos;
     String seleccion;
 
@@ -92,9 +92,10 @@ public class FragmentCotitacion extends Fragment {
     View view;
     Salon salon;
 
+    Salon2 salon2;
 
-    public void setSalon(Salon salon) {
-        this.salon = salon;
+    public void setSalon(Salon2 salon2) {
+      this.salon2=salon2;
     }
 
     @Override
@@ -113,7 +114,6 @@ public class FragmentCotitacion extends Fragment {
         txthoritas = view.findViewById(R.id.txthoritas);
         edthorias = view.findViewById(R.id.edthoritas);
         spinnerEventos = view.findViewById(R.id.spinnerEventos);
-        datefecha = view.findViewById(R.id.datePickerfecha);
 
         edtmontocoti = view.findViewById(R.id.edttotal);
         edtmontocoti.setKeyListener(null);
@@ -218,16 +218,14 @@ public class FragmentCotitacion extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validarcalculo() == true) {
-                    if (validarfecha()) {
-                        if(validaraño()) {
-                            if(validarduracionhoras()){
-                                if (validarFechaAnticipacion()) {
-                                    calcular();
+
+                    if(validarduracionhoras()){
+                        calcular();
+
+                    }
 
 
-                                }
-                            }
-                        }
+
 
                     } else {
 
@@ -238,7 +236,7 @@ public class FragmentCotitacion extends Fragment {
                     //   calcularhora();
                 }
 
-            }
+
         });
 
         btnguardarcoti.setOnClickListener(new View.OnClickListener() {
@@ -461,33 +459,16 @@ public class FragmentCotitacion extends Fragment {
         LocalTime horaLocal1 = LocalTime.of(hora1, minuto1);
         String horafin1 = horaLocal1.toString();
 
-        int year = datefecha.getYear();
-        int month = datefecha.getMonth();
-        int day = datefecha.getDayOfMonth();
 
-// Crear un objeto Calendar y establecer los componentes de la fecha
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-
-
-// Obtener la fecha como un objeto java.util.Date
-        Date cotiFechaEvento = calendar.getTime();
-
-// Formatear la fecha como "AAAA-MM-DD"
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String fechaFormateada = sdf.format(cotiFechaEvento);
 
         coti.setCotiHoraInicio(horainicio1);
         coti.setCotiHoraFin(horafin1);
-        coti.setCotiFechaEvento(fechaFormateada);
-        System.out.println(fechaFormateada);
+
         coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
 
         coti.setCotiTipoEvento(edttipoevento.getText().toString());
         coti.setUsuId(usuario);
-        //coti.setSalId(salon);
+        coti.setSalId(salon2);
         System.out.println("usuario: " + usuario.getUsuId());
         System.out.println("salon: " + salon.getId_salon());
         // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
@@ -636,53 +617,6 @@ public class FragmentCotitacion extends Fragment {
     }
 
 
-    public boolean validarfecha(){
-        int year = datefecha.getYear();
-        int month = datefecha.getMonth();
-        int day = datefecha.getDayOfMonth();
-
-        Calendar selectedDateCalendar = Calendar.getInstance();
-        selectedDateCalendar.set(year, month, day);
-        Date selectedDate = selectedDateCalendar.getTime();
-
-        Calendar todayCalendar = Calendar.getInstance();
-        Date today = todayCalendar.getTime();
-
-        // Verificar si la fecha seleccionada es menor que la fecha actual
-        if (selectedDate.before(today)) {
-            return false;
-        } else {
-            // Aquí puedes realizar cualquier acción en caso de que la fecha seleccionada sea válida.
-            return true;
-        }
-    }
-
-
-    public boolean validaraño() {
-        int year = datefecha.getYear();
-        int month = datefecha.getMonth();
-        int day = datefecha.getDayOfMonth();
-
-        Calendar selectedDateCalendar = Calendar.getInstance();
-        selectedDateCalendar.set(year, month, day);
-        Date selectedDate = selectedDateCalendar.getTime();
-
-        Calendar todayCalendar = Calendar.getInstance();
-        Date today = todayCalendar.getTime();
-
-        // Obtener el año actual
-        int currentYear = todayCalendar.get(Calendar.YEAR);
-
-        // Verificar si el año seleccionado es igual al año actual
-        if (year == currentYear || year == currentYear + 1) {
-            // Aquí puedes realizar cualquier acción en caso de que la fecha sea válida.
-            return true;
-        } else {
-            toastIncorrecto("El año seleccionado debe ser igual al año actual.");
-            return false;
-        }
-        }
-
     public boolean validarduracionhoras() {
         timePickerinicio.setIs24HourView(true);
         timePickerfinal.setIs24HourView(true);
@@ -709,28 +643,5 @@ public class FragmentCotitacion extends Fragment {
         }
 
     }
-    public boolean validarFechaAnticipacion() {
-        int year = datefecha.getYear();
-        int month = datefecha.getMonth();
-        int day = datefecha.getDayOfMonth();
-
-        Calendar selectedDateCalendar = Calendar.getInstance();
-        selectedDateCalendar.set(year, month, day);
-        Date selectedDate = selectedDateCalendar.getTime();
-
-        Calendar fiveDaysLaterCalendar = Calendar.getInstance();
-        fiveDaysLaterCalendar.add(Calendar.DAY_OF_MONTH, 5); // Agrega 5 días a la fecha actual
-        Date fiveDaysLater = fiveDaysLaterCalendar.getTime();
-
-        // Verificar si la fecha seleccionada es mayor o igual a 5 días en el futuro
-        if (selectedDate.after(fiveDaysLater) || selectedDate.equals(fiveDaysLater)) {
-            // La fecha seleccionada es válida (está a 5 días o más en el futuro)
-            return true;
-        } else {
-            toastIncorrecto("La fecha de la reserva debe tener minimo 5 días de anticipación");
-            return false;
-        }
-    }
-
 
 }
