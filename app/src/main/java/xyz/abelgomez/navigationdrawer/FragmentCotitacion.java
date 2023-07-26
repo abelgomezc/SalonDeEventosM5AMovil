@@ -129,24 +129,24 @@ public class FragmentCotitacion extends Fragment {
         btnguardarcoti = view.findViewById(R.id.btnGuardarCoti);
 
 // Obtener el objeto salon que fue configurado en el FragmentDetalleSalon
-        if (salon != null) {
+        if (salon2 != null) {
             // Imprimir los datos en la consola
             System.out.println("Datos del salon:");
-            System.out.println("ID: " + salon.getId_salon());
-            System.out.println("Nombre: " + salon.getNombre());
-            System.out.println("Dirección: " + salon.getDireccion());
-            System.out.println("Capacidad: " + salon.getCapacidad());
-            System.out.println("Costo por hora: " + salon.getCostoHora());
-            System.out.println("Estado: " + salon.isEstado());
-            System.out.println("Latitud: " + salon.getLatitud());
-            System.out.println("Longitud: " + salon.getLongitud());
+            System.out.println("ID: " + salon2.getSalId());
+            System.out.println("Nombre: " + salon2.getSalNombre());
+            System.out.println("Dirección: " + salon2.getSalDireccion());
+            System.out.println("Capacidad: " + salon2.getSalCapacidad());
+            System.out.println("Costo por hora: " + salon2.getSalCostoHora());
+            System.out.println("Estado: " + salon2.getSalEstado());
+            System.out.println("Latitud: " + salon2.getSalLatitud());
+            System.out.println("Longitud: " + salon2.getSalLongitud());
             // Puedes seguir imprimiendo los demás campos que tenga el objeto salon
         } else {
             System.out.println("El objeto salon es nulo. Asegúrate de configurarlo correctamente desde FragmentDetalleSalon.");
         }
 
-        edtdescripcion.setText(salon.getDireccion());
-        edtnomb.setText(salon.getNombre());
+        edtdescripcion.setText(salon2.getSalDireccion());
+        edtnomb.setText(salon2.getSalNombre());
 
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String usuarioJson = sharedPreferences.getString(KEY_USUARIO, "");
@@ -426,8 +426,8 @@ public class FragmentCotitacion extends Fragment {
         edthorias.setText("La diferencia de tiempo es de " + diffInHours + " horas y " + (diffInMinutes % 60) + " minutos.");
 
 
-        double costohora = diffInHours * salon.getCostoHora();
-        System.out.println("precio:" + salon.getCostoHora());
+        double costohora = diffInHours * salon2.getSalCostoHora();
+        System.out.println("precio:" + salon2.getSalCostoHora());
         int value1 = Integer.parseInt(edtmantelcito.getText().toString()) * 10;
         int value2 = Integer.parseInt(edtmesa.getText().toString()) * 15;
         int value3 = Integer.parseInt(edtsilla.getText().toString()) * 11;
@@ -470,7 +470,7 @@ public class FragmentCotitacion extends Fragment {
         coti.setUsuId(usuario);
         coti.setSalId(salon2);
         System.out.println("usuario: " + usuario.getUsuId());
-        System.out.println("salon: " + salon.getId_salon());
+        System.out.println("salon: " + salon2.getSalId());
         // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
         Gson gson = new Gson();
         String requestBody = gson.toJson(coti);
