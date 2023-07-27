@@ -87,6 +87,8 @@ public class FragmentCotitacion extends Fragment {
     private static final String KEY_USUARIO = "usuario";
     private List<Producto> productosList;
     private Spinner spinnerProductos;
+    double precioProductoSeleccionado;
+    private double precioTotalSeleccionado = 0.0;
     private RequestQueue queue;
     Usuario usuario;
     View view;
@@ -190,12 +192,7 @@ public class FragmentCotitacion extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Procesar la respuesta JSON y obtener la lista de productos
                         productosList = parseProductosFromResponse(response);
-                      /*  Producto seleccionarOpcion = new Producto();
-                        seleccionarOpcion.setId(0);
-                        seleccionarOpcion.setNombre("Seleccione una opción");
-                        List<Producto> productosListWithOption = new ArrayList<>();
-                        productosListWithOption.add(seleccionarOpcion);
-                        productosListWithOption.addAll(productosList);*/
+
 
                         ArrayAdapter<Producto> adapter1 = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, productosList);
                         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -221,11 +218,7 @@ public class FragmentCotitacion extends Fragment {
 
                     if(validarduracionhoras()){
                         calcular();
-
                     }
-
-
-
 
                     } else {
 
@@ -244,14 +237,9 @@ public class FragmentCotitacion extends Fragment {
             public void onClick(View view) {
                 if (validarenvio() == true) {
 
-
                             mostrarConfirmacion();
-
-
                     // enviarCotizacion();
                     // enviarCotizacion1();
-
-
                 }
             }
         });
@@ -329,6 +317,27 @@ public class FragmentCotitacion extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // No se realiza ninguna acción cuando no hay opción seleccionada
+            }
+        });
+
+
+        spinnerProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Obtener el producto seleccionado del Spinner
+                Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
+
+                // Obtener el precio del producto seleccionado
+                 precioProductoSeleccionado  = productoSeleccionado.getPrecio();
+
+                // Hacer lo que necesites con el precio (por ejemplo, mostrarlo en un TextView)
+            System.out.println("precio: "+precioProductoSeleccionado);
+                // Guardar el precio seleccionado en la variable global
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Puedes manejar este evento si es necesario
             }
         });
 
@@ -428,9 +437,9 @@ public class FragmentCotitacion extends Fragment {
 
         double costohora = diffInHours * salon2.getSalCostoHora();
         System.out.println("precio:" + salon2.getSalCostoHora());
-        int value1 = Integer.parseInt(edtmantelcito.getText().toString()) * 10;
-        int value2 = Integer.parseInt(edtmesa.getText().toString()) * 15;
-        int value3 = Integer.parseInt(edtsilla.getText().toString()) * 11;
+        Double value1 = Integer.parseInt(edtmantelcito.getText().toString()) * precioProductoSeleccionado;
+        Double value2 = Integer.parseInt(edtmesa.getText().toString()) * precioProductoSeleccionado;
+        Double value3 = Integer.parseInt(edtsilla.getText().toString()) * precioProductoSeleccionado;
 
         double sum = value2 + value3 + value1 + costohora;
 
@@ -643,5 +652,20 @@ public class FragmentCotitacion extends Fragment {
         }
 
     }
+
+    public void onItemSelected1(AdapterView<?> parent, View view, int position, long id) {
+        // Obtener el producto seleccionado del Spinner
+        Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
+
+        // Obtener el precio del producto seleccionado
+        double precioProductoSeleccionado = productoSeleccionado.getPrecio();
+
+        // Sumar el precio del producto seleccionado al precio total
+        precioTotalSeleccionado += precioProductoSeleccionado;
+
+        // Hacer lo que necesites con el precio total (por ejemplo, mostrarlo en un TextView)
+      //  textViewPrecioTotal.setText("Precio Total: " + precioTotalSeleccionado);
+    }
+
 
 }
