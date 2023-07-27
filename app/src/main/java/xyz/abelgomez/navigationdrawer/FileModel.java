@@ -9,6 +9,11 @@ public class FileModel {
 
     }
 
+
+    public FileModel(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
     public int getId() {
         return id;
     }

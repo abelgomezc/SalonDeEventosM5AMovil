@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         txtInputUsuario = findViewById(R.id.txtInputUsuario);
         txtInputPassword = findViewById(R.id.txtInputPassword);
-        txtNuevoUsuario = findViewById(R.id.txtNuevoUsuario);
+        //txtNuevoUsuario = findViewById(R.id.txtNuevoUsuario);
         btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
 
 //        btnIniciarSesion.setOnClickListener(v -> {
@@ -93,23 +93,27 @@ public class LoginActivity extends AppCompatActivity {
                                     try {
                                         JSONObject jsonObject = new JSONObject(response);
 
-
                                         Long usuId = jsonObject.getLong("usuId");
                                         String usuNombreUsuario = jsonObject.getString("usuNombreUsuario");
                                         String usuContrasena = jsonObject.getString("usuContrasena");
 
-                                        // Crear una instancia de Usuario con los datos extraídos
-                                        Usuario usuario = new Usuario(usuId, usuNombreUsuario, usuContrasena);
-                                        //  System.out.println("Usuario xd    -----------+++++++++++++++++++++ " + usuario.getUsuNombreUsuario()+"======================"+usuario.getUsuContrasena());
+// Crear una instancia de Usuario con los datos extraídos
+                                        Usuario usuario = new Usuario();
+                                        usuario.setUsuId(usuId);
+                                        usuario.setUsuNombreUsuario(usuNombreUsuario);
+                                        usuario.setUsuContrasena(usuContrasena);
 
                                         SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString(KEY_USUARIO, usuNombreUsuario); // Reemplaza "nombreUsuario" con el valor obtenido del servidor
+                                        Gson gson = new Gson();
+                                        String usuarioJson = gson.toJson(usuario);
+                                        editor.putString(KEY_USUARIO, usuarioJson);
                                         editor.apply();
-                                        toastCorrecto("Bienvenido  "+ usuNombreUsuario);
-                                        // El inicio de sesión fue exitoso
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
+
+                                        toastCorrecto("Bienvenido " + usuNombreUsuario);
+// El inicio de sesión fue exitoso
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
 
 
@@ -148,11 +152,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-        private boolean validar( ) {
+    private boolean validar( ) {
         boolean retorno = true;
         String usuario, password;
         usuario = edtMail.getText().toString();
-       password = edtPassword.getText().toString();
+        password = edtPassword.getText().toString();
         if (usuario.isEmpty()) {
             txtInputUsuario.setError("Ingrese su usario y/o correo electrónico");
             retorno = false;

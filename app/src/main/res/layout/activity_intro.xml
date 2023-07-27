@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:background="@drawable/img8"
+    android:background="@drawable/imgintro"
     tools:context=".IntroActivity">
 
 
@@ -19,18 +19,22 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"/>
+
     <TextView
+        android:id="@+id/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/titulo"
-        android:text="PERRUNCAY"
-        android:textColor="@color/colo1"
-        android:textSize="55dp"
-        android:textStyle="bold"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:fontFamily="@font/hammersmith_one"
-        android:layout_margin="20dp"/>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/montserrat_subrayada"
+        android:text="Celebra con estilo, reserva sin esfuerzo."
+        android:textColor="@color/black"
+        android:textSize="23dp"
+        android:textStyle="bold" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie"

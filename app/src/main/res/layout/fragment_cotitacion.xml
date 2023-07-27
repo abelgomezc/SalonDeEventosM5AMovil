@@ -22,7 +22,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/san_francisco"
-                            android:text="Cotizacion"
+                            android:text="Cotización"
                             android:textAlignment="center"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -48,16 +48,17 @@
 
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Nombre del salon"
+                                android:hint="Nombre del salón"
                                 app:startIconDrawable="@drawable/ic_person">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edtNombresalon"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:editable="false"
                                     android:fontFamily="@font/san_francisco"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:editable="false"
+                                    />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,15 +67,16 @@
 
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Descripcion del Salon">
+                                android:hint="Descripción del Salón">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edtdescripcion"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:editable="false"
                                     android:fontFamily="@font/san_francisco"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:editable="false"
+                                    />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,20 +124,34 @@
                                 android:background="@android:color/white"
                                 android:timePickerMode="spinner" />
 
-                            <TextView
-                                android:id="@+id/datePickerLabel"
+                            <Spinner
+                                android:id="@+id/spinnerEventos"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Selecciona una fecha para su reserva:" />
+                                android:entries="@array/eventos_array" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/txttitpo"
 
-                            <DatePicker
-                                android:id="@+id/datePickerfecha"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:calendarViewShown="false"
-                                android:datePickerMode="spinner"
-                                android:spinnersShown="true" />
+                                android:hint="Tipo de Evento">
 
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edttipo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/san_francisco"
+                                    android:textSize="15sp"
+                                    android:editable="false"
+                                    />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:id="@+id/datePickerLabel45"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Selecciona los productos:" />
                             <Spinner
                                 android:id="@+id/spinner"
                                 android:layout_width="wrap_content"
@@ -147,7 +163,7 @@
 
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Cuantas sillas necesita"
+                                android:hint="¿Cuántas sillas necesita?"
                                 app:startIconDrawable="@drawable/ic_person">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -155,7 +171,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/san_francisco"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:inputType="number"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -164,7 +181,7 @@
 
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Cuantas Mesas necesita"
+                                android:hint="¿Cuántas Mesas necesita?"
                                 app:startIconDrawable="@drawable/ic_person">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -172,8 +189,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/san_francisco"
-                                    android:inputType="number"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:inputType="number"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -182,17 +199,16 @@
 
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Cuantas manteles necesita"
-                                android:inputType="number"
+                                android:hint="¿Cuántas manteles necesita?"
                                 app:startIconDrawable="@drawable/ic_person">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edtMantel"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="number"
                                     android:fontFamily="@font/san_francisco"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:inputType="number"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -210,7 +226,8 @@
                                     android:layout_height="wrap_content"
                                     android:editable="false"
                                     android:fontFamily="@font/san_francisco"
-                                    android:textSize="15sp" />
+                                    android:textSize="15sp"
+                                    android:inputType="number"/>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,7 +248,7 @@
                                 android:layout_gravity="end"
                                 android:layout_marginTop="15dp"
                                 android:fontFamily="@font/san_francisco"
-                                android:text="Guardar Cotizacion"
+                                android:text="Guardar Cotización"
                                 android:textColor="@color/white" />
 
                         </LinearLayout>

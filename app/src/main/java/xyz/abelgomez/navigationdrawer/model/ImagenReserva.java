@@ -2,7 +2,9 @@ package xyz.abelgomez.navigationdrawer.model;
 
 import android.graphics.Bitmap;
 
-public class ImagenReserva {
+import java.io.Serializable;
+
+public class ImagenReserva implements Serializable {
 
 
     private Bitmap datosImagen;

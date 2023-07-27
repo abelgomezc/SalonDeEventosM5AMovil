@@ -1,5 +1,6 @@
 package xyz.abelgomez.navigationdrawer;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
@@ -17,24 +18,31 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+
+import xyz.abelgomez.navigationdrawer.model.Usuario;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String PREF_NAME = "MiPreferencia";
     private static final String KEY_USUARIO = "usuario";
     private DrawerLayout drawerLayout;
-    String nombreUsuario;
+
+    Usuario usuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-       nombreUsuario = sharedPreferences.getString(KEY_USUARIO, "");
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String usuarioJson = sharedPreferences.getString(KEY_USUARIO, "");
+        Gson gson = new Gson();
+        usuario = gson.fromJson(usuarioJson, Usuario.class);
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         TextView txtUsuario = navigationView.getHeaderView(0).findViewById(R.id.txtUsuario);
-        txtUsuario.setText(nombreUsuario);
+        txtUsuario.setText(usuario.getUsuNombreUsuario());
 
 
         // Inicializar Toolbar
@@ -43,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Establecer Toolbar como la action bar de la actividad
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
-       // NavigationView navigationView = findViewById(R.id.nav_view);
+        // NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
                 R.string.close_nav);
@@ -80,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_logout:
-                Toast.makeText(this, "Logout!....  ADIOS  "+nombreUsuario , Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Logout!....  ADIOS  "+usuario.getUsuNombreUsuario() , Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
         }

@@ -11,22 +11,22 @@
     android:padding="8dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="182dp"
-        android:layout_height="142dp"
+        android:id="@+id/cardView"
+        android:layout_width="190dp"
+        android:layout_height="150dp"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
+
+
         app:layout_constraintBottom_toBottomOf="parent"
-
-
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imagen"
-            android:layout_width="182dp"
-            android:layout_height="142dp"
+            android:layout_width="190dp"
+            android:layout_height="150dp"
 
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -37,25 +37,69 @@
             tools:ignore="MissingConstraints" />
 
     </androidx.cardview.widget.CardView>
-<!--    <ImageView-->
-<!--        android:id="@+id/imagen"-->
-<!--        android:layout_width="182dp"-->
-<!--        android:layout_height="142dp"-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imagen"-->
+    <!--        android:layout_width="182dp"-->
+    <!--        android:layout_height="142dp"-->
 
-<!--        android:scaleType="fitCenter"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:ignore="MissingConstraints" />-->
+    <!--        android:scaleType="fitCenter"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        tools:ignore="MissingConstraints" />-->
 
     <TextView
         android:id="@+id/nombre"
-        android:layout_width="198dp"
-        android:layout_height="34dp"
+        android:layout_width="192dp"
+        android:layout_height="61dp"
         android:gravity="center"
         android:paddingTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.724"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/descricion"
+        android:layout_width="187dp"
+        android:layout_height="45dp"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.73"
+        app:layout_constraintStart_toEndOf="@+id/cardView"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Nombre de Salón :"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dirección de Salón:"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold"
@@ -63,50 +107,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.257"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/nombre"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/descricion"
-        android:layout_width="190dp"
-        android:layout_height="53dp"
-        android:gravity="center"
-        android:paddingTop="8dp"
-        android:textColor="@color/black"
+        android:id="@+id/tocaParaCotizar"
+        android:layout_width="196dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="36dp"
+        android:text="Toca para más detalles"
+        android:textColor="@android:color/black"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintEnd_toEndOf="@+id/descricion"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.929"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nombre de Salon :"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.81"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Direccion:"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.673"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.537" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView"
+        app:layout_constraintVertical_bias="0.875" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

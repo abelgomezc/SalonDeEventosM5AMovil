@@ -8,7 +8,6 @@ public class Cotizacion implements Serializable {
 
     private Long cotiId;
     private String cotiTipoEvento;
-    private String cotiFechaEvento;
     private String cotiDescripcion;
     private int cotiEstado;
     private double cotiMonto;
@@ -17,7 +16,7 @@ public class Cotizacion implements Serializable {
     private Timestamp cotiFechaRegistro;
 
     private Producto producto;
-    private Salon salId;
+    private Salon2 salId;
     private Usuario usuId;
 
     public Cotizacion() {
@@ -39,13 +38,7 @@ public class Cotizacion implements Serializable {
         this.cotiTipoEvento = cotiTipoEvento;
     }
 
-    public String getCotiFechaEvento() {
-        return cotiFechaEvento;
-    }
 
-    public void setCotiFechaEvento(String cotiFechaEvento) {
-        this.cotiFechaEvento = cotiFechaEvento;
-    }
 
     public String getCotiDescripcion() {
         return cotiDescripcion;
@@ -103,11 +96,11 @@ public class Cotizacion implements Serializable {
         this.producto = producto;
     }
 
-    public Salon getSalId() {
+    public Salon2 getSalId() {
         return salId;
     }
 
-    public void setSalId(Salon salId) {
+    public void setSalId(Salon2 salId) {
         this.salId = salId;
     }
 
