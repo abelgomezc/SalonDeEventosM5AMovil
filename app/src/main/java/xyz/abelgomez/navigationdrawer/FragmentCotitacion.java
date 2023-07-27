@@ -273,9 +273,8 @@ public class FragmentCotitacion extends Fragment {
                     txtmantelcito.setVisibility(View.GONE);
                     Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
 
-                    // Obtener el precio del producto seleccionado
                     precioProductoSeleccionado = productoSeleccionado.getPrecio();
-                //    traerprecio();
+                    System.out.println("precio:" +precioProductoSeleccionado);
 
 
                 }
@@ -287,10 +286,8 @@ public class FragmentCotitacion extends Fragment {
                     edtmantelcito.setVisibility(View.GONE);
                     txtmantelcito.setVisibility(View.GONE);
                     Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
-
-                    // Obtener el precio del producto seleccionado
                     precioProductoSeleccionado = productoSeleccionado.getPrecio();
-                 //   traerprecio();
+                    System.out.println("precio:" +precioProductoSeleccionado);
 
                 }
                 if (selectedItem.equals("mantel")) {
@@ -302,9 +299,8 @@ public class FragmentCotitacion extends Fragment {
                     txtmantelcito.setVisibility(View.VISIBLE);
                     Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
 
-                    // Obtener el precio del producto seleccionado
                     precioProductoSeleccionado = productoSeleccionado.getPrecio();
-                  //  traerprecio();
+                    System.out.println("precio:" +precioProductoSeleccionado);
 
                 }
             }
@@ -443,9 +439,9 @@ public class FragmentCotitacion extends Fragment {
 
         double costohora = diffInHours * salon2.getSalCostoHora();
         System.out.println("precio:" + salon2.getSalCostoHora());
-        Double value1 = Integer.parseInt(edtmantelcito.getText().toString()) * precioProductoSeleccionado;
-        Double value2 = Integer.parseInt(edtmesa.getText().toString()) * precioProductoSeleccionado;
-        Double value3 = Integer.parseInt(edtsilla.getText().toString()) * precioProductoSeleccionado;
+        Double value1 = Double.parseDouble(edtmantelcito.getText().toString()) * precioProductoSeleccionado;
+        Double value2 = Double.parseDouble(edtmesa.getText().toString()) * precioProductoSeleccionado;
+        Double value3 = Double.parseDouble(edtsilla.getText().toString()) * precioProductoSeleccionado;
 
         double sum = value1+value2+value3+ costohora;
 
