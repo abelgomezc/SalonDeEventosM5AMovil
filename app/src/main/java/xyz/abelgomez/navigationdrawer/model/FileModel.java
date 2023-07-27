@@ -1,23 +1,17 @@
-package xyz.abelgomez.navigationdrawer;
+package xyz.abelgomez.navigationdrawer.model;
 
-public class FileModel {
-    private int id;
+import java.io.Serializable;
+
+public class FileModel implements Serializable {
     private String name;
     private String url;
 
     public FileModel() {
-
     }
 
     public FileModel(String name, String url) {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.name = name;
+        this.url = url;
     }
 
     public String getName() {

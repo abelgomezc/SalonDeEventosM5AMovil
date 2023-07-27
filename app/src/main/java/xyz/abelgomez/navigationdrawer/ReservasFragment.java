@@ -76,27 +76,7 @@ public class ReservasFragment extends Fragment {
     private void obtenerReservas(Long usuarioId) {
         String url = ConfigApi.baseUrlE + "/reserva/listar/" + usuarioId;
 
-//        StringRequest request = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONArray jsonArray = new JSONArray(response);
-//                            reservas.clear();
-//                            reservas.addAll(parsearReservas(jsonArray));
-//                            adapterReservas.notifyDataSetChanged();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Volley", "Error en la solicitud: " + error.getMessage(), error);
-//                        Toast.makeText(requireContext(), "Error al obtener las reservas", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
 
         StringRequest request = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -138,41 +118,6 @@ public class ReservasFragment extends Fragment {
 
 
 
-// ...
-
-//    private List<Map<String, Object>> parsearReservas(JSONArray jsonArray) {
-//        List<Map<String, Object>> reservas = new ArrayList<>();
-//
-//        try {
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONArray reservaArray = jsonArray.getJSONArray(i);
-//
-//                // Obtener los datos de la reserva del JSONArray
-//                String fechaEvento = URLDecoder.decode(reservaArray.getString(0), "UTF-8");
-//                String tipoEvento = URLDecoder.decode(reservaArray.getString(1), "UTF-8");
-//                int estado = reservaArray.getInt(2);
-//                double monto = reservaArray.getDouble(3);
-//                String nombreSalon = URLDecoder.decode(reservaArray.getString(4), "UTF-8");
-//
-//                // Crear un mapa con los datos de la reserva
-//                Map<String, Object> reservaMap = new HashMap<>();
-//                reservaMap.put("salonNombre", nombreSalon);
-//                reservaMap.put("monto", monto);
-//                reservaMap.put("fechaReserva", fechaEvento);
-//                reservaMap.put("estado", estado);
-//                reservaMap.put("tipoEvento", tipoEvento);
-//
-//                // Agregar la reserva al listado
-//                reservas.add(reservaMap);
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return reservas;
-//    }
 
     private List<Map<String, Object>> parsearReservas(JSONArray jsonArray) {
         List<Map<String, Object>> reservas = new ArrayList<>();

@@ -59,6 +59,7 @@ import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Cotizacion;
 import xyz.abelgomez.navigationdrawer.model.Producto;
 import xyz.abelgomez.navigationdrawer.model.Salon;
+import xyz.abelgomez.navigationdrawer.model.Salon2;
 import xyz.abelgomez.navigationdrawer.model.Usuario;
 
 
@@ -70,7 +71,7 @@ public class FragmentCotitacion extends Fragment {
     private EditText edtmesa, edtmantelcito, edtnomb;
     private EditText edtsilla;
     private EditText edtdescripcion;
-    private EditText edtmontocoti;
+    private EditText edtmontocoti,edttipoevento;
     private EditText edthorias;
     // private CotizacionViewModel cotizacionViewModel;
     ArrayList<String> arraynombres;
@@ -79,8 +80,8 @@ public class FragmentCotitacion extends Fragment {
     private AdapterHome adapter1;
     private ListView listView;
     TimePicker timePickerinicio, timePickerfinal;
-    DatePicker datefecha;
-
+    Spinner spinnerEventos;
+    String seleccion;
 
     private static final String PREF_NAME = "MiPreferencia";
     private static final String KEY_USUARIO = "usuario";
@@ -91,9 +92,10 @@ public class FragmentCotitacion extends Fragment {
     View view;
     Salon salon;
 
+    Salon2 salon2;
 
-    public void setSalon(Salon salon) {
-        this.salon = salon;
+    public void setSalon(Salon2 salon2) {
+        this.salon2=salon2;
     }
 
     @Override
@@ -108,11 +110,10 @@ public class FragmentCotitacion extends Fragment {
         txtmantelcito = view.findViewById(R.id.txtMantel);
 
         edtnomb = view.findViewById(R.id.edtNombresalon);
-
+        edttipoevento=view.findViewById(R.id.edttipo);
         txthoritas = view.findViewById(R.id.txthoritas);
         edthorias = view.findViewById(R.id.edthoritas);
-
-        datefecha = view.findViewById(R.id.datePickerfecha);
+        spinnerEventos = view.findViewById(R.id.spinnerEventos);
 
         edtmontocoti = view.findViewById(R.id.edttotal);
         edtmontocoti.setKeyListener(null);
@@ -128,24 +129,24 @@ public class FragmentCotitacion extends Fragment {
         btnguardarcoti = view.findViewById(R.id.btnGuardarCoti);
 
 // Obtener el objeto salon que fue configurado en el FragmentDetalleSalon
-        if (salon != null) {
+        if (salon2 != null) {
             // Imprimir los datos en la consola
             System.out.println("Datos del salon:");
-            System.out.println("ID: " + salon.getId_salon());
-            System.out.println("Nombre: " + salon.getNombre());
-            System.out.println("Dirección: " + salon.getDireccion());
-            System.out.println("Capacidad: " + salon.getCapacidad());
-            System.out.println("Costo por hora: " + salon.getCostoHora());
-            System.out.println("Estado: " + salon.isEstado());
-            System.out.println("Latitud: " + salon.getLatitud());
-            System.out.println("Longitud: " + salon.getLongitud());
+            System.out.println("ID: " + salon2.getSalId());
+            System.out.println("Nombre: " + salon2.getSalNombre());
+            System.out.println("Dirección: " + salon2.getSalDireccion());
+            System.out.println("Capacidad: " + salon2.getSalCapacidad());
+            System.out.println("Costo por hora: " + salon2.getSalCostoHora());
+            System.out.println("Estado: " + salon2.getSalEstado());
+            System.out.println("Latitud: " + salon2.getSalLatitud());
+            System.out.println("Longitud: " + salon2.getSalLongitud());
             // Puedes seguir imprimiendo los demás campos que tenga el objeto salon
         } else {
             System.out.println("El objeto salon es nulo. Asegúrate de configurarlo correctamente desde FragmentDetalleSalon.");
         }
 
-        edtdescripcion.setText(salon.getDireccion());
-        edtnomb.setText(salon.getNombre());
+        edtdescripcion.setText(salon2.getSalDireccion());
+        edtnomb.setText(salon2.getSalNombre());
 
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         String usuarioJson = sharedPreferences.getString(KEY_USUARIO, "");
@@ -161,7 +162,6 @@ public class FragmentCotitacion extends Fragment {
                     public void onResponse(JSONArray response) {
                         // Procesar la respuesta JSON y obtener la lista de productos
                         productosList = parseProductosFromResponse(response);
-
 
                         ArrayAdapter<Producto> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, productosList);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -212,34 +212,40 @@ public class FragmentCotitacion extends Fragment {
                     }
                 });
 
+
         btncalcularcoti.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if (validarcalculo() == true) {
-                    if (validarfecha()) {
-                        if(validaraño()) {
-                            calcular();
-                        }
 
-                    } else {
-
-                        toastIncorrecto("No puede seleccionar una fecha menor a la fecha actual");
+                    if(validarduracionhoras()){
+                        calcular();
 
                     }
 
-                    //   calcularhora();
+
+
+
+                } else {
+
+                    toastIncorrecto("No puede seleccionar una fecha menor a la fecha actual");
+
                 }
 
+                //   calcularhora();
             }
+
+
         });
+
         btnguardarcoti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (validarenvio() == true) {
 
 
-                            mostrarConfirmacion();
+                    mostrarConfirmacion();
 
 
                     // enviarCotizacion();
@@ -299,6 +305,32 @@ public class FragmentCotitacion extends Fragment {
             }
         });
 
+        spinnerEventos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if (selectedItem.equals("Boda")) {
+                    edttipoevento.setText("Boda");
+                }
+                if (selectedItem.equals("Graduación")) {
+                    edttipoevento.setText("Graduación");
+                }
+                if (selectedItem.equals("Bautizo")) {
+                    edttipoevento.setText("Bautizo");
+                }
+                if (selectedItem.equals("Confirmación")) {
+                    edttipoevento.setText("Confirmación");
+                }
+                if (selectedItem.equals("Cumpleaños")) {
+                    edttipoevento.setText("Cumpleaños");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No se realiza ninguna acción cuando no hay opción seleccionada
+            }
+        });
 
         queue = Volley.newRequestQueue(getActivity());
 
@@ -394,8 +426,8 @@ public class FragmentCotitacion extends Fragment {
         edthorias.setText("La diferencia de tiempo es de " + diffInHours + " horas y " + (diffInMinutes % 60) + " minutos.");
 
 
-        double costohora = diffInHours * salon.getCostoHora();
-        System.out.println("precio:" + salon.getCostoHora());
+        double costohora = diffInHours * salon2.getSalCostoHora();
+        System.out.println("precio:" + salon2.getSalCostoHora());
         int value1 = Integer.parseInt(edtmantelcito.getText().toString()) * 10;
         int value2 = Integer.parseInt(edtmesa.getText().toString()) * 15;
         int value3 = Integer.parseInt(edtsilla.getText().toString()) * 11;
@@ -405,6 +437,7 @@ public class FragmentCotitacion extends Fragment {
         edtmontocoti.setText(String.valueOf(sum));
 
     }
+    String cotiev;
 
 
 
@@ -426,35 +459,18 @@ public class FragmentCotitacion extends Fragment {
         LocalTime horaLocal1 = LocalTime.of(hora1, minuto1);
         String horafin1 = horaLocal1.toString();
 
-        int year = datefecha.getYear();
-        int month = datefecha.getMonth();
-        int day = datefecha.getDayOfMonth();
 
-
-// Crear un objeto Calendar y establecer los componentes de la fecha
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, day);
-
-
-// Obtener la fecha como un objeto java.util.Date
-        Date cotiFechaEvento = calendar.getTime();
-
-// Formatear la fecha como "AAAA-MM-DD"
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String fechaFormateada = sdf.format(cotiFechaEvento);
 
         coti.setCotiHoraInicio(horainicio1);
         coti.setCotiHoraFin(horafin1);
-        coti.setCotiFechaEvento(fechaFormateada);
-        System.out.println(fechaFormateada);
+
         coti.setCotiMonto(Double.parseDouble(edtmontocoti.getText().toString()));
-        coti.setCotiTipoEvento("cumpleaños");
+
+        coti.setCotiTipoEvento(edttipoevento.getText().toString());
         coti.setUsuId(usuario);
-        //coti.setSalId(salon);
+        coti.setSalId(salon2);
         System.out.println("usuario: " + usuario.getUsuId());
-        System.out.println("salon: " + salon.getId_salon());
+        System.out.println("salon: " + salon2.getSalId());
         // Convertir el objeto Persona a JSON utilizando la biblioteca Gson
         Gson gson = new Gson();
         String requestBody = gson.toJson(coti);
@@ -499,7 +515,6 @@ public class FragmentCotitacion extends Fragment {
 
 
     }
-
 
     private boolean validarenvio() {
         boolean retorno = true;
@@ -573,9 +588,7 @@ public class FragmentCotitacion extends Fragment {
         return true;
     }
 
-    public void limpiar() {
 
-    }
 
     public void toastCorrecto(String msg) {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
@@ -604,52 +617,32 @@ public class FragmentCotitacion extends Fragment {
     }
 
 
-    public boolean validarfecha(){
-        int year = datefecha.getYear();
-        int month = datefecha.getMonth();
-        int day = datefecha.getDayOfMonth();
+    public boolean validarduracionhoras() {
+        timePickerinicio.setIs24HourView(true);
+        timePickerfinal.setIs24HourView(true);
 
-        Calendar selectedDateCalendar = Calendar.getInstance();
-        selectedDateCalendar.set(year, month, day);
-        Date selectedDate = selectedDateCalendar.getTime();
+        int horaInicio = timePickerinicio.getHour();
+        int minutoInicio = timePickerinicio.getMinute();
+        int horaFin = timePickerfinal.getHour();
+        int minutoFin = timePickerfinal.getMinute();
 
-        Calendar todayCalendar = Calendar.getInstance();
-        Date today = todayCalendar.getTime();
+        int diferenciaHoras = horaFin - horaInicio;
+        int diferenciaMinutos = minutoFin - minutoInicio;
 
-        // Verificar si la fecha seleccionada es menor que la fecha actual
-        if (selectedDate.before(today)) {
-            return false;
-        } else {
-            // Aquí puedes realizar cualquier acción en caso de que la fecha seleccionada sea válida.
-            return true;
+        if (diferenciaMinutos < 0) {
+            diferenciaHoras--;
+            diferenciaMinutos += 60;
         }
+
+        if (diferenciaHoras >= 4 || (diferenciaHoras == 3 && diferenciaMinutos >= 60)) {
+            return true;
+        } else {
+            toastIncorrecto("El evento debe durar minimo 4 horas.");
+            return false;
+
+        }
+
     }
 
-
-    public boolean validaraño() {
-        int year = datefecha.getYear();
-        int month = datefecha.getMonth();
-        int day = datefecha.getDayOfMonth();
-
-        Calendar selectedDateCalendar = Calendar.getInstance();
-        selectedDateCalendar.set(year, month, day);
-        Date selectedDate = selectedDateCalendar.getTime();
-
-        Calendar todayCalendar = Calendar.getInstance();
-        Date today = todayCalendar.getTime();
-
-        // Obtener el año actual
-        int currentYear = todayCalendar.get(Calendar.YEAR);
-
-        // Verificar si el año seleccionado es igual al año actual
-        if (year == currentYear || year == currentYear + 1) {
-            // Aquí puedes realizar cualquier acción en caso de que la fecha sea válida.
-            return true;
-        } else {
-            toastIncorrecto("El año seleccionado debe ser igual al año actual.");
-            return false;
-        }
-        }
-
-
 }
+

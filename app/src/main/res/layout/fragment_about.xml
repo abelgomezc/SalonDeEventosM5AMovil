@@ -68,10 +68,7 @@
                             android:text="en Salones Perruncay"
                             android:textSize="14sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Todas tus ocasiones especiales\nCelebralas con nosotros" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -97,10 +94,7 @@
                             android:layout_height="wrap_content"
                             android:text="en Perruncay" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias cum repellat\nvelit quae suscipit c." />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -126,10 +120,6 @@
                             android:layout_height="wrap_content"
                             android:text="de Eventos" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias cum repellat\nvelit quae suscipit c." />
                     </LinearLayout>
 
                     <LinearLayout
@@ -155,10 +145,7 @@
                             android:layout_height="wrap_content"
                             android:text="de Catering" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias cum repellat\nvelit quae suscipit c." />
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -312,7 +299,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="- Marcar siempre la diferencia por medio de un servicio personalizado, puntual,\npropuestas creativas de alta calidad, con costos y precios competitivos para\nconstruir una relación estratégica de confianza logrando crecimiento y satisfacción\nmutua.\n- Perruncay es una empresa sólida que ha venido demostrando calidad en su servicio y\nrespondiendo a los requerimientos del cliente convirtiéndonos así en sus socios\nestratégicos enfocados en un mismo objetivo. Nuestro trabajo se refleja en el nivel\nde satisfacción del cliente en cada una de las Unidades en las que brindamos servicios."
+                            android:text="- Marcar siempre la diferencia por medio de un servicio personalizado, puntual,\npropuestas creativas de alta calidad, con costos y precios competitivos para\nconstruir una relación estratégica de confianza logrando crecimiento y satisfacción\nmutua."
                             android:textSize="14sp" />
 
                     </LinearLayout>
@@ -333,7 +320,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="- Proporcionar un espacio altamente versátil y adaptable que satisfaga las\nnecesidades de nuestros clientes para personalizar su evento.\n- Nos esforzamos por crear una experiencia inolvidable a través de la decoración, la\nmúsica, la iluminación y la atención personalizada. Además, nos centramos en la\ntecnología de vanguardia, ofreciendo sistemas de sonido de alta calidad, pantallas y\nproyectores de última generación, y servicios de conectividad a internet de alta\nvelocidad para eventos en línea.\n- También nos preocupamos por la sostenibilidad y la responsabilidad social, ofreciendo\nopciones de catering y bebidas sostenibles, utilizando materiales reciclables y\nreduciendo el impacto ambiental."
+                            android:text="- Proporcionar un espacio altamente versátil y adaptable que satisfaga las\nnecesidades de nuestros clientes para personalizar su evento.\n- Nos esforzamos por crear una experiencia inolvidable a través de la decoración, la\nmúsica, la iluminación y la atención personalizada. Además, nos centramos en la\ntecnología de vanguardia, ofreciendo sistemas de sonido de alta calidad, pantallas y\nproyectores de última generación, y servicios de conectividad a internet de alta\nvelocidad para eventos en línea."
                             android:textSize="14sp" />
 
                     </LinearLayout>

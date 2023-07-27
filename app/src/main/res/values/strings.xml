@@ -56,4 +56,13 @@
         <item>Loja</item>
         <item>Otros</item>
     </string-array>
+
+    <string-array name="eventos_array">
+        <item>Selecciona el tipo de evento</item>
+        <item>Boda</item>
+        <item>Graduación</item>
+        <item>Bautizo</item>
+        <item>Confirmación</item>
+        <item>Cumpleaños</item>
+    </string-array>
 </resources>

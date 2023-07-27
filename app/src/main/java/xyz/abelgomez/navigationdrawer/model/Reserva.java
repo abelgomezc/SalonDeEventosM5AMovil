@@ -1,5 +1,7 @@
 package xyz.abelgomez.navigationdrawer.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.security.Timestamp;
 import java.util.Date;
@@ -11,9 +13,18 @@ public class Reserva implements Serializable {
     private int resImagenRerserva;
     private String resComprobante;
     private Timestamp resFechaRegistro;
+
+
     private Cotizacion reCotiId;
+    //private Date resFechaEvento;
     private String resFechaEvento;
     private Usuario usuId;
+
+
+
+    public Reserva() {
+    }
+
 
     public Long getResId() {
         return resId;
@@ -29,6 +40,14 @@ public class Reserva implements Serializable {
 
     public void setResEstado(int resEstado) {
         this.resEstado = resEstado;
+    }
+
+    public int getResImagenRerserva() {
+        return resImagenRerserva;
+    }
+
+    public void setResImagenRerserva(int resImagenRerserva) {
+        this.resImagenRerserva = resImagenRerserva;
     }
 
     public String getResComprobante() {
@@ -70,15 +89,5 @@ public class Reserva implements Serializable {
     public void setUsuId(Usuario usuId) {
         this.usuId = usuId;
     }
-
-    public int getResImagenRerserva() {
-        return resImagenRerserva;
-    }
-
-    public void setResImagenRerserva(int resImagenRerserva) {
-        this.resImagenRerserva = resImagenRerserva;
-    }
 }
-
-
 

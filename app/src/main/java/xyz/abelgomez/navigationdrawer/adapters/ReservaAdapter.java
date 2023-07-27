@@ -1,6 +1,7 @@
 package xyz.abelgomez.navigationdrawer.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,15 +72,19 @@ public class ReservaAdapter extends BaseAdapter {
         montoTextView.setText(String.valueOf(monto));
         fechaTextView.setText(fechaEvento);
 
-        if(estado==1) {
+        if (estado == 1) {
             estadoTextView.setText("En espera.");
-        }else if(estado==2){
-
+            estadoTextView.setTextColor(Color.BLUE);
+        } else if (estado == 2) {
             estadoTextView.setText("Aprobado");
-
-        }else{
+            estadoTextView.setTextColor(Color.GREEN);
+        } else {
             estadoTextView.setText("Denegado");
+            estadoTextView.setTextColor(Color.RED);
         }
+
+// ... your existing code ...
+
         tipoEventoextView.setText(tipoEvento);
         if (position % 2 == 0) {
             //   view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));

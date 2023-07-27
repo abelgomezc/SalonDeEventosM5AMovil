@@ -14,7 +14,7 @@ public class Salon implements Serializable {
     private double costoHora;
     private boolean estado;
     private Timestamp fecha_hora_registro;
-    private String ciudad;
+
     private double latitud;
     private double longitud;
     private File imagen;
@@ -44,13 +44,7 @@ public class Salon implements Serializable {
         this.direccion = direccion;
     }
 
-    public String getCiudad() {
-        return ciudad;
-    }
 
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
 
     public double getLatitud() {
         return latitud;
@@ -114,6 +108,19 @@ public class Salon implements Serializable {
 
     public void setUrlImagen(String urlImagen) {
         this.urlImagen = urlImagen;
+    }
+
+    public Salon2 convertirASalon2() {
+        Salon2 salon2 = new Salon2();
+        salon2.setSalId((long) this.id_salon);
+        salon2.setSalNombre(this.nombre);
+        salon2.setSalDireccion(this.direccion);
+        salon2.setSalCapacidad(this.capacidad);
+        salon2.setSalCostoHora(this.costoHora);
+        salon2.setSalEstado(this.estado ? 1 : 0); // Convertir booleano a entero
+        salon2.setSalLongitud((float) this.longitud);
+        salon2.setSalLatitud((float) this.latitud);
+        return salon2;
     }
 
 }

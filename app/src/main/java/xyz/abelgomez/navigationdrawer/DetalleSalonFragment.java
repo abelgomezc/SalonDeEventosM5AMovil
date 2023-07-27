@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Salon;
+import xyz.abelgomez.navigationdrawer.model.Salon2;
 
 
 public class DetalleSalonFragment extends Fragment {
@@ -69,7 +70,10 @@ public class DetalleSalonFragment extends Fragment {
                 FragmentCotitacion cotizarFragment = new FragmentCotitacion();
 
                 // Establecer el objeto salon en el fragmento cotizarFragment
-                cotizarFragment.setSalon(salon);
+
+                Salon2 salon2 = salon.convertirASalon2();
+                cotizarFragment.setSalon(salon2);
+                //cotizarFragment.setSalon(salon);
 
                 // Obtener el FragmentManager y comenzar la transacción
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -205,8 +209,8 @@ public class DetalleSalonFragment extends Fragment {
             for (int i = 0; i < response.length(); i++) {
                 imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
-                imageUrl = imageUrl.replace("localhost", "192.168.18.219");
-                // imageUrl = imageUrl.replace("localhost", "192.168.18.4");
+              //  imageUrl = imageUrl.replace("localhost", "10.0.2.2");
+                 imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
 
