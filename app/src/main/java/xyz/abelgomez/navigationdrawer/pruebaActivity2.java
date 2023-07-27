@@ -17,8 +17,12 @@ import android.os.Bundle;
 import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +53,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -66,6 +71,7 @@ public class pruebaActivity2 extends AppCompatActivity {
     private TextView txtInformacionReserva;
     private static final int PICK_IMAGE_REQUEST = 1;
     private RequestQueue queue;
+    DatePicker datefecha;
 
     private Button btnSubirIma;
     private String selectedFilePath = "";
@@ -88,6 +94,7 @@ public class pruebaActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prueba2);
+        datefecha = findViewById(R.id.datePickerfecha);
 
         // Inicialización de componentes de la interfaz de usuario
         txtInformacionReserva = findViewById(R.id.txtinformacionreserva);
@@ -104,7 +111,16 @@ public class pruebaActivity2 extends AppCompatActivity {
         btnGuardarReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                guardarReservaConImagen();
+
+                if (validarfecha()) {
+
+                    if(validaraño()) {
+                        if(validarFechaAnticipacion()){
+                            guardarReservaConImagen();
+
+                        }
+                    }
+                }
             }
         });
 
@@ -473,5 +489,101 @@ public class pruebaActivity2 extends AppCompatActivity {
 
 
 
+    }
+
+
+    public boolean validarfecha(){
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar todayCalendar = Calendar.getInstance();
+        Date today = todayCalendar.getTime();
+
+        // Verificar si la fecha seleccionada es menor que la fecha actual
+        if (selectedDate.before(today)) {
+            return false;
+        } else {
+            // Aquí puedes realizar cualquier acción en caso de que la fecha seleccionada sea válida.
+            return true;
+        }
+    }
+
+
+    public boolean validaraño() {
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar todayCalendar = Calendar.getInstance();
+        Date today = todayCalendar.getTime();
+
+        // Obtener el año actual
+        int currentYear = todayCalendar.get(Calendar.YEAR);
+
+        // Verificar si el año seleccionado es igual al año actual
+        if (year == currentYear || year == currentYear + 1) {
+            // Aquí puedes realizar cualquier acción en caso de que la fecha sea válida.
+            return true;
+        } else {
+            toastIncorrecto("El año seleccionado debe ser igual al año actual.");
+            return false;
+        }
+    }
+
+    public boolean validarFechaAnticipacion() {
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar fiveDaysLaterCalendar = Calendar.getInstance();
+        fiveDaysLaterCalendar.add(Calendar.DAY_OF_MONTH, 5); // Agrega 5 días a la fecha actual
+        Date fiveDaysLater = fiveDaysLaterCalendar.getTime();
+
+        // Verificar si la fecha seleccionada es mayor o igual a 5 días en el futuro
+        if (selectedDate.after(fiveDaysLater) || selectedDate.equals(fiveDaysLater)) {
+            // La fecha seleccionada es válida (está a 5 días o más en el futuro)
+            return true;
+        } else {
+            toastIncorrecto("La fecha de la reserva debe tener minimo 5 días de anticipación");
+            return false;
+        }
+    }
+    public void toastIncorrecto(String msg) {
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.custom_toast_error, (ViewGroup) findViewById(R.id.ll_custom_toast_error));
+        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast2);
+        txtMensaje.setText(msg);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 200);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(view);
+        toast.show();
+    }
+
+    public void toastCorrecto(String msg) {
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.custom_toast_ok, (ViewGroup) findViewById(R.id.ll_custom_toast_ok));
+        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast1);
+        txtMensaje.setText(msg);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 200);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(view);
+        toast.show();
     }
 }
