@@ -7,8 +7,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +21,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -52,30 +55,35 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Cotizacion;
-import xyz.abelgomez.navigationdrawer.model.FileModel1;
 import xyz.abelgomez.navigationdrawer.model.Reserva;
 
 import xyz.abelgomez.navigationdrawer.model.Usuario;
 
 public class pruebaActivity2 extends AppCompatActivity {
+
+    private static final String PREF_NAME = "MiPreferencia";
+    private static final String KEY_USUARIO = "usuario";
+    Usuario usuario;
     private TextView textViewCotiId;
     private TextView txtInformacionReserva;
     private static final int PICK_IMAGE_REQUEST = 1;
     private RequestQueue queue;
-    DatePicker datefecha;
 
     private Button btnSubirIma;
     private String selectedFilePath = "";
     private static final int REQUEST_CODE_PICK_FILE = 1;
+    DatePicker datefecha;
 
     // Variable para almacenar el nombre del archivo subido en el servidor
     private String fileName1 = "";
@@ -94,11 +102,15 @@ public class pruebaActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prueba2);
-        datefecha = findViewById(R.id.datePickerfecha);
 
         // Inicialización de componentes de la interfaz de usuario
         txtInformacionReserva = findViewById(R.id.txtinformacionreserva);
 
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String usuarioJson = sharedPreferences.getString(KEY_USUARIO, "");
+        Gson gson = new Gson();
+        usuario = gson.fromJson(usuarioJson, Usuario.class);
+        datefecha = findViewById(R.id.datePickerfecha);
         btnSubirIma = findViewById(R.id.btnsubirarchivo);
         btnSubirIma.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,7 +123,6 @@ public class pruebaActivity2 extends AppCompatActivity {
         btnGuardarReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (validarfecha()) {
 
                     if(validaraño()) {
@@ -121,6 +132,7 @@ public class pruebaActivity2 extends AppCompatActivity {
                         }
                     }
                 }
+
             }
         });
 
@@ -167,7 +179,12 @@ public class pruebaActivity2 extends AppCompatActivity {
     }
 
     private void cancelarReserva() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Aquí puedes agregar el código necesario para realizar la acción de cancelar la reserva.
+        // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación antes de cancelar la reserva.
+        // También puedes redirigir al usuario a otra actividad o realizar otras acciones según tus necesidades.
+
+        // Por ejemplo, mostrando un cuadro de diálogo de confirmación:
+        AlertDialog.Builder builder = new AlertDialog.Builder(pruebaActivity2.this);
         builder.setTitle("Confirmar Cancelación");
         builder.setMessage("¿Estás seguro de que deseas cancelar esta reserva?");
         builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
@@ -407,7 +424,7 @@ public class pruebaActivity2 extends AppCompatActivity {
                         fileName=name;
                         System.out.println("forrrrrrrrrrrrrrrrr     "+fileName);
                         String url = jsonObject.getString("url");
-                        FileModel fileModel = new FileModel(name,url);
+                        FileModel fileModel = new FileModel(name, url);
                         uploadedFiles.add(fileModel);
                     }
                 } else {
@@ -440,8 +457,27 @@ public class pruebaActivity2 extends AppCompatActivity {
 
             // Crear un objeto de Reserva y establecer la cotizacion
             Reserva reserva = new Reserva();
+
+            int year = datefecha.getYear();
+            int month = datefecha.getMonth();
+            int day = datefecha.getDayOfMonth();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            Date cotiFechaEvento = calendar.getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String fechaFormateada = sdf.format(cotiFechaEvento);
+
+
+
             reserva.setResComprobante(urla);
             reserva.setReCotiId(cotizacion);
+            reserva.setResEstado(1);
+            reserva.setUsuId(usuario);
+            reserva.setResFechaEvento(fechaFormateada);
+            System.out.println(fechaFormateada);
+            // reserva.setResFechaEvento(new Date());
 
             // Enviar la reserva al servidor y guardarla
             enviarReservaAlServidor(reserva);
@@ -469,9 +505,12 @@ public class pruebaActivity2 extends AppCompatActivity {
                         public void onErrorResponse(VolleyError error) {
                             // Manejar errores de la solicitud
                             Log.e("TAG", "Error: " + error.toString());
+                            String response = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                            Log.e("TAG", "Error Response from Server: " + response);
                             Toast.makeText(pruebaActivity2.this, "¡No se pudo guardar su Reserva!", Toast.LENGTH_SHORT).show();
                         }
-                    }) {
+                    }
+            ) {
                 @Override
                 public String getBodyContentType() {
                     return "application/json";
@@ -490,6 +529,7 @@ public class pruebaActivity2 extends AppCompatActivity {
 
 
     }
+
 
 
     public boolean validarfecha(){
@@ -512,7 +552,6 @@ public class pruebaActivity2 extends AppCompatActivity {
             return true;
         }
     }
-
 
     public boolean validaraño() {
         int year = datefecha.getYear();
