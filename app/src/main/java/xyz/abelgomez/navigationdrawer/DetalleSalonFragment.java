@@ -207,7 +207,7 @@ public class DetalleSalonFragment extends Fragment {
             for (int i = 0; i < response.length(); i++) {
                 imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
-                imageUrl = imageUrl.replace("localhost", "192.168.18.219");
+                imageUrl = imageUrl.replace("localhost", "192.168.43.83");
                 // imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
