@@ -58,6 +58,21 @@
                 android:layout_height="76dp"
                  />
 
+
+            <TextView
+                android:id="@+id/datePickerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selecciona una fecha para su reserva:" />
+
+            <DatePicker
+                android:id="@+id/datePickerfecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:spinnersShown="true" />
+
             <Button
                 android:id="@+id/Guardarreserva"
                 android:layout_width="wrap_content"

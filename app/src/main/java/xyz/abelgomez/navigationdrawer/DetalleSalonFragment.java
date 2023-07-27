@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 import xyz.abelgomez.navigationdrawer.api.ConfigApi;
 import xyz.abelgomez.navigationdrawer.model.Salon;
+import xyz.abelgomez.navigationdrawer.model.Salon2;
 
 
 public class DetalleSalonFragment extends Fragment {
@@ -69,7 +70,8 @@ public class DetalleSalonFragment extends Fragment {
                 FragmentCotitacion cotizarFragment = new FragmentCotitacion();
 
                 // Establecer el objeto salon en el fragmento cotizarFragment
-                cotizarFragment.setSalon(salon);
+                Salon2 salon2 = salon.convertirASalon2();
+                cotizarFragment.setSalon(salon2);
 
                 // Obtener el FragmentManager y comenzar la transacción
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();

@@ -116,4 +116,17 @@ public class Salon implements Serializable {
         this.urlImagen = urlImagen;
     }
 
+    public Salon2 convertirASalon2() {
+        Salon2 salon2 = new Salon2();
+        salon2.setSalId((long) this.id_salon);
+        salon2.setSalNombre(this.nombre);
+        salon2.setSalDireccion(this.direccion);
+        salon2.setSalCapacidad(this.capacidad);
+        salon2.setSalCostoHora(this.costoHora);
+        salon2.setSalEstado(this.estado ? 1 : 0); // Convertir booleano a entero
+        salon2.setSalLongitud((float) this.longitud);
+        salon2.setSalLatitud((float) this.latitud);
+        return salon2;
+    }
+
 }

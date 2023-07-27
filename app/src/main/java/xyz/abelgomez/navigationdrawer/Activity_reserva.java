@@ -8,9 +8,14 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,6 +39,7 @@ import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import xyz.abelgomez.navigationdrawer.api.ConfigApi;
@@ -89,6 +95,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import xyz.abelgomez.navigationdrawer.api.ConfigApi;
@@ -100,6 +107,7 @@ public class Activity_reserva extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private TextView textViewCotiId;
     private TextView txtInformacionReserva;
+    DatePicker datefecha;
 
     private Button btnSubirIma;
     private String selectedFilePath = "";
@@ -112,6 +120,7 @@ public class Activity_reserva extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserva);
+        datefecha = findViewById(R.id.datePickerfecha);
 
         Log.d("Activity_reserva", "La actividad se ha creado correctamente");
 
@@ -130,7 +139,16 @@ public class Activity_reserva extends AppCompatActivity {
         btnGuardarReserva.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                guardarReservaConImagen();
+                if (validarfecha()) {
+
+                    if(validaraño()) {
+                        if(validarFechaAnticipacion()){
+                            guardarReservaConImagen();
+
+                        }
+                    }
+                }
+
             }
         });
     }
@@ -207,7 +225,7 @@ public class Activity_reserva extends AppCompatActivity {
 
     private void guardarReservaConImagen() {
         if (!selectedFilePath.isEmpty()) {
-            // Sube la imagen al servidor en un AsyncTask
+
             new FileUploadTask().execute(new File(selectedFilePath));
         } else {
             Toast.makeText(Activity_reserva.this, "Por favor, seleccione un archivo antes de guardar la reserva", Toast.LENGTH_SHORT).show();
@@ -226,7 +244,13 @@ public class Activity_reserva extends AppCompatActivity {
             // La imagen se ha subido con éxito, ahora guarda la reserva con los datos requeridos
             if (uploadedFileName != null) {
                 // Aquí llamamos al método para guardar la reserva
-                guardarReserva();
+
+                        guardarReserva();
+
+
+
+
+
             } else {
                 Toast.makeText(Activity_reserva.this, "Error al subir el archivo", Toast.LENGTH_SHORT).show();
             }
@@ -286,10 +310,24 @@ public class Activity_reserva extends AppCompatActivity {
 
         private void guardarReserva() {
             // Crea una nueva reserva con los datos requeridos
+
+            int year = datefecha.getYear();
+            int month = datefecha.getMonth();
+            int day = datefecha.getDayOfMonth();
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+
+            Date cotiFechaEvento = calendar.getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String fechaFormateada = sdf.format(cotiFechaEvento);
+
             Reserva reserva = new Reserva();
             reserva.setResComprobante(uploadedFileName);
 
-
+            reserva.setResFechaEvento(fechaFormateada);
+            System.out.println(fechaFormateada);
             // Obtén el ID de cotización desde los extras
             Intent intent = getIntent();
             long cotiId = intent.getLongExtra("cotiId", -1);
@@ -334,5 +372,105 @@ public class Activity_reserva extends AppCompatActivity {
             }
         }
 
+
+
+
+
     }
+
+    public boolean validarfecha(){
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar todayCalendar = Calendar.getInstance();
+        Date today = todayCalendar.getTime();
+
+        // Verificar si la fecha seleccionada es menor que la fecha actual
+        if (selectedDate.before(today)) {
+            return false;
+        } else {
+            // Aquí puedes realizar cualquier acción en caso de que la fecha seleccionada sea válida.
+            return true;
+        }
+    }
+
+
+    public boolean validaraño() {
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar todayCalendar = Calendar.getInstance();
+        Date today = todayCalendar.getTime();
+
+        // Obtener el año actual
+        int currentYear = todayCalendar.get(Calendar.YEAR);
+
+        // Verificar si el año seleccionado es igual al año actual
+        if (year == currentYear || year == currentYear + 1) {
+            // Aquí puedes realizar cualquier acción en caso de que la fecha sea válida.
+            return true;
+        } else {
+            toastIncorrecto("El año seleccionado debe ser igual al año actual.");
+            return false;
+        }
+    }
+
+    public boolean validarFechaAnticipacion() {
+        int year = datefecha.getYear();
+        int month = datefecha.getMonth();
+        int day = datefecha.getDayOfMonth();
+
+        Calendar selectedDateCalendar = Calendar.getInstance();
+        selectedDateCalendar.set(year, month, day);
+        Date selectedDate = selectedDateCalendar.getTime();
+
+        Calendar fiveDaysLaterCalendar = Calendar.getInstance();
+        fiveDaysLaterCalendar.add(Calendar.DAY_OF_MONTH, 5); // Agrega 5 días a la fecha actual
+        Date fiveDaysLater = fiveDaysLaterCalendar.getTime();
+
+        // Verificar si la fecha seleccionada es mayor o igual a 5 días en el futuro
+        if (selectedDate.after(fiveDaysLater) || selectedDate.equals(fiveDaysLater)) {
+            // La fecha seleccionada es válida (está a 5 días o más en el futuro)
+            return true;
+        } else {
+            toastIncorrecto("La fecha de la reserva debe tener minimo 5 días de anticipación");
+            return false;
+        }
+    }
+    public void toastIncorrecto(String msg) {
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.custom_toast_error, (ViewGroup) findViewById(R.id.ll_custom_toast_error));
+        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast2);
+        txtMensaje.setText(msg);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 200);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(view);
+        toast.show();
+    }
+
+    public void toastCorrecto(String msg) {
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.custom_toast_ok, (ViewGroup) findViewById(R.id.ll_custom_toast_ok));
+        TextView txtMensaje = view.findViewById(R.id.txtMensajeToast1);
+        txtMensaje.setText(msg);
+
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.BOTTOM, 0, 200);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(view);
+        toast.show();
+    }
+
 }
