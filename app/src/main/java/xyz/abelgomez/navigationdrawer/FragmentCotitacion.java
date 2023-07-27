@@ -44,6 +44,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -82,6 +84,7 @@ public class FragmentCotitacion extends Fragment {
     TimePicker timePickerinicio, timePickerfinal;
     Spinner spinnerEventos;
     String seleccion;
+    private double resultadoTotal = 0.0;
 
     private static final String PREF_NAME = "MiPreferencia";
     private static final String KEY_USUARIO = "usuario";
@@ -222,9 +225,10 @@ public class FragmentCotitacion extends Fragment {
 
                     } else {
 
-                        toastIncorrecto("No puede seleccionar una fecha menor a la fecha actual");
 
-                    }
+                      toastIncorrecto("No puede seleccionar una fecha menor a la fecha actual");
+
+                   }
 
                     //   calcularhora();
                 }
@@ -267,6 +271,12 @@ public class FragmentCotitacion extends Fragment {
                     txtmesita.setVisibility(View.GONE);
                     edtmantelcito.setVisibility(View.GONE);
                     txtmantelcito.setVisibility(View.GONE);
+                    Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
+
+                    // Obtener el precio del producto seleccionado
+                    precioProductoSeleccionado = productoSeleccionado.getPrecio();
+                //    traerprecio();
+
 
                 }
                 if (selectedItem.equals("mesa")) {
@@ -276,6 +286,12 @@ public class FragmentCotitacion extends Fragment {
                     txtsillita.setVisibility(View.GONE);
                     edtmantelcito.setVisibility(View.GONE);
                     txtmantelcito.setVisibility(View.GONE);
+                    Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
+
+                    // Obtener el precio del producto seleccionado
+                    precioProductoSeleccionado = productoSeleccionado.getPrecio();
+                 //   traerprecio();
+
                 }
                 if (selectedItem.equals("mantel")) {
                     txtmesita.setVisibility(View.GONE);
@@ -284,6 +300,12 @@ public class FragmentCotitacion extends Fragment {
                     txtsillita.setVisibility(View.GONE);
                     edtmantelcito.setVisibility(View.VISIBLE);
                     txtmantelcito.setVisibility(View.VISIBLE);
+                    Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
+
+                    // Obtener el precio del producto seleccionado
+                    precioProductoSeleccionado = productoSeleccionado.getPrecio();
+                  //  traerprecio();
+
                 }
             }
 
@@ -321,25 +343,8 @@ public class FragmentCotitacion extends Fragment {
         });
 
 
-        spinnerProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Obtener el producto seleccionado del Spinner
-                Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
 
-                // Obtener el precio del producto seleccionado
-                 precioProductoSeleccionado  = productoSeleccionado.getPrecio();
 
-                // Hacer lo que necesites con el precio (por ejemplo, mostrarlo en un TextView)
-            System.out.println("precio: "+precioProductoSeleccionado);
-                // Guardar el precio seleccionado en la variable global
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Puedes manejar este evento si es necesario
-            }
-        });
 
         queue = Volley.newRequestQueue(getActivity());
 
@@ -356,7 +361,6 @@ public class FragmentCotitacion extends Fragment {
                 int id = jsonProducto.getInt("prodId");
                 String nombre = jsonProducto.getString("prodNombre");
                 double precio = jsonProducto.getDouble("prodPrecio");
-
                 Producto producto = new Producto(id, nombre, precio);
                 productosList.add(producto);
             }
@@ -405,6 +409,8 @@ public class FragmentCotitacion extends Fragment {
         }
     }
 
+
+
     private void calcular() {
 
         //   timePicker1 = findViewById(R.id.timerinicio);
@@ -441,13 +447,26 @@ public class FragmentCotitacion extends Fragment {
         Double value2 = Integer.parseInt(edtmesa.getText().toString()) * precioProductoSeleccionado;
         Double value3 = Integer.parseInt(edtsilla.getText().toString()) * precioProductoSeleccionado;
 
-        double sum = value2 + value3 + value1 + costohora;
+        double sum = value1+value2+value3+ costohora;
 
         edtmontocoti.setText(String.valueOf(sum));
 
     }
-    String cotiev;
 
+
+   /* private void createNewTxtFile(String contenido) {
+        String filename = "producto_" + System.currentTimeMillis() + ".txt";
+
+        try {
+            FileOutputStream fos =this.openFileOutput(filename, Context.MODE_PRIVATE);
+            fos.write(contenido.getBytes());
+            fos.close();
+            Log.d("FileCreation", "Archivo creado: " + filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("FileCreation", "Error al crear el archivo: " + e.getMessage());
+        }
+    }*/
 
 
     private void enviarCotizacion() {
@@ -653,19 +672,6 @@ public class FragmentCotitacion extends Fragment {
 
     }
 
-    public void onItemSelected1(AdapterView<?> parent, View view, int position, long id) {
-        // Obtener el producto seleccionado del Spinner
-        Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
-
-        // Obtener el precio del producto seleccionado
-        double precioProductoSeleccionado = productoSeleccionado.getPrecio();
-
-        // Sumar el precio del producto seleccionado al precio total
-        precioTotalSeleccionado += precioProductoSeleccionado;
-
-        // Hacer lo que necesites con el precio total (por ejemplo, mostrarlo en un TextView)
-      //  textViewPrecioTotal.setText("Precio Total: " + precioTotalSeleccionado);
-    }
 
 
 }
