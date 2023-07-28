@@ -12,13 +12,21 @@ public class Salon implements Serializable {
     private String direccion;
     private int capacidad;
     private double costoHora;
-    private boolean estado;
+    private int salEstado;
     private Timestamp fecha_hora_registro;
     private String ciudad;
     private double latitud;
     private double longitud;
     private File imagen;
     private String urlImagen;
+
+    public int getSalEstado() {
+        return salEstado;
+    }
+
+    public void setSalEstado(int salEstado) {
+        this.salEstado = salEstado;
+    }
 
     public int getId_salon() {
         return id_salon;
@@ -84,13 +92,7 @@ public class Salon implements Serializable {
         this.costoHora = costoHora;
     }
 
-    public boolean isEstado() {
-        return estado;
-    }
 
-    public void setEstado(boolean estado) {
-        this.estado = estado;
-    }
 
     public Timestamp getFecha_hora_registro() {
         return fecha_hora_registro;
@@ -123,7 +125,7 @@ public class Salon implements Serializable {
         salon2.setSalDireccion(this.direccion);
         salon2.setSalCapacidad(this.capacidad);
         salon2.setSalCostoHora(this.costoHora);
-        salon2.setSalEstado(this.estado ? 1 : 0); // Convertir booleano a entero
+        salon2.setSalEstado(this.salEstado);
         salon2.setSalLongitud((float) this.longitud);
         salon2.setSalLatitud((float) this.latitud);
         return salon2;

@@ -24,7 +24,7 @@ public class FileUploadTask extends AsyncTask<List<File>, Void, Void> {
     }
 
     private void enviarArchivoAlServidor(List<File> files) {
-      //  String url = "http://192.168.18.4:9999/file/upload";
+        //  String url = "http://192.168.18.4:9999/file/upload";
         String url = ConfigApi.baseUrlE+"/file/upload";
 
 

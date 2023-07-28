@@ -154,6 +154,7 @@ public class HomeFragment extends Fragment {
 
 
     }
+
     private ArrayList<Salon> parseSalonesFromResponse(String response) {
         ArrayList<Salon> salones = new ArrayList<>();
         try {
@@ -164,14 +165,19 @@ public class HomeFragment extends Fragment {
                 String decodedJsonString = new String(jsonString.getBytes("ISO-8859-1"), "UTF-8");
                 JSONObject jsonSalon = new JSONObject(decodedJsonString);
 
-                Salon salon = new Salon();
-                salon.setId_salon(jsonSalon.getInt("salId"));
-                salon.setNombre(jsonSalon.getString("salNombre"));
-                salon.setDireccion(jsonSalon.getString("salDireccion"));
-                // Resto de los atributos del objeto Salon
+                int salEstado = jsonSalon.getInt("salEstado");
+                // Verificar si el estado del salón es igual a 1 (activo)
+                if (salEstado == 1) {
+                    Salon salon = new Salon();
+                    salon.setId_salon(jsonSalon.getInt("salId"));
+                    salon.setNombre(jsonSalon.getString("salNombre"));
+                    salon.setDireccion(jsonSalon.getString("salDireccion"));
+                    salon.setSalEstado(salEstado);
+                    // Resto de los atributos del objeto Salon
 
-                salones.add(salon);
-                obtenerUrlsSalon(salon, salon.getId_salon()); // Pasar el objeto Salon al método obtenerUrlsSalon()
+                    salones.add(salon);
+                    obtenerUrlsSalon(salon, salon.getId_salon()); // Pasar el objeto Salon al método obtenerUrlsSalon()
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -182,33 +188,36 @@ public class HomeFragment extends Fragment {
         return salones;
     }
 
-
 //    private ArrayList<Salon> parseSalonesFromResponse(String response) {
 //        ArrayList<Salon> salones = new ArrayList<>();
 //        try {
 //            JSONArray jsonArray = new JSONArray(response);
 //            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONObject jsonSalon = jsonArray.getJSONObject(i);
+//                // Decodificar la cadena JSON utilizando la codificación UTF-8
+//                String jsonString = jsonArray.getJSONObject(i).toString();
+//                String decodedJsonString = new String(jsonString.getBytes("ISO-8859-1"), "UTF-8");
+//                JSONObject jsonSalon = new JSONObject(decodedJsonString);
+//
 //                Salon salon = new Salon();
 //                salon.setId_salon(jsonSalon.getInt("salId"));
 //                salon.setNombre(jsonSalon.getString("salNombre"));
 //                salon.setDireccion(jsonSalon.getString("salDireccion"));
-////                salon.setCapacidad(jsonSalon.getInt("salCapacidad"));
-////                salon.setCostoHora(jsonSalon.getDouble("salCostoHora"));
-////                salon.setEstado(jsonSalon.getBoolean("salEstado"));
-////
-////                salon.setLatitud(jsonSalon.getDouble("salLatitud"));
-////                salon.setLongitud(jsonSalon.getDouble("salLongitud"));
+//                salon.setSalEstado(jsonSalon.getInt("salEstado"));
+//                // Resto de los atributos del objeto Salon
 //
 //                salones.add(salon);
 //                obtenerUrlsSalon(salon, salon.getId_salon()); // Pasar el objeto Salon al método obtenerUrlsSalon()
 //            }
 //        } catch (JSONException e) {
 //            e.printStackTrace();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
 //        }
 //
 //        return salones;
 //    }
+
+
 
 
 
@@ -246,8 +255,8 @@ public class HomeFragment extends Fragment {
         try {
             for (int i = 0; i < response.length(); i++) {
                 String imageUrl = response.getString(i);
-                imageUrl = imageUrl.replace("localhost", "192.168.18.219");
-                //   imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
+               // imageUrl = imageUrl.replace("localhost", "192.168.43.83");
+                  imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
                 //   imageUrl = imageUrl.replace("localhost", "192.168.37.86");
                 System.out.println("URL de imagen: " + imageUrl);
 

@@ -596,7 +596,7 @@ public class FragmentCotitacion extends Fragment {
             salon.setDireccion(response.getString("salDireccion"));
             salon.setCapacidad(response.getInt("salCapacidad"));
             salon.setCostoHora(response.getDouble("salCostoHora"));
-            salon.setEstado(response.getBoolean("salEstado"));
+            salon.setSalEstado(response.getInt("salEstado"));
             salon.setLatitud(response.getDouble("salLatitud"));
             salon.setLongitud(response.getDouble("salLongitud"));
         } catch (JSONException e) {

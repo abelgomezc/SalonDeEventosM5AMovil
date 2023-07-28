@@ -78,48 +78,48 @@ public class LoginActivity extends AppCompatActivity {
 
 
         btnIniciarSesion.setOnClickListener(v -> {
-
-            if(validar()==true){
-
-                String url = ConfigApi.baseUrlE+"/usuario/login/"+edtMail.getText().toString()+"/"+edtPassword.getText().toString();
-
+            if (validar()) {
+                String url = ConfigApi.baseUrlE + "/usuario/login/" + edtMail.getText().toString() + "/" + edtPassword.getText().toString();
 
                 StringRequest request = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-
                                 if (response != null) {
                                     try {
                                         JSONObject jsonObject = new JSONObject(response);
-
                                         Long usuId = jsonObject.getLong("usuId");
                                         String usuNombreUsuario = jsonObject.getString("usuNombreUsuario");
                                         String usuContrasena = jsonObject.getString("usuContrasena");
+                                        int usuEstado = jsonObject.getInt("usuEstado");
 
-// Crear una instancia de Usuario con los datos extraídos
+                                        // Crear una instancia de Usuario con los datos extraídos
                                         Usuario usuario = new Usuario();
                                         usuario.setUsuId(usuId);
                                         usuario.setUsuNombreUsuario(usuNombreUsuario);
                                         usuario.setUsuContrasena(usuContrasena);
+                                        usuario.setUsuEstado(usuEstado);
 
-                                        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        Gson gson = new Gson();
-                                        String usuarioJson = gson.toJson(usuario);
-                                        editor.putString(KEY_USUARIO, usuarioJson);
-                                        editor.apply();
+                                        // Verificar si el usuario está activo (usuEstado = 1)
+                                        if (usuEstado == 1) {
+                                            SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            Gson gson = new Gson();
+                                            String usuarioJson = gson.toJson(usuario);
+                                            editor.putString(KEY_USUARIO, usuarioJson);
+                                            editor.apply();
 
-
-                                        toastCorrecto("Bienvenido " + usuNombreUsuario);
-// El inicio de sesión fue exitoso
-                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-
-
+                                            toastCorrecto("Bienvenido " + usuNombreUsuario);
+                                            // El inicio de sesión fue exitoso
+                                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        } else {
+                                            // El usuario está inactivo (usuEstado = 0)
+                                            toastIncorrecto("El usuario está inactivo. Comuníquese con el administrador.");
+                                        }
 
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                        toastIncorrecto(" Por favor , Verifique sus credenciales.");
+                                        toastIncorrecto("Por favor, Verifique sus credenciales.");
                                     }
                                 } else {
                                     // El inicio de sesión falló
@@ -138,14 +138,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Agrega la solicitud a la cola de Volley para que se envíe
                 Volley.newRequestQueue(this).add(request);
-
-
             }
-
-
-
-
         });
+
 
 
 

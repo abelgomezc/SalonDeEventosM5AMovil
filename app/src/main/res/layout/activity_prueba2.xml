@@ -81,6 +81,7 @@
                 android:textSize="20sp"
                 android:textStyle="normal" />
 
+
             <TextView
                 android:id="@+id/datePickerLabel"
                 android:layout_width="wrap_content"
@@ -94,7 +95,6 @@
                 android:calendarViewShown="false"
                 android:datePickerMode="spinner"
                 android:spinnersShown="true" />
-
 
 
             <LinearLayout

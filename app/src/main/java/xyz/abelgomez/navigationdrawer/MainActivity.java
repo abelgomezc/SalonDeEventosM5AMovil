@@ -1,10 +1,12 @@
 package xyz.abelgomez.navigationdrawer;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -76,31 +78,72 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_tusCotizaciones:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TusCotizacionesFragment()).commit();
                 break;
-            case R.id.nav_ajustes:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AjustesFragment()).commit();
-                break;
+
             case R.id.nav_sobrenosotros:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
                 break;
-            case R.id.nav_reserva:
-                Intent intent = new Intent(MainActivity.this, Activity_reserva.class);
-                startActivity(intent);
-                break;
+
 
             case R.id.nav_logout:
-                Toast.makeText(this, "Logout!....  ADIOS  "+usuario.getUsuNombreUsuario() , Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, LoginActivity.class));
+                mostrarConfirmacionCerrarSesion();
+               // startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+//    @Override
+//    public void onBackPressed() {
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        } else {
+//            // Mostrar la confirmación de cierre de sesión
+//            mostrarConfirmacionCerrarSesion();
+//        }
+//    }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            // Si el fragmento Home no está visible, mostrarlo
+            if (!(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof HomeFragment)) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+                NavigationView navigationView = findViewById(R.id.nav_view);
+                navigationView.setCheckedItem(R.id.nav_home);
+            } else {
+                // Si el fragmento Home está visible, mostrar la confirmación de cierre de sesión
+                mostrarConfirmacionCerrarSesion();
+            }
         }
     }
+
+
+    private void mostrarConfirmacionCerrarSesion() {
+        new AlertDialog.Builder(this)
+                .setTitle("Cerrar Sesión")
+                .setMessage("¿Estás seguro de que deseas cerrar sesión?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cerrarSesion();
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void cerrarSesion() {
+        // Elimina los datos del usuario de las preferencias compartidas
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_USUARIO);
+        editor.apply();
+        Toast.makeText(this, "Logout!....  ADIOS  "+usuario.getUsuNombreUsuario() , Toast.LENGTH_SHORT).show();
+        // Redirige al LoginActivity
+        startActivity(new Intent(this, LoginActivity.class));
+        finish(); // Cierra la actividad actual para evitar que el usuario regrese presionando el botón "Atrás"
+    }
+
 }
