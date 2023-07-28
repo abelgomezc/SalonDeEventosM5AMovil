@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -57,12 +58,14 @@ public class AdapterCotizaciones extends BaseAdapter {
         TextView idCotizacionTextView = view.findViewById(R.id.textViewIdCotizacion);
         TextView nombreSalonTextView = view.findViewById(R.id.nombreSalonTextView);
         TextView montoTextView = view.findViewById(R.id.montoTextView);
-        TextView fechaTextView = view.findViewById(R.id.fechaTextView);
+
 
         Map<String, Object> cotizacion = cotizaciones.get(position);
         String idCotizacion = String.valueOf(cotizacion.get("cotiId"));
         String salonNombre = (String) cotizacion.get("salonNombre");
-        Double monto = (Double) cotizacion.get("monto");
+      //  Double monto = (Double) cotizacion.get("monto");
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        String montoFormateado = decimalFormat.format((double ) cotizacion.get("monto"));
         String fechaReserva = (String) cotizacion.get("fechaReserva");
         Button reservarButton = view.findViewById(R.id.btnReservar);
 
@@ -70,8 +73,9 @@ public class AdapterCotizaciones extends BaseAdapter {
 
         idCotizacionTextView.setText(idCotizacion);
         nombreSalonTextView.setText(salonNombre);
-        montoTextView.setText(String.valueOf(monto));
-        fechaTextView.setText(fechaReserva);
+
+        montoTextView.setText("$   "+String.valueOf(montoFormateado));
+
         if (position % 2 == 0) {
             //   view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
             // Reemplaza "image_name" con el nombre del archivo de imagen en la carpeta "drawable"
@@ -79,7 +83,8 @@ public class AdapterCotizaciones extends BaseAdapter {
 
         } else {
             //  view.setBackgroundColor(ContextCompat.getColor(context, R.color.combined_color));
-            view.setBackgroundResource(R.drawable.imgitem4);
+            view.setBackgroundResource(R.drawable.img2c);
+
         }
 
         reservarButton.setOnClickListener(new View.OnClickListener() {

@@ -1,12 +1,14 @@
 package xyz.abelgomez.navigationdrawer.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -59,7 +61,9 @@ public class ReservaAdapter extends BaseAdapter {
         String fechaEvento = (String) reserva.get("fechaReserva");
         String tipoEvento = (String) reserva.get("tipoEvento");
         int estado = (int) reserva.get("estado");
-        double monto = (double) reserva.get("monto");
+        //double monto =(double ) reserva.get("monto");
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        String montoFormateado = decimalFormat.format((double ) reserva.get("monto"));
         String nombreSalon = (String) reserva.get("salonNombre");
 
 
@@ -68,28 +72,29 @@ public class ReservaAdapter extends BaseAdapter {
         // Estado de la reserva: estado
 
         nombreSalonTextView.setText(nombreSalon);
-        montoTextView.setText(String.valueOf(monto));
+        montoTextView.setText("$  "+String.valueOf(montoFormateado));
         fechaTextView.setText(fechaEvento);
 
-        if(estado==1) {
+        if (estado == 1) {
             estadoTextView.setText("En espera.");
-        }else if(estado==2){
-
+            estadoTextView.setTextColor(Color.BLUE);
+        } else if (estado == 2) {
             estadoTextView.setText("Aprobado");
-
-        }else{
+            estadoTextView.setTextColor(Color.GREEN);
+        } else {
             estadoTextView.setText("Denegado");
+            estadoTextView.setTextColor(Color.RED);
         }
         tipoEventoextView.setText(tipoEvento);
-        if (position % 2 == 0) {
-            //   view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-            // Reemplaza "image_name" con el nombre del archivo de imagen en la carpeta "drawable"
-            view.setBackgroundResource(R.drawable.imgitem5);
-
-        } else {
-            //  view.setBackgroundColor(ContextCompat.getColor(context, R.color.combined_color));
-            view.setBackgroundResource(R.drawable.imgitem5);
-        }
+//        if (position % 2 == 0) {
+//            //   view.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+//            // Reemplaza "image_name" con el nombre del archivo de imagen en la carpeta "drawable"
+//            view.setBackgroundResource(R.drawable.imgitem5);
+//
+//        } else {
+//            //  view.setBackgroundColor(ContextCompat.getColor(context, R.color.combined_color));
+//            view.setBackgroundResource(R.drawable.imgitem5);
+//        }
 
         return view;
     }

@@ -9,6 +9,8 @@ public class Usuario implements Serializable {
     private String usuNombreUsuario;
     private String usuContrasena;
     private Timestamp usuFechaRegistro;
+    private int usuEstado;
+
 
 
     public Usuario(Long usuId, String usuNombreUsuario, String usuContrasena) {
@@ -51,5 +53,13 @@ public class Usuario implements Serializable {
 
     public void setUsuFechaRegistro(Timestamp usuFechaRegistro) {
         this.usuFechaRegistro = usuFechaRegistro;
+    }
+
+    public int getUsuEstado() {
+        return usuEstado;
+    }
+
+    public void setUsuEstado(int usuEstado) {
+        this.usuEstado = usuEstado;
     }
 }

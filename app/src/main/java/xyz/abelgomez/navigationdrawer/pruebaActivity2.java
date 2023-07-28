@@ -334,7 +334,7 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
                                     // Asignar la URL a la variable uploadedFileName
                                     uploadedFileName = url;
 
-                                    uploadedFileName = uploadedFileName.replace("192.168.43.83", "localhost");
+                                    uploadedFileName = uploadedFileName.replace("192.168.18.4", "localhost");
                                     Log.d("TAG+++++++++++++++++++++++++++++", "URL del archivo: " + uploadedFileName);
                                     // Aquí puedes hacer lo que necesites con la URL, como guardarla en la reserva
                                     // o usarla de alguna otra forma.

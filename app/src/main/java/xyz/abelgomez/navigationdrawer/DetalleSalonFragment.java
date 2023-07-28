@@ -128,7 +128,7 @@ public class DetalleSalonFragment extends Fragment {
             salon.setDireccion(response.getString("salDireccion"));
             salon.setCapacidad(response.getInt("salCapacidad"));
             salon.setCostoHora(response.getDouble("salCostoHora"));
-            salon.setEstado(response.getBoolean("salEstado"));
+            salon.setSalEstado(response.getInt("salEstado"));
             salon.setLatitud(response.getDouble("salLatitud"));
             salon.setLongitud(response.getDouble("salLongitud"));
         } catch (JSONException e) {
@@ -154,7 +154,7 @@ public class DetalleSalonFragment extends Fragment {
             direccionTextView.setText(salon.getDireccion());
             //cantiView.setText(String.valueOf(salon.getCapacidad()));
             cantiView.setText(String.valueOf(salon.getCapacidad()) + " Personas");
-            if (salon.isEstado() == true){
+            if (salon.getSalEstado() == 1){
 
                 estadoView.setText("Disponible.");
 
@@ -207,7 +207,7 @@ public class DetalleSalonFragment extends Fragment {
             for (int i = 0; i < response.length(); i++) {
                 imageUrl = response.getString(i);
                 // Reemplaza "localhost" con la dirección IP del servidor
-                imageUrl = imageUrl.replace("localhost", "192.168.43.83");
+                imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 // imageUrl = imageUrl.replace("localhost", "192.168.18.4");
                 System.out.println("URL de imagen: " + imageUrl);
                 slideModels.add(new SlideModel(imageUrl, ScaleTypes.FIT));
