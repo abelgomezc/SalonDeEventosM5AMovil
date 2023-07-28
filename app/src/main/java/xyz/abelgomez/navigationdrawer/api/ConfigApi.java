@@ -17,9 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import xyz.abelgomez.navigationdrawer.utils.DateSerializer;
 import xyz.abelgomez.navigationdrawer.utils.TimeSerializer;
 
-public class ConfigApi {
-  //public static final String baseUrlE = "http://10.0.2.2:9999";
- public static final String baseUrlE = "http://192.168.18.4:9999";
+public class ConfigApi { public static final String baseUrlE = "http://10.0.2.2:9999";
+// public static final String baseUrlE = "http://192.168.18.4:9999";
 //   public static final String baseUrlE = "http://192.168.37.86:9999";
 
 

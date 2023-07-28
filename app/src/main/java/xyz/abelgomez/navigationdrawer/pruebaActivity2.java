@@ -176,11 +176,8 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
         }
 
         private void cancelarReserva() {
-            // Aquí puedes agregar el código necesario para realizar la acción de cancelar la reserva.
-            // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación antes de cancelar la reserva.
-            // También puedes redirigir al usuario a otra actividad o realizar otras acciones según tus necesidades.
 
-            // Por ejemplo, mostrando un cuadro de diálogo de confirmación:
+
             AlertDialog.Builder builder = new AlertDialog.Builder(pruebaActivity2.this);
             builder.setTitle("Confirmar Cancelación");
             builder.setMessage("¿Estás seguro de que deseas cancelar esta reserva?");
@@ -193,6 +190,8 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
                     Toast.makeText(pruebaActivity2.this, "Reserva cancelada", Toast.LENGTH_SHORT).show();
                 }
             });
+
+
 
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
@@ -334,7 +333,8 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
                                     // Asignar la URL a la variable uploadedFileName
                                     uploadedFileName = url;
 
-                                    uploadedFileName = uploadedFileName.replace("192.168.18.4", "localhost");
+                                  //  uploadedFileName = uploadedFileName.replace("192.168.18.4", "localhost");
+                                    uploadedFileName = uploadedFileName.replace("10.0.2.2", "localhost");
                                     Log.d("TAG+++++++++++++++++++++++++++++", "URL del archivo: " + uploadedFileName);
                                     // Aquí puedes hacer lo que necesites con la URL, como guardarla en la reserva
                                     // o usarla de alguna otra forma.
