@@ -102,6 +102,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        }
 //    }
 
+//    @Override
+//    public void onBackPressed() {
+//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//            drawerLayout.closeDrawer(GravityCompat.START);
+//        } else {
+//            // Si el fragmento Home no está visible, mostrarlo
+//            if (!(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof HomeFragment)) {
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+//                NavigationView navigationView = findViewById(R.id.nav_view);
+//                navigationView.setCheckedItem(R.id.nav_home);
+//            } else {
+//                // Si el fragmento Home está visible, mostrar la confirmación de cierre de sesión
+//                mostrarConfirmacionCerrarSesion();
+//            }
+//        }
+//    }
+
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -118,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
+
 
 
     private void mostrarConfirmacionCerrarSesion() {
@@ -145,5 +163,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(this, LoginActivity.class));
         finish(); // Cierra la actividad actual para evitar que el usuario regrese presionando el botón "Atrás"
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1) {
+//            // Verificar si el resultado es OK (reserva guardada exitosamente)
+//            if (resultCode == RESULT_OK) {
+//                // Realizar la transacción para dirigirte al HomeFragment
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ReservasFragment()).commit();
+//                NavigationView navigationView = findViewById(R.id.nav_tusReservas);
+//                navigationView.setCheckedItem(R.id.nav_tusReservas);
+//            }
+//        }
+//    }
+
 
 }
