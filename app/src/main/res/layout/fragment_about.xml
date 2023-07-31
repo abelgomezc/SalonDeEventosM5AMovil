@@ -356,7 +356,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="Primera Entrada\nJOSE MARIA ORTEGA - PEDRO LOPEZ DE ARGUDO" />
 
                         <TextView
@@ -364,7 +364,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="Segunda Entrada\nMANUEL TENORIO LAZO" />
 
                         <LinearLayout
@@ -386,7 +386,7 @@
                                 android:layout_weight="1"
                                 android:text="EMAIL\ninfoeventos@perruncay.com"
                                 android:textColor="@android:color/black"
-                                android:textSize="14sp" />
+                                android:textSize="13sp" />
 
                         </LinearLayout>
 

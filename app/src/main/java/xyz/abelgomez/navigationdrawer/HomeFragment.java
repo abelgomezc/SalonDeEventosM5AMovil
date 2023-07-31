@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,7 +61,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-
+        // Vincular el botón FloatingActionButton (fab) y agregar un OnClickListener
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Llevar la lista al principio
+                listView.smoothScrollToPosition(0);
+            }
+        });
 
 
         listView = view.findViewById(R.id.listaView);
@@ -255,7 +264,7 @@ public class HomeFragment extends Fragment {
         try {
             for (int i = 0; i < response.length(); i++) {
                 String imageUrl = response.getString(i);
-               // imageUrl = imageUrl.replace("localhost", "192.168.43.83");
+             //   imageUrl = imageUrl.replace("localhost", "10.0.2.2");
                   imageUrl = imageUrl.replace("localhost", "192.168.18.4");//ipcasa
                 //   imageUrl = imageUrl.replace("localhost", "192.168.37.86");
                 System.out.println("URL de imagen: " + imageUrl);

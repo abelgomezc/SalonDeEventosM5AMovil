@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.FileUtils;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
@@ -176,11 +177,8 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
         }
 
         private void cancelarReserva() {
-            // Aquí puedes agregar el código necesario para realizar la acción de cancelar la reserva.
-            // Por ejemplo, puedes mostrar un cuadro de diálogo de confirmación antes de cancelar la reserva.
-            // También puedes redirigir al usuario a otra actividad o realizar otras acciones según tus necesidades.
 
-            // Por ejemplo, mostrando un cuadro de diálogo de confirmación:
+
             AlertDialog.Builder builder = new AlertDialog.Builder(pruebaActivity2.this);
             builder.setTitle("Confirmar Cancelación");
             builder.setMessage("¿Estás seguro de que deseas cancelar esta reserva?");
@@ -193,6 +191,8 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
                     Toast.makeText(pruebaActivity2.this, "Reserva cancelada", Toast.LENGTH_SHORT).show();
                 }
             });
+
+
 
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
@@ -335,6 +335,7 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
                                     uploadedFileName = url;
 
                                     uploadedFileName = uploadedFileName.replace("192.168.18.4", "localhost");
+                                   // uploadedFileName = uploadedFileName.replace("10.0.2.2", "localhost");
                                     Log.d("TAG+++++++++++++++++++++++++++++", "URL del archivo: " + uploadedFileName);
                                     // Aquí puedes hacer lo que necesites con la URL, como guardarla en la reserva
                                     // o usarla de alguna otra forma.
@@ -482,7 +483,18 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
                                 Log.d("TAG", "Response: " + response);
                                 // Guardar la reserva en el servidor fue exitoso
                                 Toast.makeText(pruebaActivity2.this, "¡ Tu reserva ha sido guardada con éxito!", Toast.LENGTH_SHORT).show();
+                                // Crear un intent para volver a MainActivity con savedInstanceState como null después de 2 segundos
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(pruebaActivity2.this, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
 
+                                        // Finalizar la actividad actual
+                                        finish();
+                                    }
+                                }, 2000);
                             }
                         },
                         new Response.ErrorListener() {
@@ -510,6 +522,50 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
                 // Agregar la solicitud a la cola de solicitudes de Volley
                 queue.add(request);
             }
+
+
+//            // Método para enviar la reserva al servidor y guardarla
+//            private void enviarReservaAlServidor(Reserva reserva) {
+//                String url = ConfigApi.baseUrlE + "/reserva/crear"; // URL para guardar la reserva en el servidor
+//
+//                Gson gson = new Gson();
+//                String requestBody = gson.toJson(reserva);
+//                StringRequest request = new StringRequest(Request.Method.POST, url,
+//                        new Response.Listener<String>() {
+//                            @Override
+//                            public void onResponse(String response) {
+//                                // Manejar la respuesta del servidor
+//                                Log.d("TAG", "Response: " + response);
+//                                // Guardar la reserva en el servidor fue exitoso
+//                                Toast.makeText(pruebaActivity2.this, "¡ Tu reserva ha sido guardada con éxito!", Toast.LENGTH_SHORT).show();
+//
+//                            }
+//                        },
+//                        new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                                // Manejar errores de la solicitud
+//                                Log.e("TAG", "Error: " + error.toString());
+//                                String response = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+//                                Log.e("TAG", "Error Response from Server: " + response);
+//                                Toast.makeText(pruebaActivity2.this, "¡No se pudo guardar su Reserva!", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                ) {
+//                    @Override
+//                    public String getBodyContentType() {
+//                        return "application/json";
+//                    }
+//
+//                    @Override
+//                    public byte[] getBody() throws AuthFailureError {
+//                        return requestBody.getBytes(StandardCharsets.UTF_8);
+//                    }
+//                };
+//
+//                // Agregar la solicitud a la cola de solicitudes de Volley
+//                queue.add(request);
+//            }
 
 
         }
