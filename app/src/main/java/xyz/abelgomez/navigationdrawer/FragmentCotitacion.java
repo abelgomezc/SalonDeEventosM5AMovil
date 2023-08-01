@@ -233,12 +233,12 @@ public class FragmentCotitacion extends Fragment {
         btnguardarcoti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validarenvio() == true) {
+
 
                             mostrarConfirmacion();
                     // enviarCotizacion();
                     // enviarCotizacion1();
-                }
+
             }
         });
         // Agregar la solicitud a la cola
@@ -563,7 +563,7 @@ public class FragmentCotitacion extends Fragment {
 
     }
 
-    private boolean validarenvio() {
+   /* private boolean validarenvio() {
         boolean retorno = true;
         String descripcion, sillas, mesa, monto, nombre;
         descripcion = edtdescripcion.getText().toString();
@@ -584,7 +584,7 @@ public class FragmentCotitacion extends Fragment {
         }
 
         return retorno;
-    }
+    }*/
 
     /*private boolean validarcalculo() {
         boolean retorno = true;
