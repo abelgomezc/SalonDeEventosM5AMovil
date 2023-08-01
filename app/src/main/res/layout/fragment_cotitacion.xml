@@ -161,59 +161,37 @@
                 android:minHeight="48dp" />
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtSilla"
 
+
+
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtmensaje"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="¿Cuántas sillas necesita?"
                 app:startIconDrawable="@drawable/ic_person">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtSillas"
+                    android:id="@+id/edtmensaje"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/san_francisco"
                     android:inputType="number"
                     android:textSize="15sp" />
 
+
             </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtMesa"
-
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btngupro"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="¿Cuántas Mesas necesita?"
-                app:startIconDrawable="@drawable/ic_person">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtMesa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/san_francisco"
-                    android:inputType="number"
-                    android:textSize="15sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtMantel"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="¿Cuántas manteles necesita?"
-                app:startIconDrawable="@drawable/ic_person">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtMantel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/san_francisco"
-                    android:inputType="number"
-                    android:textSize="15sp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_gravity="end"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/san_francisco"
+                android:text="Guardar Producto"
+                android:textColor="@color/white" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtTotalcoti"

@@ -47,6 +47,7 @@ import org.json.JSONObject;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -67,11 +68,12 @@ import xyz.abelgomez.navigationdrawer.model.Usuario;
 
 public class FragmentCotitacion extends Fragment {
 
+    private ArrayList<Double> preciosSeleccionados = new ArrayList<>();
 
-    private Button btncalcularcoti, btnguardarcoti;
-    private TextInputLayout txtsillita, txtmesita, txtdescrion, txtmontocoti, txthoritas, txtmantelcito;
+    private Button btncalcularcoti, btnguardarcoti,btnprodu;
+    private TextInputLayout txtsillita, txtmesita, txtdescrion, txtmontocoti, txthoritas, txtmantelcito,txtcanti;
     private EditText edtmesa, edtmantelcito, edtnomb;
-    private EditText edtsilla;
+    private EditText edtsilla,edtcanti;
     private EditText edtdescripcion;
     private EditText edtmontocoti,edttipoevento;
     private EditText edthorias;
@@ -84,7 +86,7 @@ public class FragmentCotitacion extends Fragment {
     TimePicker timePickerinicio, timePickerfinal;
     Spinner spinnerEventos;
     String seleccion;
-    private double resultadoTotal = 0.0;
+    double resultadoTotal = 0.0;
 
     private static final String PREF_NAME = "MiPreferencia";
     private static final String KEY_USUARIO = "usuario";
@@ -111,9 +113,11 @@ public class FragmentCotitacion extends Fragment {
         spinnerProductos = view.findViewById(R.id.spinner);
         edtdescripcion = view.findViewById(R.id.edtdescripcion);
         txtdescrion = view.findViewById(R.id.txtdescripcionsalon);
-        edtmantelcito = view.findViewById(R.id.edtMantel);
-        txtmantelcito = view.findViewById(R.id.txtMantel);
 
+
+        btnprodu= view.findViewById(R.id.btngupro);
+        edtcanti=view.findViewById(R.id.edtmensaje);
+        txtcanti=view.findViewById(R.id.txtmensaje);
         edtnomb = view.findViewById(R.id.edtNombresalon);
         edttipoevento=view.findViewById(R.id.edttipo);
         txthoritas = view.findViewById(R.id.txthoritas);
@@ -123,10 +127,7 @@ public class FragmentCotitacion extends Fragment {
         edtmontocoti = view.findViewById(R.id.edttotal);
         edtmontocoti.setKeyListener(null);
         txtmontocoti = view.findViewById(R.id.txtTotalcoti);
-        txtsillita = view.findViewById(R.id.txtSilla);
-        txtmesita = view.findViewById(R.id.txtMesa);
-        edtmesa = view.findViewById(R.id.edtMesa);
-        edtsilla = view.findViewById(R.id.edtSillas);
+
         timePickerinicio = view.findViewById(R.id.timerinicio);
         timePickerfinal = view.findViewById(R.id.timerfinal);
 
@@ -217,18 +218,11 @@ public class FragmentCotitacion extends Fragment {
 
             @Override
             public void onClick(View view) {
-                if (validarcalculo() == true) {
+
 
                     if(validarduracionhoras()){
                         calcular();
                     }
-
-                    } else {
-
-
-                      toastIncorrecto("No puede seleccionar una fecha menor a la fecha actual");
-
-                   }
 
                     //   calcularhora();
                 }
@@ -239,12 +233,12 @@ public class FragmentCotitacion extends Fragment {
         btnguardarcoti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validarenvio() == true) {
+
 
                             mostrarConfirmacion();
                     // enviarCotizacion();
                     // enviarCotizacion1();
-                }
+
             }
         });
         // Agregar la solicitud a la cola
@@ -252,62 +246,62 @@ public class FragmentCotitacion extends Fragment {
 
 
         queue = Volley.newRequestQueue(getActivity());
-        txtsillita.setVisibility(View.GONE);
+       /* txtsillita.setVisibility(View.GONE);
         txtmesita.setVisibility(View.GONE);
 
         edtmesa.setVisibility(View.GONE);
         edtsilla.setVisibility(View.GONE);
         edtmantelcito.setVisibility(View.GONE);
-        txtmantelcito.setVisibility(View.GONE);
+        txtmantelcito.setVisibility(View.GONE);*/
 
-        spinnerProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*spinnerProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                if (selectedItem.equals("silla")) {
-                    txtsillita.setVisibility(View.VISIBLE);
-                    edtsilla.setVisibility(View.VISIBLE);
-                    edtmesa.setVisibility(View.GONE);
-                    txtmesita.setVisibility(View.GONE);
-                    edtmantelcito.setVisibility(View.GONE);
-                    txtmantelcito.setVisibility(View.GONE);
-                    Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
-
-                    precioProductoSeleccionado = productoSeleccionado.getPrecio();
-                    System.out.println("precio:" +precioProductoSeleccionado);
-
-
-                }
-                if (selectedItem.equals("mesa")) {
-                    txtmesita.setVisibility(View.VISIBLE);
-                    edtmesa.setVisibility(View.VISIBLE);
-                    edtsilla.setVisibility(View.GONE);
-                    txtsillita.setVisibility(View.GONE);
-                    edtmantelcito.setVisibility(View.GONE);
-                    txtmantelcito.setVisibility(View.GONE);
+                String selectedItem1 = parent.getItemAtPosition(position).toString();
                     Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
                     precioProductoSeleccionado = productoSeleccionado.getPrecio();
-                    System.out.println("precio:" +precioProductoSeleccionado);
 
-                }
-                if (selectedItem.equals("mantel")) {
-                    txtmesita.setVisibility(View.GONE);
-                    edtmesa.setVisibility(View.GONE);
-                    edtsilla.setVisibility(View.GONE);
-                    txtsillita.setVisibility(View.GONE);
-                    edtmantelcito.setVisibility(View.VISIBLE);
-                    txtmantelcito.setVisibility(View.VISIBLE);
-                    Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
+                System.out.println("precio:" +precioProductoSeleccionado);
+                System.out.println("opcion "+ selectedItem1);
+                edtcanti.setText("");
+                    txtcanti.setHint("Cuantas "+selectedItem1+"s desea");
 
-                    precioProductoSeleccionado = productoSeleccionado.getPrecio();
-                    System.out.println("precio:" +precioProductoSeleccionado);
-
-                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // No se realiza ninguna acción cuando no hay opción seleccionada
+            }
+        });*/
+
+        spinnerProductos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem1 = parent.getItemAtPosition(position).toString();
+                Producto productoSeleccionado = (Producto) parent.getItemAtPosition(position);
+                precioProductoSeleccionado = productoSeleccionado.getPrecio();
+
+                System.out.println("precio:" + precioProductoSeleccionado);
+                System.out.println("opcion " + selectedItem1);
+
+                // Borra el contenido del EditText
+                edtcanti.setText("");
+
+                // Establecer el Hint nuevamente con la nueva opción seleccionada
+                txtcanti.setHint("Cuantas " + selectedItem1 + "s desea");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No se realiza ninguna acción cuando no hay opción seleccionada
+            }
+        });
+
+
+        btnprodu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              sumarproduc();
             }
         });
 
@@ -347,6 +341,30 @@ public class FragmentCotitacion extends Fragment {
         return view;
     }
 
+
+    // Método para calcular la suma total de los precios seleccionados
+    private double calcularSumaTotal() {
+        double sumaTotal = 0;
+        for (double precio : preciosSeleccionados) {
+            sumaTotal += precio;
+        }
+        return sumaTotal;
+    }
+
+    // Puedes llamar a este método cuando desees obtener la suma total y hacer algo con ese valor
+    private void procesarSumaTotal() {
+        double sumaTotal = calcularSumaTotal();
+        // Haz lo que necesites con la sumaTotal (por ejemplo, mostrarla en un TextView, guardarla en una base de datos, etc.).
+    }
+
+    public void sumarproduc(){
+        Double value1 = Double.parseDouble(edtcanti.getText().toString()) * precioProductoSeleccionado;
+
+        System.out.println("precio produ: " + value1);
+
+        resultadoTotal += value1;
+        System.out.println("resultado total: " + resultadoTotal);
+    }
 
     private List<Producto> parseProductosFromResponse(JSONArray response) {
         List<Producto> productosList = new ArrayList<>();
@@ -439,13 +457,18 @@ public class FragmentCotitacion extends Fragment {
 
         double costohora = diffInHours * salon2.getSalCostoHora();
         System.out.println("precio:" + salon2.getSalCostoHora());
-        Double value1 = Double.parseDouble(edtmantelcito.getText().toString()) * precioProductoSeleccionado;
+     /*   Double value1 = Double.parseDouble(edtmantelcito.getText().toString()) * precioProductoSeleccionado;
         Double value2 = Double.parseDouble(edtmesa.getText().toString()) * precioProductoSeleccionado;
-        Double value3 = Double.parseDouble(edtsilla.getText().toString()) * precioProductoSeleccionado;
+        Double value3 = Double.parseDouble(edtsilla.getText().toString()) * precioProductoSeleccionado;*/
 
-        double sum = value1+value2+value3+ costohora;
+        double sum =  costohora+resultadoTotal;
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        String formattedSum = decimalFormat.format(sum);
+        System.out.println("precio:" + costohora);
 
-        edtmontocoti.setText(String.valueOf(sum));
+        System.out.println("precio2:" + formattedSum);
+
+        edtmontocoti.setText(String.valueOf(formattedSum));
 
     }
 
@@ -540,7 +563,7 @@ public class FragmentCotitacion extends Fragment {
 
     }
 
-    private boolean validarenvio() {
+   /* private boolean validarenvio() {
         boolean retorno = true;
         String descripcion, sillas, mesa, monto, nombre;
         descripcion = edtdescripcion.getText().toString();
@@ -561,9 +584,9 @@ public class FragmentCotitacion extends Fragment {
         }
 
         return retorno;
-    }
+    }*/
 
-    private boolean validarcalculo() {
+    /*private boolean validarcalculo() {
         boolean retorno = true;
         String descripcion, sillas, mesa, monto, nombre;
         descripcion = edtdescripcion.getText().toString();
@@ -583,7 +606,7 @@ public class FragmentCotitacion extends Fragment {
             txtmesita.setErrorEnabled(false);
         }
         return retorno;
-    }
+    }*/
 
 
     private Salon parseSalonFromResponse(JSONObject response) {
